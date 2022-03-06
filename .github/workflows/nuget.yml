@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_PATH: 'src/StrongTypedId/StrongTypedId.csproj'
-  SOLUTION_PATH: 'src/StrongTypedId.sln'
+  SOLUTION_PATH: 'StrongTypedId.sln'
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 
@@ -23,7 +23,7 @@ jobs:
     - name: 'Install dotnet'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
 
     - name: 'Restore packages'
       run: dotnet restore ${{ env.PROJECT_PATH }}
