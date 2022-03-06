@@ -9,7 +9,7 @@
     <Description>A super small library for providing strong typed Ids (as opposed to using primitives)</Description>
     <Copyright>Steffen Skov 2022</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/NQbbe/StrongTypedId</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
     <PackageTags>Ckode, Id</PackageTags>
   </PropertyGroup>
 
