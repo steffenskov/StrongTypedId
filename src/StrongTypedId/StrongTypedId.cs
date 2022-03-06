@@ -12,26 +12,26 @@ namespace StrongTypedId
 	/// Abstract baseclass to represent a strong typed id. Use it like this:
 	/// public class UserId: StrongTypedId<UserId, Guid>
 	/// </Summary>
-	public abstract class StrongTypedId<TConcreteClass, TValue> : IComparable, IComparable<TValue>, IEquatable<TValue>
-	where TConcreteClass : StrongTypedId<TConcreteClass, TValue>
-	where TValue : struct, IComparable, IComparable<TValue>, IEquatable<TValue>
+	public abstract class StrongTypedId<TStrongTypedId, TPrimitiveId> : IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
+	where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
+	where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
 	{
 		/// <Summary>
 		/// JsonConverter for serializing purely the underlying value. Use it like this:
 		/// [JsonConverter(typeof(UserId.StrongIdJsonConverter))]
 		/// public class UserId: StrongTypedId<UserId, Guid>
 		/// </Summary>
-		public class StrongTypedIdJsonConverter : JsonConverter<TConcreteClass>
+		public class StrongTypedIdJsonConverter : JsonConverter<TStrongTypedId>
 		{
-			public override TConcreteClass Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+			public override TStrongTypedId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 			{
-				var value = (TValue)GeTValue(reader);
+				var value = (TPrimitiveId)GeTValue(reader);
 				return Create(value);
 			}
 
 			private object GeTValue(Utf8JsonReader reader)
 			{
-				return typeof(TValue) switch
+				return typeof(TPrimitiveId) switch
 				{
 					Type t when t == typeof(bool) => reader.GetBoolean(),
 					Type t when t == typeof(Guid) => reader.GetGuid(),
@@ -50,46 +50,46 @@ namespace StrongTypedId
 				};
 			}
 
-			public override void Write(Utf8JsonWriter writer, TConcreteClass value, JsonSerializerOptions options)
+			public override void Write(Utf8JsonWriter writer, TStrongTypedId value, JsonSerializerOptions options)
 			{
 				writer.WriteStringValue(value.ToString());
 			}
 		}
 
 		private static readonly object _ctorDelegateLock = new();
-		private static readonly ConcurrentDictionary<Type, Func<TValue, TConcreteClass>> _ctors = new();
+		private static readonly ConcurrentDictionary<Type, Func<TPrimitiveId, TStrongTypedId>> _ctors = new();
 
 		/// <Summary>
 		/// Creates a new instance of your strong typed id.
 		/// If your actual value is a Guid, Guid.NewGuid() will be used, otherwise the value will be the default for the type.
 		/// </Summary>
-		public static TConcreteClass New()
+		public static TStrongTypedId New()
 		{
-			if (typeof(TValue) == typeof(Guid))
-				return Create((TValue)(object)Guid.NewGuid());
+			if (typeof(TPrimitiveId) == typeof(Guid))
+				return Create((TPrimitiveId)(object)Guid.NewGuid());
 			else
 				return Create(default);
 		}
 
-		private static TConcreteClass Create(TValue value)
+		private static TStrongTypedId Create(TPrimitiveId value)
 		{
-			var ctor = GetOrCreateCtor<TConcreteClass>();
+			var ctor = GetOrCreateCtor<TStrongTypedId>();
 			var instance = ctor!.Invoke(value);
 			return instance;
 		}
 
-		private static Func<TValue, TConcreteClass> GetOrCreateCtor<T>()
+		private static Func<TPrimitiveId, TStrongTypedId> GetOrCreateCtor<T>()
 		{
-			var idType = typeof(TConcreteClass);
+			var idType = typeof(TStrongTypedId);
 			if (!_ctors.TryGetValue(idType, out var func))
 			{
-				var ctor = idType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(TValue) }, null);
+				var ctor = idType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(TPrimitiveId) }, null);
 				_ctors[idType] = func = CreateDelegate(ctor!);
 			}
 			return func;
 		}
 
-		private static Func<TValue, TConcreteClass> CreateDelegate(ConstructorInfo constructor)
+		private static Func<TPrimitiveId, TStrongTypedId> CreateDelegate(ConstructorInfo constructor)
 		{
 			var constructorParam = constructor.GetParameters();
 
@@ -109,134 +109,134 @@ namespace StrongTypedId
 			gen.Emit(OpCodes.Ret);
 
 			// Return the delegate :)
-			return (Func<TValue, TConcreteClass>)method.CreateDelegate(typeof(Func<TValue, TConcreteClass>));
+			return (Func<TPrimitiveId, TStrongTypedId>)method.CreateDelegate(typeof(Func<TPrimitiveId, TStrongTypedId>));
 		}
 
-		private TValue _value;
+		public TPrimitiveId PrimitiveId { get; }
 
-		protected StrongTypedId(TValue value)
+		protected StrongTypedId(TPrimitiveId primitiveId)
 		{
-			_value = value;
+			PrimitiveId = primitiveId;
 		}
 
 		public override bool Equals(object? obj)
 		{
-			return _value.Equals(obj);
+			return PrimitiveId.Equals(obj);
 		}
 
 		public override int GetHashCode()
 		{
-			return _value.GetHashCode();
+			return PrimitiveId.GetHashCode();
 		}
 
 		public override string ToString()
 		{
-			return _value.ToString()!;
+			return PrimitiveId.ToString()!;
 		}
 
-		public int CompareTo(TValue other)
+		public int CompareTo(TPrimitiveId other)
 		{
-			return _value.CompareTo(other);
+			return PrimitiveId.CompareTo(other);
 		}
 
-		public bool Equals(TValue other)
+		public bool Equals(TPrimitiveId other)
 		{
-			return _value.Equals(other);
+			return PrimitiveId.Equals(other);
 		}
 
 		public int CompareTo(object? obj)
 		{
-			return _value.CompareTo(obj);
+			return PrimitiveId.CompareTo(obj);
 		}
 
-		public static bool operator ==(StrongTypedId<TConcreteClass, TValue>? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator ==(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.Equals(b?._value) == true;
+			return a?.Equals(b?.PrimitiveId) == true;
 		}
 
-		public static bool operator ==(StrongTypedId<TConcreteClass, TValue>? a, TValue? b)
+		public static bool operator ==(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, TPrimitiveId? b)
 		{
 			return a?.Equals(b) == true;
 		}
 
-		public static bool operator ==(TValue? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator ==(TPrimitiveId? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.Equals(b?._value) == true;
+			return a?.Equals(b?.PrimitiveId) == true;
 		}
 
-		public static bool operator >(StrongTypedId<TConcreteClass, TValue>? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator >(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?._value.CompareTo(b?._value) > 0;
+			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) > 0;
 		}
 
-		public static bool operator >(StrongTypedId<TConcreteClass, TValue>? a, TValue? b)
+		public static bool operator >(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, TPrimitiveId? b)
 		{
-			return a?._value.CompareTo(b) > 0;
+			return a?.PrimitiveId.CompareTo(b) > 0;
 		}
 
-		public static bool operator >(TValue? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator >(TPrimitiveId? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.CompareTo(b?._value) > 0;
+			return a?.CompareTo(b?.PrimitiveId) > 0;
 		}
 
-		public static bool operator <(StrongTypedId<TConcreteClass, TValue>? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator <(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?._value.CompareTo(b?._value) < 0;
+			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) < 0;
 		}
 
-		public static bool operator <(StrongTypedId<TConcreteClass, TValue>? a, TValue? b)
+		public static bool operator <(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, TPrimitiveId? b)
 		{
-			return a?._value.CompareTo(b) < 0;
+			return a?.PrimitiveId.CompareTo(b) < 0;
 		}
 
-		public static bool operator <(TValue? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator <(TPrimitiveId? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.CompareTo(b?._value) < 0;
+			return a?.CompareTo(b?.PrimitiveId) < 0;
 		}
 
-		public static bool operator >=(StrongTypedId<TConcreteClass, TValue>? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator >=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?._value.CompareTo(b?._value) >= 0;
+			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) >= 0;
 		}
 
-		public static bool operator >=(StrongTypedId<TConcreteClass, TValue>? a, TValue? b)
+		public static bool operator >=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, TPrimitiveId? b)
 		{
-			return a?._value.CompareTo(b) >= 0;
+			return a?.PrimitiveId.CompareTo(b) >= 0;
 		}
 
-		public static bool operator >=(TValue? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator >=(TPrimitiveId? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.CompareTo(b?._value) >= 0;
+			return a?.CompareTo(b?.PrimitiveId) >= 0;
 		}
 
-		public static bool operator <=(StrongTypedId<TConcreteClass, TValue>? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator <=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?._value.CompareTo(b?._value) <= 0;
+			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) <= 0;
 		}
 
-		public static bool operator <=(StrongTypedId<TConcreteClass, TValue>? a, TValue? b)
+		public static bool operator <=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, TPrimitiveId? b)
 		{
-			return a?._value.CompareTo(b) <= 0;
+			return a?.PrimitiveId.CompareTo(b) <= 0;
 		}
 
-		public static bool operator <=(TValue? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator <=(TPrimitiveId? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.CompareTo(b?._value) <= 0;
+			return a?.CompareTo(b?.PrimitiveId) <= 0;
 		}
 
-		public static bool operator !=(StrongTypedId<TConcreteClass, TValue>? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator !=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.Equals(b?._value) != true;
+			return a?.Equals(b?.PrimitiveId) != true;
 		}
 
-		public static bool operator !=(StrongTypedId<TConcreteClass, TValue>? a, TValue? b)
+		public static bool operator !=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, TPrimitiveId? b)
 		{
 			return a?.Equals(b) != true;
 		}
 
-		public static bool operator !=(TValue? a, StrongTypedId<TConcreteClass, TValue>? b)
+		public static bool operator !=(TPrimitiveId? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			return a?.Equals(b?._value) != true;
+			return a?.Equals(b?.PrimitiveId) != true;
 		}
 	}
 }
