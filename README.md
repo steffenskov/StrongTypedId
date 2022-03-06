@@ -8,6 +8,9 @@ This works through the use of an abstract base class (`StrongTypedId<TStrongType
 This project is inspired by Andrew Lock's StronglyTypedId: https://github.com/andrewlock/StronglyTypedId.
 However I needed support for .Net 5 and thus this project was born.
 
+# Installation
+I recommend using the NuGet package: https://www.nuget.org/packages/StrongTypedId/ however you can also simply copy the class StrongTypedId into your project, as it's a single class solution.
+
 # Usage
 
 Specify your class like this:
