@@ -83,8 +83,14 @@ namespace StrongTypedId
 			var idType = typeof(TStrongTypedId);
 			if (!_ctors.TryGetValue(idType, out var func))
 			{
-				var ctor = idType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(TPrimitiveId) }, null);
-				_ctors[idType] = func = CreateDelegate(ctor!);
+				lock (_ctorDelegateLock)
+				{
+					if (!_ctors.TryGetValue(idType, out func))
+					{
+						var ctor = idType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(TPrimitiveId) }, null);
+						_ctors[idType] = func = CreateDelegate(ctor!);
+					}
+				}
 			}
 			return func;
 		}
