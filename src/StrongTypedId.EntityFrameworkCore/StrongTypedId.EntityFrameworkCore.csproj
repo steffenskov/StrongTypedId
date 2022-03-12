@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>Steffen Skov</Authors>
     <Company>Steffen Skov</Company>
     <Description>EntityFrame.Core ValueConverter for the StrongTypedId library</Description>
@@ -17,7 +17,7 @@
     <None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="StrongTypedId" Version="1.1.0" />
+    <PackageReference Include="StrongTypedId" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
