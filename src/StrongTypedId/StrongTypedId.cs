@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.ComponentModel;
-using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace StrongTypedId
 {
@@ -18,129 +14,6 @@ namespace StrongTypedId
 		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
 		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
 	{
-		/// <Summary>
-		/// JsonConverter for System.Text.Json. It serializes purely the underlying value. Use it like this:
-		/// [JsonConverter(typeof(UserId.StrongIdJsonConverter))]
-		/// public class UserId: StrongTypedId<UserId, Guid>
-		/// </Summary>
-		public class StrongTypedIdJsonConverter : JsonConverter<TStrongTypedId>
-		{
-			public override TStrongTypedId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-			{
-				var value = (TPrimitiveId)GetValue(reader);
-				return Create(value);
-			}
-
-			private static object GetValue(Utf8JsonReader reader)
-			{
-				return typeof(TPrimitiveId) switch
-				{
-					Type t when t == typeof(bool) => reader.GetBoolean(),
-					Type t when t == typeof(Guid) => reader.GetGuid(),
-					Type t when t == typeof(short) => reader.GetInt16(),
-					Type t when t == typeof(int) => reader.GetInt32(),
-					Type t when t == typeof(long) => reader.GetInt64(),
-					Type t when t == typeof(ushort) => reader.GetUInt16(),
-					Type t when t == typeof(uint) => reader.GetUInt32(),
-					Type t when t == typeof(ulong) => reader.GetUInt64(),
-					Type t when t == typeof(float) => reader.GetSingle(),
-					Type t when t == typeof(double) => reader.GetDouble(),
-					Type t when t == typeof(decimal) => reader.GetDecimal(),
-					Type t when t == typeof(byte) => reader.GetByte(),
-					Type t when t == typeof(sbyte) => reader.GetSByte(),
-					_ => throw new NotSupportedException()
-				};
-			}
-
-			public override void Write(Utf8JsonWriter writer, TStrongTypedId value, JsonSerializerOptions options)
-			{
-				writer.WriteStringValue(value.ToString());
-			}
-		}
-
-		/// <summary>
-		/// JsonConverter for Newtonsoft. It serializes purely the underlying value. Use it like this:
-		/// [JsonConverter(typeof(UserId.StrongTypedIdNewtonSoftJsonConverter))]
-		/// public class UserId: StrongTypedId<UserId, Guid>
-		/// </summary>
-		/*
-		public class StrongTypedIdNewtonSoftJsonConverter : NewtonSoft.Json.JsonConverter<TStrongTypedId>
-		{
-			public override TStrongTypedId? ReadJson(JsonReader reader, Type objectType, TStrongTypedId? existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer)
-			{
-				var result = serializer.Deserialize<TPrimitiveId?>(reader);
-				return result.HasValue
-					? Create(result.Value)
-					: null;
-			}
-
-			public override void WriteJson(JsonWriter writer, TStrongTypedId? value, Newtonsoft.Json.JsonSerializer serializer)
-			{
-				serializer.Serialize(writer, value?.PrimitiveId);
-			}
-		}*/
-
-		/// <summary>
-		/// TypeConverter for WebAPI and MVC. Its purpose is to allow StrongTypedIds as arguments to controller actions.
-		/// Use it like this:
-		/// [TypeConverter(typeof(UserId.StrongTypedIdTypeConverter))]
-		/// public class UserId: StrongTypedId<UserId, Guid>
-		/// </summary>
-		public class StrongTypedIdTypeConverter : TypeConverter
-		{
-			public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
-			{
-				return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-			}
-
-			public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
-			{
-				var stringValue = value as string;
-				if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitiveId))
-				{
-					return Create((TPrimitiveId)primitiveId);
-				}
-
-				return base.ConvertFrom(context, culture, value);
-			}
-
-			private static bool TryParse(string stringValue, out object primitiveId)
-			{
-				primitiveId = typeof(TPrimitiveId) switch
-				{
-					Type t when t == typeof(bool) => bool.Parse(stringValue),
-					Type t when t == typeof(Guid) => Guid.Parse(stringValue),
-					Type t when t == typeof(short) => short.Parse(stringValue),
-					Type t when t == typeof(int) => int.Parse(stringValue),
-					Type t when t == typeof(long) => long.Parse(stringValue),
-					Type t when t == typeof(ushort) => ushort.Parse(stringValue),
-					Type t when t == typeof(uint) => uint.Parse(stringValue),
-					Type t when t == typeof(ulong) => ulong.Parse(stringValue),
-					Type t when t == typeof(float) => float.Parse(stringValue),
-					Type t when t == typeof(double) => double.Parse(stringValue),
-					Type t when t == typeof(decimal) => decimal.Parse(stringValue),
-					Type t when t == typeof(byte) => byte.Parse(stringValue),
-					Type t when t == typeof(sbyte) => sbyte.Parse(stringValue),
-					_ => throw new NotSupportedException()
-				};
-				return true;
-			}
-		}
-
-		/// <summary>
-		/// ValueConverter for EntityFramework. Its purpose is to allow the usage of the StrongTypedId in your Entity classes.
-		/// Add it to your DbContext class in protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) like this:
-		/// configurationBuilder.Properties<UserId>().HaveConversion<UserId.StrongTypedIdValueConverter>();
-		/// </summary>
-		/*
-		public class StrongTypedIdValueConverter : ValueConverter<TStrongTypedId, TPrimitiveId>
-		{
-			public StrongTypedIdValueConverter()
-				: base(id => id.PrimitiveId, primitiveId => Create(primitiveId))
-			{
-			}
-		}*/
-
 		private static readonly object _ctorDelegateLock = new();
 		private static readonly ConcurrentDictionary<Type, Func<TPrimitiveId, TStrongTypedId>> _ctors = new();
 
@@ -160,7 +33,7 @@ namespace StrongTypedId
 			}
 		}
 
-		private static TStrongTypedId Create(TPrimitiveId value)
+		public static TStrongTypedId Create(TPrimitiveId value)
 		{
 			var ctor = GetOrCreateCtor();
 			var instance = ctor!.Invoke(value);

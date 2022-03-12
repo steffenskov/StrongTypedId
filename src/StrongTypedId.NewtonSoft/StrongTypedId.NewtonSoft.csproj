@@ -6,7 +6,7 @@
     <Version>1.1.0</Version>
     <Authors>Steffen Skov</Authors>
     <Company>Steffen Skov</Company>
-    <Description>A super small library for providing strong typed Ids (as opposed to using primitives)</Description>
+    <Description>NewtonSoft.Json JsonConverter for the StrongTypedId library</Description>
     <Copyright>Steffen Skov 2022</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
@@ -14,7 +14,13 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="../../README.md" Pack="true" PackagePath="\"/>
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="StrongTypedId" Version="1.1.0" />
   </ItemGroup>
 
 </Project>
