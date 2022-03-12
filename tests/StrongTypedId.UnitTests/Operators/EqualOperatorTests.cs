@@ -3,6 +3,19 @@ namespace StrongTypedId.UnitTests;
 public class EqualOperatorTests
 {
 	[Fact]
+	public void EqualOperator_OtherIsNull_NotEqual()
+	{
+		// Arrange
+		var idOne = GuidId.New();
+
+		// Act
+		var equal = idOne == null;
+
+		// Assert
+		Assert.False(equal);
+	}
+
+	[Fact]
 	public void EqualOperator_BothAreStrongTypedAndEqual_AreEqual()
 	{
 		// Arrange
