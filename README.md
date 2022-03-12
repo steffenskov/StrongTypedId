@@ -64,7 +64,9 @@ After doing that you need to add the converter to EF in your `DbContext` class l
 ```
 protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 {
-	configurationBuilder.Properties<UserId>().HaveConversion<StrongTypedIdValueConverter<UserId, Guid>>();
+	configurationBuilder
+		.Properties<UserId>()
+		.HaveConversion<StrongTypedIdValueConverter<UserId, Guid>>();
 }
 ```
 
