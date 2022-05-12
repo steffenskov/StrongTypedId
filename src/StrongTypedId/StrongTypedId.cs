@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 
 namespace StrongTypedId
 {
@@ -10,7 +11,7 @@ namespace StrongTypedId
 	/// Abstract baseclass to represent a strong typed id. Use it like this:
 	/// public class UserId: StrongTypedId<UserId, Guid>
 	/// </Summary>
-	public abstract class StrongTypedId<TStrongTypedId, TPrimitiveId> : IComparable, IComparable<TPrimitiveId>, IEquatable<TStrongTypedId>
+	public abstract class StrongTypedId<TStrongTypedId, TPrimitiveId> : IComparable, IComparable<StrongTypedId<TStrongTypedId, TPrimitiveId>>, IComparable<TPrimitiveId>, IEquatable<TStrongTypedId>
 		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
 		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
 	{
@@ -121,6 +122,11 @@ namespace StrongTypedId
 		public int CompareTo(object? obj)
 		{
 			return PrimitiveId.CompareTo(obj);
+		}
+
+		public int CompareTo(StrongTypedId<TStrongTypedId, TPrimitiveId>? other)
+		{
+			return PrimitiveId.CompareTo(other?.PrimitiveId);
 		}
 
 		public static bool operator ==(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
