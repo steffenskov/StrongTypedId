@@ -1,6 +1,6 @@
 # StrongTypedId.Dapper.DDD.Repository
 
-This is a small extension method for making usage of StrongTypedIds easier with the [Dapper.DDD.Repository](https://github.com/steffenskov/Dapper.DDD.Repository).
+This package simplifies the usage of StrongTypedIds with [Dapper.DDD.Repository](https://github.com/steffenskov/Dapper.DDD.Repository).
 
 # Usage
 
