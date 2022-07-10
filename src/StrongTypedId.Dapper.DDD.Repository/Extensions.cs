@@ -1,11 +1,15 @@
-﻿namespace Dapper.DDD.Repository;
+﻿using System;
+using StrongTypedId;
 
-public static class Extensions
+namespace Dapper.DDD.Repository
 {
-	public static (Func<TStrongTypedId, TPrimitiveId> convertToPrimitive, Func<TPrimitiveId, TStrongTypedId> convertToStrongType) GetTypeConverter<TStrongTypedId, TPrimitiveId>(this StrongTypedId<TStrongTypedId, TPrimitiveId> strongTypedId)
-		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
-		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
+	public static class Extensions
 	{
-		return ((id) => id.PrimitiveId, StrongTypedId<TStrongTypedId, TPrimitiveId>.Create);
+		public static (Func<TStrongTypedId, TPrimitiveId> convertToPrimitive, Func<TPrimitiveId, TStrongTypedId> convertToStrongType) GetTypeConverter<TStrongTypedId, TPrimitiveId>(this StrongTypedId<TStrongTypedId, TPrimitiveId> strongTypedId)
+			where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
+			where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
+		{
+			return ((id) => id.PrimitiveId, StrongTypedId<TStrongTypedId, TPrimitiveId>.Create);
+		}
 	}
 }
