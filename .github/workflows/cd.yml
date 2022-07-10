@@ -57,16 +57,16 @@ jobs:
       id: version
       uses: battila7/get-version-action@v2
       
-    - name: 'Pack Repository'
+    - name: 'Pack main project'
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
-    - name: 'Pack DependencyInjection'
+    - name: 'Pack NewtonSoft extension'
       run: dotnet pack ${{ env.NEWTON_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
-    - name: 'Pack MySql'
+    - name: 'Pack EntityFramework extension'
       run: dotnet pack ${{ env.EF_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
-    - name: 'Pack Sql'
+    - name: 'Pack Dapper.DDD.Repository extension'
       run: dotnet pack ${{ env.DAPPER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
       
     - name: 'Push package'
