@@ -1,9 +1,8 @@
 name: "Continuous Deployment"
 
-on: 
+on:
   push:
-    tags:
-    - 'v*'
+    branches: [ main ]
 
 env:
   PROJECT_PATH: 'src/StrongTypedId/StrongTypedId.csproj'
@@ -53,21 +52,41 @@ jobs:
     - name: 'Build project'
       run: dotnet build ${{ env.SOLUTION_PATH }} --no-restore --configuration Release
       
-    - name: 'Get version'
+    - name: 'Get main version'
       id: version
-      uses: battila7/get-version-action@v2
+      uses: bbonkr/get-version-action@v1.0.4
+      with:
+        project: ${{ env.PROJECT_PATH }}
+
+    - name: 'Get NewtonSoft extension version'
+      id: newton_version
+      uses: bbonkr/get-version-action@v1.0.4
+      with:
+        project: ${{ env.NEWTON_PROJECT_PATH }}
+
+    - name: 'Get EF version'
+      id: ef_version
+      uses: bbonkr/get-version-action@v1.0.4
+      with:
+        project: ${{ env.EF_PROJECT_PATH }}
+    
+    - name: 'Get Dapper version'
+      id: dapper_version
+      uses: bbonkr/get-version-action@v1.0.4
+      with:
+        project: ${{ env.DAPPER_PROJECT_PATH }}
       
     - name: 'Pack main project'
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Pack NewtonSoft extension'
-      run: dotnet pack ${{ env.NEWTON_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.NEWTON_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.newton_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Pack EntityFramework extension'
-      run: dotnet pack ${{ env.EF_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.EF_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.ef_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Pack Dapper.DDD.Repository extension'
-      run: dotnet pack ${{ env.DAPPER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.DAPPER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.dapper_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
       
     - name: 'Push package'
-      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}
+      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }} --skip-duplicate
