@@ -16,7 +16,7 @@ I recommend using the NuGet package: [StrongTypedId](https://www.nuget.org/packa
 Specify your class like this:
 ```
 [TypeConverter(typeof(StrongTypedIdTypeConverter<UserId, Guid>))]
-[JsonConverter(typeof(SystemTextJsonConverter<UserID, Guid>))]
+[JsonConverter(typeof(SystemTextJsonConverter<UserId, Guid>))]
 public class UserId: StrongTypedId<UserId, Guid>
 {
 	public UserId(Guid primitiveId) : base(primitiveId)

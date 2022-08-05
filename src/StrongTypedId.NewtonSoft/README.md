@@ -7,9 +7,9 @@ This package provides support for using StrongTypedId with the NewtonSoft JSON s
 Add a `NewtonSoft.Json.JsonConverter` similarly to the built-in converters:
 
 ```
-[TypeConverter(typeof(UserId.StrongTypedIdTypeConverter))]
-[JsonConverter(typeof(UserId.StrongTypedIdJsonConverter))]
-[Newtonsoft.Json.JsonConverter(typeof(UserId.StrongTypedIdNewtonSoftJsonConverter))]
+[TypeConverter(typeof(StrongTypedIdTypeConverter<UserId, Guid>))]
+[JsonConverter(typeof(SystemTextJsonConverter<UserId, Guid>))]
+[Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<UserId, Guid>))]
 public class UserId: StrongTypedId<UserId, Guid>
 {
 	public UserId(Guid primitiveId) : base(primitiveId)
