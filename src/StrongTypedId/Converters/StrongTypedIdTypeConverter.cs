@@ -19,7 +19,7 @@ namespace StrongTypedId.Converters
 			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 		}
 
-		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
+		public override object? ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			var stringValue = value as string;
 			if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitiveId))
@@ -34,19 +34,19 @@ namespace StrongTypedId.Converters
 		{
 			primitiveId = typeof(TPrimitiveId) switch
 			{
-				Type t when t == typeof(bool) => bool.Parse(stringValue),
-				Type t when t == typeof(Guid) => Guid.Parse(stringValue),
-				Type t when t == typeof(short) => short.Parse(stringValue),
-				Type t when t == typeof(int) => int.Parse(stringValue),
-				Type t when t == typeof(long) => long.Parse(stringValue),
-				Type t when t == typeof(ushort) => ushort.Parse(stringValue),
-				Type t when t == typeof(uint) => uint.Parse(stringValue),
-				Type t when t == typeof(ulong) => ulong.Parse(stringValue),
-				Type t when t == typeof(float) => float.Parse(stringValue),
-				Type t when t == typeof(double) => double.Parse(stringValue),
-				Type t when t == typeof(decimal) => decimal.Parse(stringValue),
-				Type t when t == typeof(byte) => byte.Parse(stringValue),
-				Type t when t == typeof(sbyte) => sbyte.Parse(stringValue),
+				{ } t when t == typeof(bool) => bool.Parse(stringValue),
+				{ } t when t == typeof(Guid) => Guid.Parse(stringValue),
+				{ } t when t == typeof(short) => short.Parse(stringValue),
+				{ } t when t == typeof(int) => int.Parse(stringValue),
+				{ } t when t == typeof(long) => long.Parse(stringValue),
+				{ } t when t == typeof(ushort) => ushort.Parse(stringValue),
+				{ } t when t == typeof(uint) => uint.Parse(stringValue),
+				{ } t when t == typeof(ulong) => ulong.Parse(stringValue),
+				{ } t when t == typeof(float) => float.Parse(stringValue),
+				{ } t when t == typeof(double) => double.Parse(stringValue),
+				{ } t when t == typeof(decimal) => decimal.Parse(stringValue),
+				{ } t when t == typeof(byte) => byte.Parse(stringValue),
+				{ } t when t == typeof(sbyte) => sbyte.Parse(stringValue),
 				_ => throw new NotSupportedException()
 			};
 			return true;
