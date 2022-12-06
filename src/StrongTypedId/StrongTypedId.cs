@@ -131,6 +131,10 @@ namespace StrongTypedId
 
 		public static bool operator ==(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
+			if (a is null && b is null) 
+			{
+				return true;
+			}
 			return a?.PrimitiveId.Equals(b?.PrimitiveId) == true;
 		}
 
