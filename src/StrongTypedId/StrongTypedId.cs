@@ -51,9 +51,7 @@ namespace StrongTypedId
 				{
 					if (!_ctors.TryGetValue(idType, out func))
 					{
-						var ctor = idType.GetConstructor(
-							BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null,
-							new[] { typeof(TPrimitiveId) }, null);
+						var ctor = idType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(TPrimitiveId) }, null);
 						_ctors[idType] = func = CreateDelegate(ctor!);
 					}
 				}
@@ -81,8 +79,7 @@ namespace StrongTypedId
 			gen.Emit(OpCodes.Ret);
 
 			// Return the delegate :)
-			return (Func<TPrimitiveId, TStrongTypedId>)method.CreateDelegate(
-				typeof(Func<TPrimitiveId, TStrongTypedId>));
+			return (Func<TPrimitiveId, TStrongTypedId>)method.CreateDelegate(typeof(Func<TPrimitiveId, TStrongTypedId>));
 		}
 
 		public TPrimitiveId PrimitiveId { get; }
@@ -132,8 +129,7 @@ namespace StrongTypedId
 			return PrimitiveId.CompareTo(other?.PrimitiveId);
 		}
 
-		public static bool operator ==(StrongTypedId<TStrongTypedId, TPrimitiveId>? a,
-			StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
+		public static bool operator ==(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
 			if (a is null && b is null)
 			{
