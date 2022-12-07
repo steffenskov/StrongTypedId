@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 
 namespace StrongTypedId
 {
-
 	/// <Summary>
 	/// Abstract baseclass to represent a strong typed id. Use it like this:
 	/// public class UserId: StrongTypedId<UserId, Guid>
@@ -41,7 +40,8 @@ namespace StrongTypedId
 			return instance;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields", Justification = "We know the ctor is protected and have control over this")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+			Justification = "We know the ctor is protected and have control over this")]
 		private static Func<TPrimitiveId, TStrongTypedId> GetOrCreateCtor()
 		{
 			var idType = typeof(TStrongTypedId);
@@ -56,6 +56,7 @@ namespace StrongTypedId
 					}
 				}
 			}
+
 			return func;
 		}
 
@@ -65,12 +66,11 @@ namespace StrongTypedId
 
 			// Create the dynamic method
 			var method =
-				new DynamicMethod(
-					string.Format("{0}__{1}", constructor.DeclaringType!.Name, Guid.NewGuid().ToString().Replace("-", "")),
+				new DynamicMethod($"{constructor.DeclaringType!.Name}__{Guid.NewGuid().ToString().Replace("-", "")}",
 					constructor.DeclaringType,
 					Array.ConvertAll<ParameterInfo, Type>(constructorParam, p => p.ParameterType),
 					true
-					);
+				);
 
 			// Create the il
 			var gen = method.GetILGenerator();
@@ -131,10 +131,11 @@ namespace StrongTypedId
 
 		public static bool operator ==(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
-			if (a is null && b is null) 
+			if (a is null && b is null)
 			{
 				return true;
 			}
+
 			return a?.PrimitiveId.Equals(b?.PrimitiveId) == true;
 		}
 
@@ -210,6 +211,11 @@ namespace StrongTypedId
 
 		public static bool operator !=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
+			if (a is null && b is null)
+			{
+				return false;
+			}
+
 			return a?.PrimitiveId.Equals(b?.PrimitiveId) != true;
 		}
 
