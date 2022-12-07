@@ -10,8 +10,7 @@ namespace StrongTypedId
 	/// Abstract baseclass to represent a strong typed id. Use it like this:
 	/// public class UserId: StrongTypedId<UserId, Guid>
 	/// </Summary>
-	public abstract class StrongTypedId<TStrongTypedId, TPrimitiveId> : IComparable,
-		IComparable<StrongTypedId<TStrongTypedId, TPrimitiveId>>, IComparable<TPrimitiveId>, IEquatable<TStrongTypedId>
+	public abstract class StrongTypedId<TStrongTypedId, TPrimitiveId> : IComparable, IComparable<StrongTypedId<TStrongTypedId, TPrimitiveId>>, IComparable<TPrimitiveId>, IEquatable<TStrongTypedId>
 		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
 		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
 	{
@@ -41,8 +40,7 @@ namespace StrongTypedId
 			return instance;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell",
-			"S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
 			Justification = "We know the ctor is protected and have control over this")]
 		private static Func<TPrimitiveId, TStrongTypedId> GetOrCreateCtor()
 		{
@@ -70,9 +68,7 @@ namespace StrongTypedId
 
 			// Create the dynamic method
 			var method =
-				new DynamicMethod(
-					string.Format("{0}__{1}", constructor.DeclaringType!.Name,
-						Guid.NewGuid().ToString().Replace("-", "")),
+				new DynamicMethod($"{constructor.DeclaringType!.Name}__{Guid.NewGuid().ToString().Replace("-", "")}",
 					constructor.DeclaringType,
 					Array.ConvertAll<ParameterInfo, Type>(constructorParam, p => p.ParameterType),
 					true
@@ -157,8 +153,7 @@ namespace StrongTypedId
 			return a?.Equals(b?.PrimitiveId) == true;
 		}
 
-		public static bool operator >(StrongTypedId<TStrongTypedId, TPrimitiveId>? a,
-			StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
+		public static bool operator >(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
 			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) > 0;
 		}
@@ -173,8 +168,7 @@ namespace StrongTypedId
 			return a?.CompareTo(b?.PrimitiveId) > 0;
 		}
 
-		public static bool operator <(StrongTypedId<TStrongTypedId, TPrimitiveId>? a,
-			StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
+		public static bool operator <(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
 			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) < 0;
 		}
@@ -189,8 +183,7 @@ namespace StrongTypedId
 			return a?.CompareTo(b?.PrimitiveId) < 0;
 		}
 
-		public static bool operator >=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a,
-			StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
+		public static bool operator >=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
 			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) >= 0;
 		}
@@ -205,8 +198,7 @@ namespace StrongTypedId
 			return a?.CompareTo(b?.PrimitiveId) >= 0;
 		}
 
-		public static bool operator <=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a,
-			StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
+		public static bool operator <=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
 			return a?.PrimitiveId.CompareTo(b?.PrimitiveId) <= 0;
 		}
@@ -221,8 +213,7 @@ namespace StrongTypedId
 			return a?.CompareTo(b?.PrimitiveId) <= 0;
 		}
 
-		public static bool operator !=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a,
-			StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
+		public static bool operator !=(StrongTypedId<TStrongTypedId, TPrimitiveId>? a, StrongTypedId<TStrongTypedId, TPrimitiveId>? b)
 		{
 			if (a is null && b is null)
 			{
