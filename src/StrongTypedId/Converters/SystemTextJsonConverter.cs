@@ -42,8 +42,29 @@ namespace StrongTypedId.Converters
 
 		public override void Write(Utf8JsonWriter writer, TStrongTypedId value, JsonSerializerOptions options)
 		{
-			writer.WriteStringValue(value.ToString());
+			var writeAction = GetWriteAction(writer, value);
+			writeAction();
+		}
+
+		private static Action GetWriteAction(Utf8JsonWriter writer, TStrongTypedId value)
+		{
+			return 	value.PrimitiveId switch
+			{
+				bool val => () => writer.WriteBooleanValue(val),
+				Guid val => () => writer.WriteStringValue(val.ToString()),
+				short val => () => writer.WriteNumberValue(val),
+				int val => () => writer.WriteNumberValue(val),
+				long val => () => writer.WriteNumberValue(val),
+				ushort val => () => writer.WriteNumberValue(val),
+				uint val => () => writer.WriteNumberValue(val),
+				ulong val => () => writer.WriteNumberValue(val),
+				float val => () => writer.WriteNumberValue(val),
+				double val => () => writer.WriteNumberValue(val),
+				decimal val => () => writer.WriteNumberValue(val),
+				byte val => () => writer.WriteNumberValue(val),
+				sbyte val => () => writer.WriteNumberValue(val),
+				_ => throw new NotSupportedException()
+			}; 
 		}
 	}
-
 }

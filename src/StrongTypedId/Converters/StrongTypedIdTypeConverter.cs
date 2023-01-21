@@ -19,7 +19,7 @@ namespace StrongTypedId.Converters
 			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 		}
 
-		public override object? ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
 		{
 			var stringValue = value as string;
 			if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitiveId))
