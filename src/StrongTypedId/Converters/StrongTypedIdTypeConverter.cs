@@ -12,7 +12,7 @@ namespace StrongTypedId.Converters
 	/// </summary>
 	public class StrongTypedIdTypeConverter<TStrongTypedId, TPrimitiveId> : TypeConverter
 		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
-		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
+		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>, IParsable<TPrimitiveId>
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
 		{
