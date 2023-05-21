@@ -10,7 +10,7 @@ namespace StrongTypedId.Converters
 	/// </Summary>
 	public class StrongTypedIdValueConverter<TStrongTypedId, TPrimitiveId> : ValueConverter<TStrongTypedId, TPrimitiveId>
 		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
-		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
+		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>, IParsable<TPrimitiveId>
 	{
 		public StrongTypedIdValueConverter()
 			: base(id => id.PrimitiveId, primitiveId => StrongTypedId<TStrongTypedId, TPrimitiveId>.Create(primitiveId))

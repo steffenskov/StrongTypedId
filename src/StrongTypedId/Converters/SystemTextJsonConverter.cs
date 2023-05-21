@@ -11,7 +11,7 @@ namespace StrongTypedId.Converters
 	/// </Summary>
 	public class SystemTextJsonConverter<TStrongTypedId, TPrimitiveId> : JsonConverter<TStrongTypedId>
 		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
-		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>
+		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>, IParsable<TPrimitiveId>
 	{
 		public override TStrongTypedId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 		{
