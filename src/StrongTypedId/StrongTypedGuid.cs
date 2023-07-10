@@ -3,7 +3,7 @@
 namespace StrongTypedId
 {
     /// <Summary>
-    /// Abstract baseclass to represent a strong typed id. Use it like this:
+    /// Abstract baseclass to represent a strong typed guid. Use it like this:
     /// public class UserId: StrongTypedId&lt;UserId&gt;
     /// </Summary>
     public abstract class StrongTypedGuid<TStrongTypedId> : StrongTypedId<TStrongTypedId, Guid>

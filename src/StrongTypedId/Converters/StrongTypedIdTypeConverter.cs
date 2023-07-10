@@ -5,10 +5,10 @@ using System.Globalization;
 namespace StrongTypedId.Converters
 {
 	/// <summary>
-	/// TypeConverter for WebAPI and MVC. Its purpose is to allow StrongTypedIds as arguments to controller actions.
+	/// TypeConverter for WebAPI and MVC. Its purpose is to allow StrongTypedValues as arguments to controller actions.
 	/// Use it like this:
-	/// [TypeConverter(typeof(StrongTypedIdTypeConverter&lt;UserId, Guid&gt;))]
-	/// public class UserId: StrongTypedId&lt;UserId, Guid&gt;
+	/// [TypeConverter(typeof(StrongTypedValueTypeConverter&lt;EmailAddress, string&gt;))]
+	/// public class EmailAddress: StrongTypedValue&lt;EmailAddress, string&gt;
 	/// </summary>
 	public class StrongTypedValueTypeConverter<TStrongTypedValue, TPrimitiveValue> : TypeConverter
 		where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
@@ -52,5 +52,19 @@ namespace StrongTypedId.Converters
 			};
 			return true;
 		}
+	}
+
+	/// <summary>
+	/// TypeConverter for WebAPI and MVC. Its purpose is to allow StrongTypedIds as arguments to controller actions.
+	/// Use it like this:
+	/// [TypeConverter(typeof(StrongTypedIdTypeConverter&lt;UserId, Guid&gt;))]
+	/// public class UserId: StrongTypedId&lt;UserId, Guid&gt;
+	/// </summary>
+	public class StrongTypedIdTypeConverter<TStrongTypedId, TPrimitiveId> : StrongTypedValueTypeConverter<TStrongTypedId, TPrimitiveId>
+		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
+		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>,
+		IParsable<TPrimitiveId>
+	{
+		
 	}
 }
