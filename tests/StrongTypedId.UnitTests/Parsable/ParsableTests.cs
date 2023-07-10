@@ -38,6 +38,7 @@ public class ParsableTests
         
         // Assert
         Assert.True(parsed);
+        Assert.NotNull(strongId);
         Assert.Equal(guid, strongId.PrimitiveId);
     }
     
@@ -52,7 +53,6 @@ public class ParsableTests
 
         // Assert
         Assert.False(parsed);
-        Assert.NotNull(strongId);
-        Assert.Equal(default, strongId.PrimitiveId);
+        Assert.Null(strongId);
     }
 }

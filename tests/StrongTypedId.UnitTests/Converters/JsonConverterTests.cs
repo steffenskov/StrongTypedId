@@ -55,7 +55,7 @@ public class JsonConverterTests
     public void Serialize_Int_SerializedAsInt()
     {
         // Arrange
-        var id = IntId.New();
+        var id = IntId.Create(42);
 
         // Act
         var strongIdJson = JsonSerializer.Serialize(id, new JsonSerializerOptions
