@@ -37,7 +37,7 @@ public class NewtonSoftJsonConverterTests
     public void Serialize_Int_SerializedAsInt()
     {
         // Arrange
-        var id = IntId.New();
+        var id = IntId.Create(42);
 
         // Act
         var strongIdJson = JsonConvert.SerializeObject(id);

@@ -5,24 +5,24 @@ namespace StrongTypedId.Converters
 {
 	/// <summary>
 	/// JsonConverter for Newtonsoft. It serializes purely the underlying value. Use it like this:
-	/// [JsonConverter(typeof(NewtonSoftJsonConverter<UserId, Guid>))]
-	/// public class UserId: StrongTypedId<UserId, Guid>
+	/// [JsonConverter(typeof(NewtonSoftJsonConverter&lt;UserId, Guid&gt;))]
+	/// public class UserId: StrongTypedId&lt;UserId, Guid&gt;
 	/// </summary>
-	public class NewtonSoftJsonConverter<TStrongTypedId, TPrimitiveId> : JsonConverter<TStrongTypedId>
-		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
-		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>, IParsable<TPrimitiveId>
+	public class NewtonSoftJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
+		where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
+		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>, IParsable<TPrimitiveValue>
 	{
-		public override TStrongTypedId? ReadJson(JsonReader reader, Type objectType, TStrongTypedId? existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer)
+		public override TStrongTypedValue? ReadJson(JsonReader reader, Type objectType, TStrongTypedValue? existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer)
 		{
-			var result = serializer.Deserialize<TPrimitiveId?>(reader);
-			return result.HasValue
-				? StrongTypedId<TStrongTypedId, TPrimitiveId>.Create(result.Value)
+			var result = serializer.Deserialize<TPrimitiveValue?>(reader);
+			return result is not null
+				? StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(result)
 				: null;
 		}
 
-		public override void WriteJson(JsonWriter writer, TStrongTypedId? value, Newtonsoft.Json.JsonSerializer serializer)
+		public override void WriteJson(JsonWriter writer, TStrongTypedValue? value, Newtonsoft.Json.JsonSerializer serializer)
 		{
-			serializer.Serialize(writer, value?.PrimitiveId);
+			serializer.Serialize(writer, value is null ? null : value.PrimitiveId);
 		}
 	}
 }

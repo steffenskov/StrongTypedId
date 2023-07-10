@@ -5,14 +5,14 @@ using System.Globalization;
 namespace StrongTypedId.Converters
 {
 	/// <summary>
-	/// TypeConverter for WebAPI and MVC. Its purpose is to allow StrongTypedIds as arguments to controller actions.
+	/// TypeConverter for WebAPI and MVC. Its purpose is to allow StrongTypedValues as arguments to controller actions.
 	/// Use it like this:
-	/// [TypeConverter(typeof(StrongTypedIdTypeConverter<UserId, Guid>))]
-	/// public class UserId: StrongTypedId<UserId, Guid>
+	/// [TypeConverter(typeof(StrongTypedValueTypeConverter&lt;EmailAddress, string&gt;))]
+	/// public class EmailAddress: StrongTypedValue&lt;EmailAddress, string&gt;
 	/// </summary>
-	public class StrongTypedIdTypeConverter<TStrongTypedId, TPrimitiveId> : TypeConverter
-		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
-		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>, IParsable<TPrimitiveId>
+	public class StrongTypedValueTypeConverter<TStrongTypedValue, TPrimitiveValue> : TypeConverter
+		where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
+		where TPrimitiveValue :  IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>, IParsable<TPrimitiveValue>
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
 		{
@@ -24,7 +24,7 @@ namespace StrongTypedId.Converters
 			var stringValue = value as string;
 			if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitiveId))
 			{
-				return StrongTypedId<TStrongTypedId, TPrimitiveId>.Create((TPrimitiveId)primitiveId);
+				return StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create((TPrimitiveValue)primitiveId);
 			}
 
 			return base.ConvertFrom(context, culture, value);
@@ -32,9 +32,10 @@ namespace StrongTypedId.Converters
 
 		private static bool TryParse(string stringValue, out object primitiveId)
 		{
-			primitiveId = typeof(TPrimitiveId) switch
+			primitiveId = typeof(TPrimitiveValue) switch
 			{
 				{ } t when t == typeof(bool) => bool.Parse(stringValue),
+				{ } t when t == typeof(char) => stringValue[0],
 				{ } t when t == typeof(Guid) => Guid.Parse(stringValue),
 				{ } t when t == typeof(short) => short.Parse(stringValue),
 				{ } t when t == typeof(int) => int.Parse(stringValue),
@@ -51,5 +52,19 @@ namespace StrongTypedId.Converters
 			};
 			return true;
 		}
+	}
+
+	/// <summary>
+	/// TypeConverter for WebAPI and MVC. Its purpose is to allow StrongTypedIds as arguments to controller actions.
+	/// Use it like this:
+	/// [TypeConverter(typeof(StrongTypedIdTypeConverter&lt;UserId, Guid&gt;))]
+	/// public class UserId: StrongTypedId&lt;UserId, Guid&gt;
+	/// </summary>
+	public class StrongTypedIdTypeConverter<TStrongTypedId, TPrimitiveId> : StrongTypedValueTypeConverter<TStrongTypedId, TPrimitiveId>
+		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
+		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>,
+		IParsable<TPrimitiveId>
+	{
+		
 	}
 }
