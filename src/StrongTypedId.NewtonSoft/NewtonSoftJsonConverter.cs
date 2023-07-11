@@ -10,7 +10,7 @@ namespace StrongTypedId.Converters
 	/// </summary>
 	public class NewtonSoftJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
 		where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
-		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>, IParsable<TPrimitiveValue>
+		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 	{
 		public override TStrongTypedValue? ReadJson(JsonReader reader, Type objectType, TStrongTypedValue? existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer)
 		{

@@ -21,7 +21,7 @@ namespace StrongTypedId.Converters
 	/// </Summary>
 	public class StrongTypedValueValueConverter<TStrongTypedValue, TPrimitiveValue> : ValueConverter<TStrongTypedValue, TPrimitiveValue>
 		where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
-		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>, IParsable<TPrimitiveValue>
+		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 	{
 		public StrongTypedValueValueConverter()
 			: base(id => id.PrimitiveId, primitiveId => StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(primitiveId))
