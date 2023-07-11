@@ -17,6 +17,8 @@ namespace StrongTypedId
             return Create(Guid.NewGuid());
         }
 
+        public static TStrongTypedId Empty { get; } = Create(Guid.Empty);
+
         protected StrongTypedGuid(Guid primitiveId) : base(primitiveId)
         {
         }
