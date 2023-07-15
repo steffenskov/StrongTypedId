@@ -54,3 +54,7 @@ This is supported through the use of the built-in `TypeConverter`.
 ## NewtonSoft.Json
 
 This is supported through the package [StrongTypedId.NewtonSoft](https://www.nuget.org/packages/StrongTypedId.NewtonSoft).
+
+## Swagger
+
+This is supported through the package [StrongTypedId.Swagger](https://www.nuget.org/packages/StrongTypedId.Swagger).
