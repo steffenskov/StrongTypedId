@@ -55,31 +55,31 @@ jobs:
       
     - name: 'Get main version'
       id: version
-      uses: bbonkr/get-version-action@v1.0.4
+      uses: bbonkr/get-version-action@v1.2.0
       with:
         project: ${{ env.PROJECT_PATH }}
 
     - name: 'Get NewtonSoft extension version'
       id: newton_version
-      uses: bbonkr/get-version-action@v1.0.4
+      uses: bbonkr/get-version-action@v1.2.0
       with:
         project: ${{ env.NEWTON_PROJECT_PATH }}
 
     - name: 'Get EF version'
       id: ef_version
-      uses: bbonkr/get-version-action@v1.0.4
+      uses: bbonkr/get-version-action@v1.2.0
       with:
         project: ${{ env.EF_PROJECT_PATH }}
     
     - name: 'Get Dapper version'
       id: dapper_version
-      uses: bbonkr/get-version-action@v1.0.4
+      uses: bbonkr/get-version-action@v1.2.0
       with:
         project: ${{ env.DAPPER_PROJECT_PATH }}
 
     - name: 'Get Swagger extension version'
       id: swagger_version
-      uses: bbonkr/get-version-action@v1.0.4
+      uses: bbonkr/get-version-action@v1.2.0
       with:
         project: ${{ env.SWAGGER_PROJECT_PATH }}
       
