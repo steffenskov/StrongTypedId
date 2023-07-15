@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <Version>1.4.3</Version>
+    <Version>1.5.0</Version>
     <Authors>Steffen Skov</Authors>
     <Company>Steffen Skov</Company>
     <Description>NewtonSoft.Json JsonConverter for the StrongTypedId library</Description>
