@@ -9,6 +9,7 @@ env:
   NEWTON_PROJECT_PATH: 'src/StrongTypedId.NewtonSoft/StrongTypedId.NewtonSoft.csproj'
   EF_PROJECT_PATH: 'src/StrongTypedId.EntityFrameworkCore/StrongTypedId.EntityFrameworkCore.csproj'
   DAPPER_PROJECT_PATH: 'src/StrongTypedId.Dapper.DDD.Repository/StrongTypedId.Dapper.DDD.Repository.csproj'
+  SWAGGER_PROJECT_PATH: 'src/StrongTypedId.Swagger/StrongTypedId.Swagger.csproj'
   SOLUTION_PATH: 'StrongTypedId.sln'
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
@@ -75,6 +76,12 @@ jobs:
       uses: bbonkr/get-version-action@v1.0.4
       with:
         project: ${{ env.DAPPER_PROJECT_PATH }}
+
+    - name: 'Get Swagger extension version'
+      id: swagger_version
+      uses: bbonkr/get-version-action@v1.0.4
+      with:
+        project: ${{ env.SWAGGER_PROJECT_PATH }}
       
     - name: 'Pack main project'
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
@@ -87,6 +94,9 @@ jobs:
 
     - name: 'Pack Dapper.DDD.Repository extension'
       run: dotnet pack ${{ env.DAPPER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.dapper_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+
+    - name: 'Pack Swagger extension'
+      run: dotnet pack ${{ env.SWAGGER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.swagger_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
       
     - name: 'Push package'
       run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }} --skip-duplicate
