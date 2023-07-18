@@ -1,6 +1,6 @@
 namespace StrongTypedId.UnitTests.Model;
 
-[JsonConverter(typeof(SystemTextJsonConverter<GuidId, Guid>))]
+[StrongTypedIdJsonConverter<GuidId, Guid>]
 [Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<GuidId, Guid>))]
 public class GuidId : StrongTypedGuid<GuidId>
 {

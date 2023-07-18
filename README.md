@@ -7,7 +7,7 @@ The benefit of this is simple: You don't run the risk of accidentally using the 
 This works through the use of an abstract base class (`StrongTypedId<TStrongTypedId, TPrimitiveId>`) which is inherited to gain the id functionality.
 
 This project is inspired by [Andrew Lock's StronglyTypedId](https://github.com/andrewlock/StronglyTypedId).
-However I needed support for .Net 5 and thus this project was born.
+However I needed support for .Net 5 and thus this project was born. It has since evolved to .Net 7.
 
 # Installation
 
@@ -18,8 +18,8 @@ I recommend using the NuGet package: [StrongTypedId](https://www.nuget.org/packa
 Specify your class like this:
 
 ```
-[TypeConverter(typeof(StrongTypedIdTypeConverter<UserId, Guid>))]
-[JsonConverter(typeof(SystemTextJsonConverter<UserId, Guid>))]
+[TypeConverter(typeof(StrongTypedValueTypeConverter<UserId, Guid>))]
+[StrongTypedIdJsonConverter<UserId, Guid>]
 public class UserId: StrongTypedId<UserId, Guid>
 {
 	public UserId(Guid primitiveId) : base(primitiveId)
@@ -32,6 +32,13 @@ This specifies that the class `UserId` is in fact a `Guid` and can be used in pl
 And that's basically all there is to it, now you just use `UserId` in place of `Guid` where you're dealing with an User's Id.
 
 You can omit the `JsonConverter` if you don't use json serialization as well as the `TypeConverter` if you're not using WebAPI or MVC.
+
+Furthermore there are a couple of base classes available to you:
+- `StrongTypedValue` for anything that's not an id, this supports `string` as a primitive value.
+- `StrongTypedId` for anything that IS an id, this only supports `struct` types as primitives (therefore no `strings`). 
+  - Adds the static `Parse(string)` and `TryParse(string, out TStrongTypedId)` methods.
+- `StrongTypedGuid` a further specialization of `StrongTypedId`.
+  - Adds the static `New()` method for instantiating new ids with random values as well as the static `Empty` property.
 
 # Compatibility
 
