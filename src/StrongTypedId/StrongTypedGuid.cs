@@ -6,18 +6,18 @@ namespace StrongTypedId
     /// Abstract baseclass to represent a strong typed guid. Use it like this:
     /// public class UserId: StrongTypedId&lt;UserId&gt;
     /// </Summary>
-    public abstract class StrongTypedGuid<TStrongTypedId> : StrongTypedId<TStrongTypedId, Guid>
-        where TStrongTypedId : StrongTypedGuid<TStrongTypedId>
+    public abstract class StrongTypedGuid<TSelf> : StrongTypedId<TSelf, Guid>
+        where TSelf : StrongTypedGuid<TSelf>
     {
         /// <Summary>
         /// Creates a new instance of your strong typed id with Guid.NewGuid() as its primitive id.
         /// </Summary>
-        public static TStrongTypedId New()
+        public static TSelf New()
         {
             return Create(Guid.NewGuid());
         }
 
-        public static TStrongTypedId Empty { get; } = Create(Guid.Empty);
+        public static TSelf Empty { get; } = Create(Guid.Empty);
 
         protected StrongTypedGuid(Guid primitiveId) : base(primitiveId)
         {
