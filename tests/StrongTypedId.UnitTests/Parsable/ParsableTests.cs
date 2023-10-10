@@ -13,7 +13,7 @@ public class ParsableTests
         var strongId = GuidId.Parse(text);
         
         // Assert
-        Assert.Equal(guid, strongId.PrimitiveId);
+        Assert.Equal(guid, strongId.Value);
     }
     
     [Fact]
@@ -39,7 +39,7 @@ public class ParsableTests
         // Assert
         Assert.True(parsed);
         Assert.NotNull(strongId);
-        Assert.Equal(guid, strongId.PrimitiveId);
+        Assert.Equal(guid, strongId.Value);
     }
     
     [Fact]

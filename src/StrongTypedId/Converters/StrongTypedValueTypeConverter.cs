@@ -22,17 +22,17 @@ namespace StrongTypedId.Converters
 		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
 		{
 			var stringValue = value as string;
-			if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitiveId))
+			if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitive))
 			{
-				return StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create((TPrimitiveValue)primitiveId);
+				return StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create((TPrimitiveValue)primitive);
 			}
 
 			return base.ConvertFrom(context, culture, value);
 		}
 
-		private static bool TryParse(string stringValue, out object primitiveId)
+		private static bool TryParse(string stringValue, out object primitiveValue)
 		{
-			primitiveId = typeof(TPrimitiveValue) switch
+			primitiveValue = typeof(TPrimitiveValue) switch
 			{
 				{ } t when t == typeof(bool) => bool.Parse(stringValue),
 				{ } t when t == typeof(char) => stringValue[0],

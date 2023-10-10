@@ -12,9 +12,11 @@ namespace StrongTypedId
         where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>,
         IParsable<TPrimitiveId>
     {
-        protected StrongTypedId(TPrimitiveId primitiveId) : base(primitiveId)
+        protected StrongTypedId(TPrimitiveId value) : base(value)
         {
         }
+
+        public TPrimitiveId PrimitiveId => Value;
         
         public static TSelf Parse(string s, IFormatProvider? provider = null)
         {

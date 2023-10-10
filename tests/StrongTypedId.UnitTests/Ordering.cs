@@ -14,9 +14,9 @@ public class OrderingTests
 		var ordered = ids.OrderBy(id => id).ToList();
 
 		// Assert
-		Assert.Equal(42, ordered[0].PrimitiveId);
-		Assert.Equal(256, ordered[1].PrimitiveId);
-		Assert.Equal(1337, ordered[2].PrimitiveId);
+		Assert.Equal(42, ordered[0].Value);
+		Assert.Equal(256, ordered[1].Value);
+		Assert.Equal(1337, ordered[2].Value);
 	}
 
 	[Fact]
@@ -29,8 +29,8 @@ public class OrderingTests
 		var ordered = ids.OrderByDescending(id => id).ToList();
 
 		// Assert
-		Assert.Equal(1337, ordered[0].PrimitiveId);
-		Assert.Equal(256, ordered[1].PrimitiveId);
-		Assert.Equal(42, ordered[2].PrimitiveId);
+		Assert.Equal(1337, ordered[0].Value);
+		Assert.Equal(256, ordered[1].Value);
+		Assert.Equal(42, ordered[2].Value);
 	}
 }

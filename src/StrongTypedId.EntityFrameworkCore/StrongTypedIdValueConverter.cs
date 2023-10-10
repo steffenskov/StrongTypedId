@@ -8,9 +8,9 @@ namespace StrongTypedId.Converters
 	/// Add it to your DbContext class in protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) like this:
 	/// configurationBuilder.Properties&lt;UserId&gt;().HaveConversion&lt;StrongTypedIdValueConverter&lt;UserId, Guid&gt;&gt;();
 	/// </Summary>
-	public class StrongTypedIdValueConverter<TStrongTypedId, TPrimitiveId> : StrongTypedValueValueConverter<TStrongTypedId, TPrimitiveId>
-		where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
-		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>, IParsable<TPrimitiveId>
+	public class StrongTypedIdValueConverter<TStrongTypedValue, TPrimitiveValue> : StrongTypedValueValueConverter<TStrongTypedValue, TPrimitiveValue>
+		where TStrongTypedValue : StrongTypedId<TStrongTypedValue, TPrimitiveValue>
+		where TPrimitiveValue : struct, IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>, IParsable<TPrimitiveValue>
 	{
 	}
 	
@@ -24,7 +24,7 @@ namespace StrongTypedId.Converters
 		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 	{
 		public StrongTypedValueValueConverter()
-			: base(id => id.PrimitiveId, primitiveId => StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(primitiveId))
+			: base(id => id.Value, primitiveId => StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(primitiveId))
 		{
 		}
 	}

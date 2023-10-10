@@ -61,7 +61,7 @@ internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue>
 
     private static Action GetWriteAction(Utf8JsonWriter writer, TStrongTypedValue value)
     {
-        return value.PrimitiveId switch
+        return value.Value switch
         {
             bool val => () => writer.WriteBooleanValue(val),
             char val => () => writer.WriteStringValue(val.ToString()),

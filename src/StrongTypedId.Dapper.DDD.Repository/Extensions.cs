@@ -9,7 +9,7 @@ namespace Dapper.DDD.Repository
 			where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
 			where TPrimitiveValue :  IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 		{
-			return ((id) => id.PrimitiveId, StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create);
+			return ((id) => id.Value, StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create);
 		}
 	}
 }

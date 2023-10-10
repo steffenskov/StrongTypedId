@@ -1,9 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Reflection;
 using System.Reflection.Emit;
 using StrongTypedId.Collections;
-using StrongTypedId.Converters;
 
 namespace StrongTypedId
 {
@@ -66,51 +64,51 @@ namespace StrongTypedId
                 typeof(Func<TPrimitiveValue, TSelf>));
         }
 
-        public TPrimitiveValue PrimitiveId { get; }
+        public TPrimitiveValue Value { get; }
 
-        protected StrongTypedValue(TPrimitiveValue primitiveId)
+        protected StrongTypedValue(TPrimitiveValue value)
         {
-            PrimitiveId = primitiveId;
+            Value = value;
         }
 
         public override bool Equals(object? obj)
         {
             if (obj is TSelf strongTyped)
             {
-                return PrimitiveId.Equals(strongTyped.PrimitiveId);
+                return Value.Equals(strongTyped.Value);
             }
 
-            return PrimitiveId.Equals(obj);
+            return Value.Equals(obj);
         }
 
         public bool Equals(TSelf? other)
         {
-            return PrimitiveId.Equals(other is null ? null : other.PrimitiveId);
+            return Value.Equals(other is null ? null : other.Value);
         }
 
         public override int GetHashCode()
         {
-            return PrimitiveId.GetHashCode();
+            return Value.GetHashCode();
         }
 
         public override string ToString()
         {
-            return PrimitiveId.ToString()!;
+            return Value.ToString()!;
         }
 
         public int CompareTo(TPrimitiveValue? other)
         {
-            return PrimitiveId.CompareTo(other);
+            return Value.CompareTo(other);
         }
 
         public int CompareTo(object? obj)
         {
-            return PrimitiveId.CompareTo(obj);
+            return Value.CompareTo(obj);
         }
 
         public int CompareTo(StrongTypedValue<TSelf, TPrimitiveValue>? other)
         {
-            return PrimitiveId.CompareTo(other is null ? null : other.PrimitiveId);
+            return Value.CompareTo(other is null ? null : other.Value);
         }
 
         public static bool operator ==(StrongTypedValue<TSelf, TPrimitiveValue>? a,
@@ -121,81 +119,81 @@ namespace StrongTypedId
                 return true;
             }
 
-            return a?.PrimitiveId.Equals(b is null ? null : b.PrimitiveId) == true;
+            return a?.Value.Equals(b is null ? null : b.Value) == true;
         }
 
         public static bool operator ==(StrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue b)
         {
-            return a?.PrimitiveId.Equals(b) == true;
+            return a?.Value.Equals(b) == true;
         }
 
         public static bool operator ==(TPrimitiveValue? a, StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.Equals(b is null ? null : b.PrimitiveId) == true;
+            return a?.Equals(b is null ? null : b.Value) == true;
         }
 
         public static bool operator >(StrongTypedValue<TSelf, TPrimitiveValue>? a,
             StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.PrimitiveId.CompareTo(b is null ? null : b.PrimitiveId) > 0;
+            return a?.Value.CompareTo(b is null ? null : b.Value) > 0;
         }
 
         public static bool operator >(StrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
         {
-            return a?.PrimitiveId.CompareTo(b) > 0;
+            return a?.Value.CompareTo(b) > 0;
         }
 
         public static bool operator >(TPrimitiveValue? a, StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.CompareTo(b is null ? null : b.PrimitiveId) > 0;
+            return a?.CompareTo(b is null ? null : b.Value) > 0;
         }
 
         public static bool operator <(StrongTypedValue<TSelf, TPrimitiveValue>? a,
             StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.PrimitiveId.CompareTo(b is null ? null : b.PrimitiveId) < 0;
+            return a?.Value.CompareTo(b is null ? null : b.Value) < 0;
         }
 
         public static bool operator <(StrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
         {
-            return a?.PrimitiveId.CompareTo(b) < 0;
+            return a?.Value.CompareTo(b) < 0;
         }
 
         public static bool operator <(TPrimitiveValue? a, StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.CompareTo(b is null ? null : b.PrimitiveId) < 0;
+            return a?.CompareTo(b is null ? null : b.Value) < 0;
         }
 
         public static bool operator >=(StrongTypedValue<TSelf, TPrimitiveValue>? a,
             StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.PrimitiveId.CompareTo(b is null ? null : b.PrimitiveId) >= 0;
+            return a?.Value.CompareTo(b is null ? null : b.Value) >= 0;
         }
 
         public static bool operator >=(StrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
         {
-            return a?.PrimitiveId.CompareTo(b) >= 0;
+            return a?.Value.CompareTo(b) >= 0;
         }
 
         public static bool operator >=(TPrimitiveValue? a, StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.CompareTo(b is null ? null : b.PrimitiveId) >= 0;
+            return a?.CompareTo(b is null ? null : b.Value) >= 0;
         }
 
         public static bool operator <=(StrongTypedValue<TSelf, TPrimitiveValue>? a,
             StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.PrimitiveId.CompareTo(b is null ? null : b.PrimitiveId) <= 0;
+            return a?.Value.CompareTo(b is null ? null : b.Value) <= 0;
         }
 
         public static bool operator <=(StrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
         {
-            return a?.PrimitiveId.CompareTo(b) <= 0;
+            return a?.Value.CompareTo(b) <= 0;
         }
 
         public static bool operator <=(TPrimitiveValue? a, StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.CompareTo(b is null ? null : b.PrimitiveId) <= 0;
+            return a?.CompareTo(b is null ? null : b.Value) <= 0;
         }
 
         public static bool operator !=(StrongTypedValue<TSelf, TPrimitiveValue>? a,
@@ -206,17 +204,17 @@ namespace StrongTypedId
                 return false;
             }
 
-            return a?.PrimitiveId.Equals(b is null ? null : b.PrimitiveId) != true;
+            return a?.Value.Equals(b is null ? null : b.Value) != true;
         }
 
         public static bool operator !=(StrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue b)
         {
-            return a?.PrimitiveId.Equals(b) != true;
+            return a?.Value.Equals(b) != true;
         }
 
         public static bool operator !=(TPrimitiveValue? a, StrongTypedValue<TSelf, TPrimitiveValue>? b)
         {
-            return a?.Equals(b is null ? null : b.PrimitiveId) != true;
+            return a?.Equals(b is null ? null : b.Value) != true;
         }
     }
 }
