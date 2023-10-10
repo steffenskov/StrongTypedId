@@ -9,7 +9,7 @@ Add type converters like this to your Dapper.DDD.Repository DefaultConfiguration
 ```
 public class UserId : StrongTypedId<UserId, Guid>
 {
-	public UserId(Guid primitiveId) : base(primitiveId)
+	public UserId(Guid value) : base(value)
 	{
 	}
 }

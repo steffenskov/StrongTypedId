@@ -19,7 +19,7 @@ namespace StrongTypedId
 
         public static TSelf Empty { get; } = Create(Guid.Empty);
 
-        protected StrongTypedGuid(Guid primitiveId) : base(primitiveId)
+        protected StrongTypedGuid(Guid value) : base(value)
         {
         }
     }

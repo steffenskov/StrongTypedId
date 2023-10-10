@@ -22,7 +22,7 @@ namespace StrongTypedId.Converters
 
 		public override void WriteJson(JsonWriter writer, TStrongTypedValue? value, Newtonsoft.Json.JsonSerializer serializer)
 		{
-			serializer.Serialize(writer, value is null ? null : value.PrimitiveId);
+			serializer.Serialize(writer, value is null ? null : value.Value);
 		}
 	}
 }

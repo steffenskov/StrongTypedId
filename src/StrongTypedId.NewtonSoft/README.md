@@ -8,11 +8,11 @@ Add a `NewtonSoft.Json.JsonConverter` similarly to the built-in converters:
 
 ```
 [TypeConverter(typeof(StrongTypedIdTypeConverter<UserId, Guid>))]
-[JsonConverter(typeof(SystemTextJsonConverter<UserId, Guid>))]
+[StrongTypedIdJsonConverter<UserId, Guid>]
 [Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<UserId, Guid>))]
 public class UserId: StrongTypedId<UserId, Guid>
 {
-	public UserId(Guid primitiveId) : base(primitiveId)
+	public UserId(Guid value) : base(value)
 	{
 	}
 }
