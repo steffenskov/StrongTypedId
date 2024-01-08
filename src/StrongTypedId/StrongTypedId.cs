@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StrongTypedId
 {
@@ -23,23 +24,21 @@ namespace StrongTypedId
             return Create(TPrimitiveId.Parse(s, provider));
         }
 
-        public static bool TryParse(string? s, out TSelf? result)
+        public static bool TryParse(string? s, [MaybeNullWhen(returnValue:false)] out TSelf result)
         {
             return TryParse(s, null, out result);
         }
 
-        public static bool TryParse(string? s, IFormatProvider? provider, out TSelf? result)
+        public static bool TryParse(string? s, IFormatProvider? provider, [MaybeNullWhen(returnValue:false)] out TSelf result)
         {
-            if (TPrimitiveId.TryParse(s, provider, out var primitiveId))
+	        if (TPrimitiveId.TryParse(s, provider, out var primitiveId))
             {
                 result = Create(primitiveId);
                 return true;
             }
-            else
-            {
-                result = null;
-                return false;
-            }
+
+	        result = null;
+	        return false;
         }
     }
 }
