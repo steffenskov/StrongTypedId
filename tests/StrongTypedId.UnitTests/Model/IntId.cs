@@ -4,7 +4,7 @@ namespace StrongTypedId.UnitTests.Model;
 [Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<IntId, int>))]
 public class IntId : StrongTypedId<IntId, int>
 {
-	public IntId(int value) : base(value)
+	public IntId(int primitiveValue) : base(primitiveValue)
 	{
 	}
 }

@@ -13,7 +13,7 @@ public class JsonConverterTests
 
         // Act
         var strongIdJson = JsonSerializer.Serialize(id);
-        var primitiveIdJson = JsonSerializer.Serialize(id.Value);
+        var primitiveIdJson = JsonSerializer.Serialize(id.PrimitiveValue);
 
         // Assert
         Assert.Equal(primitiveIdJson, strongIdJson);
@@ -31,7 +31,7 @@ public class JsonConverterTests
 
         // Assert
         Assert.NotNull(strongId);
-        Assert.Equal(guid, strongId!.Value);
+        Assert.Equal(guid, strongId!.PrimitiveValue);
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class JsonConverterTests
 
         // Act
         var strongIdJson = JsonSerializer.Serialize(id);
-        var primitiveIdJson = JsonSerializer.Serialize(id.Value);
+        var primitiveIdJson = JsonSerializer.Serialize(id.PrimitiveValue);
 
         // Assert
         Assert.Equal(primitiveIdJson, strongIdJson);
@@ -60,7 +60,7 @@ public class JsonConverterTests
 
         // Assert
         Assert.NotNull(strongId);
-        Assert.Equal(intValue, strongId!.Value);
+        Assert.Equal(intValue, strongId!.PrimitiveValue);
     }
 
     [Fact]
