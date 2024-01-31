@@ -40,6 +40,8 @@ Furthermore there are a couple of base classes available to you:
 - `StrongTypedGuid` a further specialization of `StrongTypedId`.
   - Adds the static `New()` method for instantiating new ids with random values as well as the static `Empty` property.
 
+Finally you can recognize a `StrongTyped` value by calling the extension method `IsStrongTypedValue()`. All strong typed values furthermore implements both `IStrongTypedValue<TPrimitiveValue>` as well as `IStrongTypedValue` (The latter being strictly a marker interface).
+
 # Compatibility
 
 ## Dapper.DDD.Repository

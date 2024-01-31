@@ -17,8 +17,6 @@ namespace StrongTypedId
         {
         }
 
-        public TPrimitiveId PrimitiveId => Value;
-        
         public static TSelf Parse(string s, IFormatProvider? provider = null)
         {
             return Create(TPrimitiveId.Parse(s, provider));
