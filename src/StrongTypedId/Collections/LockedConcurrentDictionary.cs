@@ -11,14 +11,16 @@ internal class LockedConcurrentDictionary<TKey, TValue>
 
 	public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
 	{
-		if (!_dictionary.TryGetValue(key, out var result))
+		if (_dictionary.TryGetValue(key, out var result))
 		{
-			lock (_lock)
+			return result;
+		}
+
+		lock (_lock)
+		{
+			if (!_dictionary.TryGetValue(key, out result))
 			{
-				if (!_dictionary.TryGetValue(key, out result))
-				{
-					_dictionary[key] = result = valueFactory(key);
-				}
+				_dictionary[key] = result = valueFactory(key);
 			}
 		}
 
