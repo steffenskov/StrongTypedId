@@ -22,6 +22,12 @@ public class StrongTypedValueTypeConverter<TStrongTypedValue, TPrimitiveValue> :
 	public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
 	{
 		var stringValue = value as string;
+		
+		if (stringValue == "null")
+		{
+			return null;
+		}
+		
 		if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitive))
 		{
 			return StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create((TPrimitiveValue)primitive);
