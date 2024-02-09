@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace StrongTypedId.UnitTests.Converters;
 
 public class TypeConverterTests
@@ -113,7 +115,7 @@ public class TypeConverterTests
 	{
 		// Arrange
 		var converter = TypeDescriptor.GetConverter(typeof(EmailAddress));
-		var json = converter.ConvertToString(null);
+		var json = JsonSerializer.Serialize<string>(null!);
 
 		// Act
 		var strongId = converter.ConvertFrom(json!) as EmailAddress;
@@ -121,6 +123,7 @@ public class TypeConverterTests
 		// Assert
 		Assert.Null(strongId);
 	}
+
 
 	[Fact]
 	public void Deserialize_String_Deserializes()
@@ -137,4 +140,22 @@ public class TypeConverterTests
 		Assert.NotNull(strongValue);
 		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
 	}
+
+	[Fact]
+	public void Deserialize_EmptyString_Deserializes()
+	{
+		// Arrange
+		var converter = TypeDescriptor.GetConverter(typeof(EmailAddress));
+		var stringValue = "";
+		var json = converter.ConvertToString(stringValue);
+
+		// Act
+		var strongValue = converter.ConvertFrom(json!) as EmailAddress;
+
+		// Assert
+		Assert.NotNull(strongValue);
+		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+	}
 }
+
+file record Test(string? Name);
