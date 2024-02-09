@@ -137,4 +137,20 @@ public class TypeConverterTests
 		Assert.NotNull(strongValue);
 		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
 	}
+
+	[Fact]
+	public void Deserialize_EmptyString_Deserializes()
+	{
+		// Arrange
+		var converter = TypeDescriptor.GetConverter(typeof(EmailAddress));
+		var stringValue = "";
+		var json = converter.ConvertToString(stringValue);
+
+		// Act
+		var strongValue = converter.ConvertFrom(json!) as EmailAddress;
+
+		// Assert
+		Assert.NotNull(strongValue);
+		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+	}
 }

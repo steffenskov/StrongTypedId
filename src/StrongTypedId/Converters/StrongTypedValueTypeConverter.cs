@@ -30,7 +30,7 @@ public class StrongTypedValueTypeConverter<TStrongTypedValue, TPrimitiveValue> :
 		if (string.IsNullOrEmpty(stringValue))
 		{
 			return typeof(TPrimitiveValue) == typeof(string)
-				? stringValue
+				? StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create((TPrimitiveValue)value)
 				: null;
 		}
 
