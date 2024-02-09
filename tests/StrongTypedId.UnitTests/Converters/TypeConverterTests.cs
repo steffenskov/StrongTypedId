@@ -157,5 +157,3 @@ public class TypeConverterTests
 		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
 	}
 }
-
-file record Test(string? Name);
