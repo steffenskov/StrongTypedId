@@ -18,15 +18,15 @@ jobs:
   test:
     name: 'test'
     runs-on: 'ubuntu-latest'
-        
+
     steps:
     - name: 'Checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 'Install dotnet'
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
 
     - name: 'Restore packages'
       run: dotnet restore ${{ env.SOLUTION_PATH }}
@@ -40,63 +40,33 @@ jobs:
 
     steps:
     - name: 'Checkout'
-      uses: actions/checkout@v3
-      
+      uses: actions/checkout@v4
+
     - name: 'Install dotnet'
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
 
     - name: 'Restore packages'
       run: dotnet restore ${{ env.SOLUTION_PATH }}
-    
+
     - name: 'Build project'
       run: dotnet build ${{ env.SOLUTION_PATH }} --no-restore --configuration Release
-      
-    - name: 'Get main version'
-      id: version
-      uses: bbonkr/get-version-action@v1.2.0
-      with:
-        project: ${{ env.PROJECT_PATH }}
 
-    - name: 'Get NewtonSoft extension version'
-      id: newton_version
-      uses: bbonkr/get-version-action@v1.2.0
-      with:
-        project: ${{ env.NEWTON_PROJECT_PATH }}
-
-    - name: 'Get EF version'
-      id: ef_version
-      uses: bbonkr/get-version-action@v1.2.0
-      with:
-        project: ${{ env.EF_PROJECT_PATH }}
-    
-    - name: 'Get Dapper version'
-      id: dapper_version
-      uses: bbonkr/get-version-action@v1.2.0
-      with:
-        project: ${{ env.DAPPER_PROJECT_PATH }}
-
-    - name: 'Get Swagger extension version'
-      id: swagger_version
-      uses: bbonkr/get-version-action@v1.2.0
-      with:
-        project: ${{ env.SWAGGER_PROJECT_PATH }}
-      
     - name: 'Pack main project'
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Pack NewtonSoft extension'
-      run: dotnet pack ${{ env.NEWTON_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.newton_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.NEWTON_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Pack EntityFramework extension'
-      run: dotnet pack ${{ env.EF_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.ef_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.EF_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Pack Dapper.DDD.Repository extension'
-      run: dotnet pack ${{ env.DAPPER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.dapper_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.DAPPER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: 'Pack Swagger extension'
-      run: dotnet pack ${{ env.SWAGGER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{ steps.swagger_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
-      
+      run: dotnet pack ${{ env.SWAGGER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+
     - name: 'Push package'
       run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }} --skip-duplicate
