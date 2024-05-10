@@ -6,6 +6,10 @@ on:
       - '**'      # matches every branch
       - '!main'   # excludes main
 
+concurrency:
+  group: nuget-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   PROJECT_PATH: 'src/StrongTypedId/StrongTypedId.csproj'
   SOLUTION_PATH: 'StrongTypedId.sln'

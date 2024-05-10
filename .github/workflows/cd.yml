@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+concurrency:
+  group: nuget-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   PROJECT_PATH: 'src/StrongTypedId/StrongTypedId.csproj'
   NEWTON_PROJECT_PATH: 'src/StrongTypedId.NewtonSoft/StrongTypedId.NewtonSoft.csproj'
