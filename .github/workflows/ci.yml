@@ -5,7 +5,7 @@ on:
     branches:
       - '**'      # matches every branch
       - '!main'   # excludes main
-    
+
 env:
   PROJECT_PATH: 'src/StrongTypedId/StrongTypedId.csproj'
   SOLUTION_PATH: 'StrongTypedId.sln'
@@ -16,15 +16,15 @@ jobs:
   test:
     name: 'test'
     runs-on: 'ubuntu-latest'
-        
+
     steps:
     - name: 'Checkout'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 'Install dotnet'
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
 
     - name: 'Restore packages'
       run: dotnet restore ${{ env.SOLUTION_PATH }}
