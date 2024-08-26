@@ -8,7 +8,8 @@ namespace StrongTypedId
     /// public class UserId: StrongTypedId&lt;UserId, int&gt;
     /// </Summary>
     public abstract class StrongTypedId<TSelf, TPrimitiveId> : StrongTypedValue<TSelf, TPrimitiveId>,
-        IParsable<TSelf?>
+	    IStrongTypedId<TPrimitiveId>,
+	    IParsable<TSelf?>
         where TSelf : StrongTypedId<TSelf, TPrimitiveId>
         where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>,
         IParsable<TPrimitiveId>
