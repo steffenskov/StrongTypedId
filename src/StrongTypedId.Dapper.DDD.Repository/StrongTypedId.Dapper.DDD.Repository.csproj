@@ -1,23 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-	
-    <Authors>Steffen Skov</Authors>
-    <Company>Steffen Skov</Company>
-    <Description>TypeConverter extension for easy usage of StrongTypedId with the Dapper.DDD.Repository.</Description>
-    <Copyright>Steffen Skov 2022</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
-    <PackageTags>strongly-typed, Id, Dapper</PackageTags>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+		<Authors>Steffen Skov</Authors>
+		<Company>Steffen Skov</Company>
+		<Description>TypeConverter extension for easy usage of StrongTypedId with the Dapper.DDD.Repository.</Description>
+		<Copyright>Steffen Skov 2022</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
+		<PackageTags>strongly-typed, Id, Dapper</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
+	</ItemGroup>
 
 </Project>

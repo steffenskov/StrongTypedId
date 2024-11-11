@@ -10,6 +10,7 @@ concurrency:
 
 env:
   PROJECT_PATH: 'src/StrongTypedId/StrongTypedId.csproj'
+  MONGO_PROJECT_PATH: 'src/StrongTypedId.MongoDB/StrongTypedId.MongoDB.csproj'
   NEWTON_PROJECT_PATH: 'src/StrongTypedId.NewtonSoft/StrongTypedId.NewtonSoft.csproj'
   EF_PROJECT_PATH: 'src/StrongTypedId.EntityFrameworkCore/StrongTypedId.EntityFrameworkCore.csproj'
   DAPPER_PROJECT_PATH: 'src/StrongTypedId.Dapper.DDD.Repository/StrongTypedId.Dapper.DDD.Repository.csproj'
@@ -60,6 +61,9 @@ jobs:
     - name: 'Pack main project'
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
+    - name: 'Pack MongoDB extension'
+      run: dotnet pack ${{ env.MONGO_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      
     - name: 'Pack NewtonSoft extension'
       run: dotnet pack ${{ env.NEWTON_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 

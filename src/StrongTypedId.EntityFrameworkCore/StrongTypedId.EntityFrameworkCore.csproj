@@ -1,26 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    
-    <Authors>Steffen Skov</Authors>
-    <Company>Steffen Skov</Company>
-    <Description>EntityFrame.Core ValueConverter for the StrongTypedId library</Description>
-    <Copyright>Steffen Skov 2022</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
-    <PackageTags>strongly-typed, Id, EF, EntityFramework</PackageTags>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+		<Authors>Steffen Skov</Authors>
+		<Company>Steffen Skov</Company>
+		<Description>EntityFrame.Core ValueConverter for the StrongTypedId library</Description>
+		<Copyright>Steffen Skov 2022</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
+		<PackageTags>strongly-typed, Id, EF, EntityFramework</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10"/>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
+	</ItemGroup>
 
 </Project>
