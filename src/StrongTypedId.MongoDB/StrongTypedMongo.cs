@@ -1,4 +1,5 @@
-﻿using Ckode;
+﻿using System.Reflection;
+using Ckode;
 using StrongTypedId.MongoDB.Serializers.Factories;
 
 namespace StrongTypedId.MongoDB;
@@ -8,9 +9,9 @@ public static class StrongTypedMongo
 	private static readonly object _serializerRegistrationLock = new();
 	private static readonly HashSet<Type> _registeredSerializerTypes = [];
 
-	public static void AddStrongTypedMongoSerializers(params Type[] typeHooks)
+	public static void AddStrongTypedMongoSerializers(params Assembly[] assemblies)
 	{
-		var types = typeHooks.SelectMany(type => type.Assembly.GetTypes());
+		var types = assemblies.SelectMany(assembly => assembly.GetTypes());
 		var serializerFactories = ServiceLocator.CreateInstances<IMongoSerializerFactory>().ToList();
 
 

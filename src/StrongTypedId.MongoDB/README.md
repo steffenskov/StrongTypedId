@@ -4,19 +4,15 @@ This package provides support for using StrongTypedId with MongoDB by adding a M
 
 # Usage
 
-Add a `NewtonSoft.Json.JsonConverter` similarly to the built-in converters:
+Simply reference the project and execute `StrongTypedMongo.AddStrongTypedMongoSerializers` with your assemblies
+containing StrongTyped types.
 
 ```
-[TypeConverter(typeof(StrongTypedIdTypeConverter<UserId, Guid>))]
-[StrongTypedIdJsonConverter<UserId, Guid>]
-[Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<UserId, Guid>))]
-public class UserId: StrongTypedId<UserId, Guid>
-{
-	public UserId(Guid value) : base(value)
-	{
-	}
-}
+StrongTypedMongo.AddStrongTypedMongoSerializers(typeof(MyId).Assembly);
+
+// or
+
+StrongTypedMongo.AddStrongTypedMongoSerializers(typeof(MyId).Assembly, typeof(IdInOtherAssembly).Assembly);
 ```
 
-Notice how you can have both JsonConverters applied simultaneously to support both WebAPI and NewtonSoft at the same
-time.
+You can wire up as many assemblies as you want in a single call.
