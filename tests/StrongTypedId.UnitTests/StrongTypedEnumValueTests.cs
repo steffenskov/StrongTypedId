@@ -1,6 +1,6 @@
 namespace StrongTypedId.UnitTests;
 
-public class StrongTypedEnumTests
+public class StrongTypedEnumValueTests
 {
 	[Fact]
 	public void Create_InvalidString_Throws()
@@ -9,7 +9,7 @@ public class StrongTypedEnumTests
 		var primitive = "Hello world";
 
 		// Act && Assert
-		Assert.Throws<ArgumentException>(() => FakeStrongEnum.Create(primitive));
+		Assert.Throws<ArgumentException>(() => FakeStrongEnumValue.Create(primitive));
 	}
 
 	[Fact]
@@ -19,7 +19,7 @@ public class StrongTypedEnumTests
 		var primitive = nameof(FakeEnum.Value1);
 
 		// Act
-		var strongEnum = FakeStrongEnum.Create(primitive);
+		var strongEnum = FakeStrongEnumValue.Create(primitive);
 
 		// Assert
 		Assert.Equal(FakeEnum.Value1, strongEnum.PrimitiveEnumValue);
@@ -32,7 +32,7 @@ public class StrongTypedEnumTests
 		FakeEnum primitive = 0;
 
 		// Act && Assert
-		Assert.Throws<ArgumentException>(() => new FakeStrongEnum(primitive));
+		Assert.Throws<ArgumentException>(() => new FakeStrongEnumValue(primitive));
 	}
 
 	[Fact]
@@ -42,7 +42,7 @@ public class StrongTypedEnumTests
 		var primitive = "Hello world";
 
 		// Act && Assert
-		Assert.Throws<ArgumentException>(() => new FakeStrongEnum(primitive));
+		Assert.Throws<ArgumentException>(() => new FakeStrongEnumValue(primitive));
 	}
 
 	[Fact]
@@ -52,7 +52,7 @@ public class StrongTypedEnumTests
 		var primitive = FakeEnum.Value1;
 
 		// Act
-		var strongEnum = new FakeStrongEnum(primitive);
+		var strongEnum = new FakeStrongEnumValue(primitive);
 
 		// Assert
 		Assert.Equal(primitive, strongEnum.PrimitiveEnumValue);
@@ -65,20 +65,20 @@ public class StrongTypedEnumTests
 		var primitive = nameof(FakeEnum.Value1);
 
 		// Act
-		var strongEnum = new FakeStrongEnum(primitive);
+		var strongEnum = new FakeStrongEnumValue(primitive);
 
 		// Assert
 		Assert.Equal(FakeEnum.Value1, strongEnum.PrimitiveEnumValue);
 	}
 }
 
-file class FakeStrongEnum : StrongTypedEnum<FakeStrongEnum, FakeEnum>
+file class FakeStrongEnumValue : StrongTypedEnumValue<FakeStrongEnumValue, FakeEnum>
 {
-	public FakeStrongEnum(FakeEnum value) : base(value)
+	public FakeStrongEnumValue(FakeEnum value) : base(value)
 	{
 	}
 
-	public FakeStrongEnum(string value) : base(value)
+	public FakeStrongEnumValue(string value) : base(value)
 	{
 	}
 }

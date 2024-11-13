@@ -1,10 +1,10 @@
 namespace StrongTypedId;
 
-public abstract class StrongTypedEnum<TSelf, TEnum> : StrongTypedValue<TSelf, string>
+public abstract class StrongTypedEnumValue<TSelf, TEnum> : StrongTypedValue<TSelf, string>
 	where TSelf : StrongTypedValue<TSelf, string>
 	where TEnum : struct, Enum
 {
-	protected StrongTypedEnum(TEnum value) : base(value.ToString())
+	protected StrongTypedEnumValue(TEnum value) : base(value.ToString())
 	{
 		if (!Enum.IsDefined(value))
 		{
@@ -12,7 +12,7 @@ public abstract class StrongTypedEnum<TSelf, TEnum> : StrongTypedValue<TSelf, st
 		}
 	}
 
-	protected StrongTypedEnum(string value) : base(value)
+	protected StrongTypedEnumValue(string value) : base(value)
 	{
 		if (!Enum.TryParse<TEnum>(value, out _))
 		{
