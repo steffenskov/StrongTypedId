@@ -1,6 +1,6 @@
 namespace StrongTypedId.IntegrationTests.Models;
 
-public class StrongEnumValue : StrongTypedEnum<StrongEnumValue, FakeEnum>
+public class StrongEnumValue : StrongTypedEnumValue<StrongEnumValue, FakeEnum>
 {
 	public StrongEnumValue(FakeEnum value) : base(value)
 	{
