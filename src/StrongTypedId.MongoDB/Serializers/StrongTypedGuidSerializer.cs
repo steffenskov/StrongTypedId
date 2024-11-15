@@ -13,21 +13,21 @@ internal class StrongTypedGuidSerializer<TStrongTypedId> : IBsonSerializer<TStro
 			return null;
 		}
 
-		Guid rawValue;
+		string rawValue;
 
 		if (context.Reader.CurrentBsonType == BsonType.Document)
 		{
 			context.Reader.ReadStartDocument();
 			context.Reader.ReadString(); // reads typename which mongo implicitly serialized
-			rawValue = context.Reader.ReadGuid();
+			rawValue = context.Reader.ReadString();
 			context.Reader.ReadEndDocument();
 		}
 		else
 		{
-			rawValue = context.Reader.ReadGuid();
+			rawValue = context.Reader.ReadString();
 		}
 
-		return StrongTypedGuid<TStrongTypedId>.Create(rawValue);
+		return StrongTypedGuid<TStrongTypedId>.Parse(rawValue);
 	}
 
 	public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TStrongTypedId? value)
@@ -38,7 +38,7 @@ internal class StrongTypedGuidSerializer<TStrongTypedId> : IBsonSerializer<TStro
 		}
 		else
 		{
-			context.Writer.WriteGuid(value.PrimitiveValue);
+			context.Writer.WriteString(value.PrimitiveValue.ToString());
 		}
 	}
 
