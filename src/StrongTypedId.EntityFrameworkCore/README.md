@@ -16,3 +16,6 @@ protected override void ConfigureConventions(ModelConfigurationBuilder configura
 ```
 
 And that's all there is to it, now any of your entities can use the `UserId` type instead of `Guid`.
+
+# Documentation
+Auto generated documentation via [DocFx](https://github.com/dotnet/docfx) is available here: https://steffenskov.github.io/StrongTypedId/

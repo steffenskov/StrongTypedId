@@ -19,3 +19,6 @@ public class UserId: StrongTypedId<UserId, Guid>
 ```
 
 Notice how you can have both JsonConverters applied simultaneously to support both WebAPI and NewtonSoft at the same time.
+
+# Documentation
+Auto generated documentation via [DocFx](https://github.com/dotnet/docfx) is available here: https://steffenskov.github.io/StrongTypedId/

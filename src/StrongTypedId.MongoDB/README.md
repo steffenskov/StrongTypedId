@@ -16,3 +16,6 @@ StrongTypedMongo.AddStrongTypedMongoSerializers(typeof(MyId).Assembly, typeof(Id
 ```
 
 You can wire up as many assemblies as you want in a single call.
+
+# Documentation
+Auto generated documentation via [DocFx](https://github.com/dotnet/docfx) is available here: https://steffenskov.github.io/StrongTypedId/

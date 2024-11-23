@@ -22,3 +22,6 @@ builder.Services.AddSwaggerGen(options => {
 ```
 
 ~~~~The latter can be useful, if you're using Reflection to search your AppDomain for all types and map them.
+
+# Documentation
+Auto generated documentation via [DocFx](https://github.com/dotnet/docfx) is available here: https://steffenskov.github.io/StrongTypedId/

@@ -42,6 +42,9 @@ Furthermore there are a couple of base classes available to you:
 
 Finally you can recognize a `StrongTyped` value by calling the extension method `IsStrongTypedValue()`. All strong typed values furthermore implements both `IStrongTypedValue<TPrimitiveValue>` as well as `IStrongTypedValue` (The latter being strictly a marker interface).
 
+# Documentation
+Auto generated documentation via [DocFx](https://github.com/dotnet/docfx) is available here: https://steffenskov.github.io/StrongTypedId/
+
 # Compatibility
 
 ## Dapper.DDD.Repository
