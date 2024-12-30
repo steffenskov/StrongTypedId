@@ -10,11 +10,11 @@ namespace StrongTypedId
         where TSelf : StrongTypedGuid<TSelf>
     {
         /// <Summary>
-        /// Creates a new instance of your strong typed id with Guid.NewGuid() as its primitive id.
+        /// Creates a new instance of your strong typed id with Guid.CreateVersion7() as its primitive id.
         /// </Summary>
         public static TSelf New()
         {
-            return Create(Guid.NewGuid());
+            return Create(Guid.CreateVersion7());
         }
 
         public static TSelf Empty { get; } = Create(Guid.Empty);
