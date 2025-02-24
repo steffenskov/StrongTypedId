@@ -19,7 +19,7 @@
 		<None Include="README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
