@@ -20,7 +20,7 @@ public static class Extensions
 
 	public static bool IsStrongTypedValue(this Type type)
 	{
-		if (type == typeof(object)) // Type information gives us nothing, in this case we throw
+		if (type == typeof(object))
 		{
 			return false;
 		}
@@ -30,7 +30,7 @@ public static class Extensions
 
 	public static bool IsStrongTypedGuid(this Type type)
 	{
-		if (type == typeof(object)) // Type information gives us nothing, in this case we throw
+		if (type == typeof(object))
 		{
 			return false;
 		}
