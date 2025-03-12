@@ -4,8 +4,7 @@ This package provides support for using StrongTypedId with the NewtonSoft JSON s
 
 # Usage
 
-Add the `StrongTypedNewtonSoftJsonConverter` to your serializer settings, there's no need to decorate your types with an
-attribute any more.
+First add the `StrongTypedNewtonSoftJsonConverter` to your serializer settings.
 
 ```
 var settings = new JsonSerializerSettings
@@ -27,14 +26,18 @@ var serializer = new JsonSerializer()
 var json = serializer.Serialize(writer, UserId.New());
 ```
 
-# Obsolete: Old Usage
+This will serialize any `StrongTypedId`, `StrongTypedGuid` or `StrongTypedValue` with explicit type information,
+allowing deserialization even if your model is abstract.
 
-Add a `NewtonSoft.Json.JsonConverter` similarly to the built-in converters:
+If you furthermore have types you'd prefer serialized as their underlying value, you can add a
+`Newtonsoft.Json.JsonConverter` attribute to the type:
 
 ```
 [TypeConverter(typeof(StrongTypedIdTypeConverter<UserId, Guid>))]
 [StrongTypedIdJsonConverter<UserId, Guid>]
-[Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<UserId, Guid>))]
+
+[Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<UserId, Guid>))] // This is the converter for NewtonSoft.
+
 public class UserId: StrongTypedId<UserId, Guid>
 {
 	public UserId(Guid value) : base(value)

@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace StrongTypedId.UnitTests.Model;
 
 [TypeConverter(typeof(StrongTypedValueTypeConverter<DateValue, DateTime>))]
@@ -5,6 +7,16 @@ namespace StrongTypedId.UnitTests.Model;
 public class DateValue : StrongTypedValue<DateValue, DateTime>
 {
 	public DateValue(DateTime primitiveValue) : base(primitiveValue)
+	{
+	}
+}
+
+[TypeConverter(typeof(StrongTypedValueTypeConverter<AttributedDateValue, DateTime>))]
+[StrongTypedValueJsonConverter<AttributedDateValue, DateTime>]
+[JsonConverter(typeof(NewtonSoftJsonConverter<AttributedDateValue, DateTime>))]
+public class AttributedDateValue : StrongTypedValue<AttributedDateValue, DateTime>
+{
+	public AttributedDateValue(DateTime primitiveValue) : base(primitiveValue)
 	{
 	}
 }

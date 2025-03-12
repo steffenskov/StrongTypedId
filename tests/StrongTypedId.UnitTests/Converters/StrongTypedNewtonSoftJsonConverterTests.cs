@@ -4,45 +4,30 @@ namespace StrongTypedId.UnitTests.Converters;
 
 public class StrongTypedNewtonSoftJsonConverterTests
 {
-	#region Interface
+	private readonly JsonSerializerSettings _options;
 
-	[Fact]
-	public void Serialize_DeclaredAsInterfaceWithoutTypeHandling_DoesNotContainTypeInformation()
+	public StrongTypedNewtonSoftJsonConverterTests()
 	{
-		// Arrange
-		var options = new JsonSerializerSettings
+		_options = new JsonSerializerSettings
 		{
-			TypeNameHandling = TypeNameHandling.None,
 			Converters = [new StrongTypedNewtonSoftJsonConverter()]
 		};
-		var aggregate = new FakeAggregate
-		{
-			Marker = new Marker("Hello world")
-		};
-
-		// Act
-		var json = JsonConvert.SerializeObject(aggregate, options);
-
-		// Assert
-		Assert.DoesNotContain(typeof(Marker).FullName!, json);
 	}
+
+	#region Interface
 
 	[Fact]
 	public void Serialize_DeclaredAsInterface_TypeInformationDoesNotContainVersion()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			TypeNameHandling = TypeNameHandling.Auto,
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
+
 		var aggregate = new FakeAggregate
 		{
 			Marker = new Marker("Hello world")
 		};
 
 		// Act
-		var json = JsonConvert.SerializeObject(aggregate, options);
+		var json = JsonConvert.SerializeObject(aggregate, _options);
 
 		// Assert
 		Assert.Contains(typeof(Marker).FullName!, json);
@@ -53,106 +38,61 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_DeclaredAsInterface_ContainsTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			TypeNameHandling = TypeNameHandling.Auto,
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var aggregate = new FakeAggregate
 		{
 			Marker = new Marker("Hello world")
 		};
 
 		// Act
-		var json = JsonConvert.SerializeObject(aggregate, options);
+		var json = JsonConvert.SerializeObject(aggregate, _options);
 
 		// Assert
 		Assert.Contains(typeof(Marker).FullName!, json);
 	}
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Deserialize_DeclaredAsInterfaceWithTypeHandling_CanDeserialize(TypeNameHandling typeNameHandling)
+	[Fact]
+	public void Deserialize_DeclaredAsInterface_CanDeserialize()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			TypeNameHandling = typeNameHandling,
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var aggregate = new FakeAggregate
 		{
 			Marker = new Marker("Hello world")
 		};
-		var json = JsonConvert.SerializeObject(aggregate, options);
+		var json = JsonConvert.SerializeObject(aggregate, _options);
 
 		// Act
 
-		var deserialized = JsonConvert.DeserializeObject<FakeAggregate>(json, options);
+		var deserialized = JsonConvert.DeserializeObject<FakeAggregate>(json, _options);
 
 		// Assert
 		Assert.Equal(aggregate, deserialized);
-	}
-
-	[Fact]
-	public void Deserialize_DeclaredAsInterfaceWithoutTypeHandling_CannotDeserialize()
-	{
-		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			TypeNameHandling = TypeNameHandling.None,
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var aggregate = new FakeAggregate
-		{
-			Marker = new Marker("Hello world")
-		};
-		var json = JsonConvert.SerializeObject(aggregate, options);
-
-		// Act && Assert
-		var ex = Assert.Throws<InvalidOperationException>(() => JsonConvert.DeserializeObject<FakeAggregate>(json, options));
-		Assert.Contains("Cannot deserialize interface or abstract type when JSON doesn't contain $type", ex.Message);
 	}
 
 	#endregion
 
 	#region Guid
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_GuidWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Guid_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = GuidId.New();
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_GuidWithoutTypeHandling_SerializedAsGuid()
+	public void Serialize_AttributedGuid_SerializedAsGuid()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = GuidId.New();
+		var id = AttributedGuidId.New();
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -163,15 +103,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawGuid_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var guid = Guid.NewGuid();
-		var json = JsonConvert.SerializeObject(guid, options);
+		var json = JsonConvert.SerializeObject(guid, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<GuidId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<GuidId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -182,56 +118,127 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_GuidIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<GuidId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<GuidId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
 	}
 
-	#endregion
-
-	#region Byte
-
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_ByteWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Deserialize_SerializedGuid_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
-		var id = ByteId.Create(42);
+		var value = GuidId.New();
+		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var deserializedValue = JsonConvert.DeserializeObject<GuidId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
+	}
+
+	#endregion
+
+	#region Bool
+
+	[Fact]
+	public void Serialize_Bool_SerializedWithTypeInformation()
+	{
+		// Arrange
+		var id = BoolValue.Create(true);
+
+		// Act
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_ByteWithoutTypeHandling_SerializedAsByte()
+	public void Serialize_AttributedBool_SerializedAsBool()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
+		var id = AttributedBoolValue.Create(true);
+
+		// Act
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
+		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
+
+		// Assert
+		Assert.Equal(primitiveIdJson, strongIdJson);
+	}
+
+	[Fact]
+	public void Deserialize_RawBool_Deserializes()
+	{
+		// Arrange
+		var boolValue = true;
+		var json = JsonConvert.SerializeObject(boolValue, _options);
+
+		// Act
+		var strongId = JsonConvert.DeserializeObject<BoolValue>(json, _options);
+
+		// Assert
+		Assert.NotNull(strongId);
+		Assert.Equal(boolValue, strongId!.PrimitiveValue);
+	}
+
+	[Fact]
+	public void Deserialize_BoolIsNull_Deserializes()
+	{
+		// Arrange
+		var json = JsonConvert.SerializeObject(null, _options);
+
+		// Act
+		var strongId = JsonConvert.DeserializeObject<BoolValue?>(json, _options);
+
+		// Assert
+		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedBool_Deserializes()
+	{
+		// Arrange
+		var value = BoolValue.Create(true);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<BoolValue?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
+	}
+
+	#endregion
+
+	#region Byte
+
+	[Fact]
+	public void Serialize_Byte_SerializedWithTypeInformation()
+	{
+		// Arrange
 		var id = ByteId.Create(42);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
+
+		// Assert
+		Assert.Contains(id.GetType().FullName!, json);
+	}
+
+	[Fact]
+	public void Serialize_AttributedByte_SerializedAsByte()
+	{
+		// Arrange
+		var id = AttributedByteId.Create(42);
+
+		// Act
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -242,15 +249,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawByte_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var byteValue = 42;
-		var json = JsonConvert.SerializeObject(byteValue, options);
+		var json = JsonConvert.SerializeObject(byteValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<ByteId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<ByteId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -261,56 +264,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_ByteIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<ByteId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<ByteId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedByte_Deserializes()
+	{
+		// Arrange
+		var value = ByteId.Create(42);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<ByteId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Char
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_CharWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Char_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = CharValue.Create('A');
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_CharWithoutTypeHandling_SerializedAsChar()
+	public void Serialize_AttributedChar_SerializedAsChar()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = CharValue.Create('A');
+		var id = AttributedCharValue.Create('A');
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -321,15 +322,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawChar_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var charValue = 'A';
-		var json = JsonConvert.SerializeObject(charValue, options);
+		var json = JsonConvert.SerializeObject(charValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<CharValue>(json, options);
+		var strongId = JsonConvert.DeserializeObject<CharValue>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -340,56 +337,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_CharIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<CharValue?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<CharValue?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedChar_Deserializes()
+	{
+		// Arrange
+		var value = CharValue.Create('A');
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<CharValue?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Date
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_DateWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Date_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = DateValue.Create(DateTime.UtcNow);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_DateWithoutTypeHandling_SerializedAsDate()
+	public void Serialize_AttributedDate_SerializedAsDate()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = DateValue.Create(DateTime.UtcNow);
+		var id = AttributedDateValue.Create(DateTime.UtcNow);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -400,15 +395,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawDate_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var DateTimeValue = DateTime.UtcNow;
-		var json = JsonConvert.SerializeObject(DateTimeValue, options);
+		var json = JsonConvert.SerializeObject(DateTimeValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<DateValue>(json, options);
+		var strongId = JsonConvert.DeserializeObject<DateValue>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -419,56 +410,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_DateIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<DateValue?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<DateValue?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedDate_Deserializes()
+	{
+		// Arrange
+		var value = DateValue.Create(DateTime.UtcNow);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<DateValue?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Short
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_ShortWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Short_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = ShortId.Create(42);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_ShortWithoutTypeHandling_SerializedAsShort()
+	public void Serialize_AttributedShort_SerializedAsShort()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = ShortId.Create(42);
+		var id = AttributedShortId.Create(42);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -479,15 +468,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawShort_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		short shortValue = 42;
-		var json = JsonConvert.SerializeObject(shortValue, options);
+		var json = JsonConvert.SerializeObject(shortValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<ShortId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<ShortId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -498,56 +483,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_ShortIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<ShortId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<ShortId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedShort_Deserializes()
+	{
+		// Arrange
+		var value = ShortId.Create(42);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<ShortId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Ushort
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_UshortWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Ushort_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = UshortId.Create(42);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_UshortWithoutTypeHandling_SerializedAsUshort()
+	public void Serialize_AttributedUshort_SerializedAsUshort()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = UshortId.Create(42);
+		var id = AttributedUshortId.Create(42);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -558,15 +541,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawUshort_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		ushort ushortValue = 42;
-		var json = JsonConvert.SerializeObject(ushortValue, options);
+		var json = JsonConvert.SerializeObject(ushortValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<UshortId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<UshortId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -577,56 +556,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_UshortIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<UshortId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<UshortId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedUshort_Deserializes()
+	{
+		// Arrange
+		var value = UshortId.Create(42);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<UshortId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Int
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_IntWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Int_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = IntId.Create(42);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_IntWithoutTypeHandling_SerializedAsInt()
+	public void Serialize_AttributedInt_SerializedAsInt()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = IntId.Create(42);
+		var id = AttributedIntId.Create(42);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -637,15 +614,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawInt_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var intValue = 42;
-		var json = JsonConvert.SerializeObject(intValue, options);
+		var json = JsonConvert.SerializeObject(intValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<IntId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<IntId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -656,56 +629,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_IntIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<IntId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<IntId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedInt_Deserializes()
+	{
+		// Arrange
+		var value = IntId.Create(42);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<IntId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Uint
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_UintWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Uint_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = UintId.Create(42);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_UintWithoutTypeHandling_SerializedAsUint()
+	public void Serialize_AttributedUint_SerializedAsUint()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = UintId.Create(42);
+		var id = AttributedUintId.Create(42);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -716,15 +687,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawUint_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var uintValue = 42u;
-		var json = JsonConvert.SerializeObject(uintValue, options);
+		var json = JsonConvert.SerializeObject(uintValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<UintId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<UintId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -735,56 +702,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_UintIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<UintId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<UintId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedUint_Deserializes()
+	{
+		// Arrange
+		var value = UintId.Create(42);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<UintId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Long
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_LongWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Long_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = LongId.Create(42);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_LongWithoutTypeHandling_SerializedAsLong()
+	public void Serialize_AttributedLong_SerializedAsLong()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = LongId.Create(42);
+		var id = AttributedLongId.Create(42);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -795,15 +760,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawLong_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var longValue = 42L;
-		var json = JsonConvert.SerializeObject(longValue, options);
+		var json = JsonConvert.SerializeObject(longValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<LongId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<LongId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -814,56 +775,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_LongIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<LongId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<LongId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedLong_Deserializes()
+	{
+		// Arrange
+		var value = LongId.Create(42);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<LongId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Ulong
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_UlongWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Ulong_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = UlongId.Create(42);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_UlongWithoutTypeHandling_SerializedAsUlong()
+	public void Serialize_AttributedUlong_SerializedAsUlong()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = UlongId.Create(42);
+		var id = AttributedUlongId.Create(42);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -874,15 +833,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawUlong_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var ulongValue = 42UL;
-		var json = JsonConvert.SerializeObject(ulongValue, options);
+		var json = JsonConvert.SerializeObject(ulongValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<UlongId>(json, options);
+		var strongId = JsonConvert.DeserializeObject<UlongId>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -893,56 +848,54 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_UlongIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<UlongId?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<UlongId?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedUlong_Deserializes()
+	{
+		// Arrange
+		var value = UlongId.Create(42);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<UlongId?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Float
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_FloatWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Float_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = FloatValue.Create(42.1337f);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_FloatWithoutTypeHandling_SerializedAsFloat()
+	public void Serialize_AttributedFloat_SerializedAsFloat()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = FloatValue.Create(42.1337f);
+		var id = AttributedFloatValue.Create(42.1337f);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -953,15 +906,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawFloat_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var floatValue = 42.1337f;
-		var json = JsonConvert.SerializeObject(floatValue, options);
+		var json = JsonConvert.SerializeObject(floatValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<FloatValue>(json, options);
+		var strongId = JsonConvert.DeserializeObject<FloatValue>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -972,56 +921,55 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_FloatIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<FloatValue?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<FloatValue?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+
+	[Fact]
+	public void Deserialize_SerializedFloat_Deserializes()
+	{
+		// Arrange
+		var value = FloatValue.Create(42.1337f);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<FloatValue?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Double
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_DoubleWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Double_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = DoubleValue.Create(42.1337);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_DoubleWithoutTypeHandling_SerializedAsDouble()
+	public void Serialize_AttributedDouble_SerializedAsDouble()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = DoubleValue.Create(42.1337);
+		var id = AttributedDoubleValue.Create(42.1337);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -1032,15 +980,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawDouble_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var doubleValue = 42.1337;
-		var json = JsonConvert.SerializeObject(doubleValue, options);
+		var json = JsonConvert.SerializeObject(doubleValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<DoubleValue>(json, options);
+		var strongId = JsonConvert.DeserializeObject<DoubleValue>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -1051,56 +995,55 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_DoubleIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<DoubleValue?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<DoubleValue?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+
+	[Fact]
+	public void Deserialize_SerializedDouble_Deserializes()
+	{
+		// Arrange
+		var value = DoubleValue.Create(42.1337);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<DoubleValue?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region Decimal
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_DecimalWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_Decimal_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
 		var id = DecimalValue.Create(42.1337m);
 
 		// Act
-		var json = JsonConvert.SerializeObject(id, options);
+		var json = JsonConvert.SerializeObject(id, _options);
 
 		// Assert
 		Assert.Contains(id.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_DecimalWithoutTypeHandling_SerializedAsDecimal()
+	public void Serialize_AttributedDecimal_SerializedAsDecimal()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var id = DecimalValue.Create(42.1337m);
+		var id = AttributedDecimalValue.Create(42.1337m);
 
 		// Act
-		var strongIdJson = JsonConvert.SerializeObject(id, options);
+		var strongIdJson = JsonConvert.SerializeObject(id, _options);
 		var primitiveIdJson = JsonConvert.SerializeObject(id.PrimitiveValue);
 
 		// Assert
@@ -1111,15 +1054,11 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_RawDecimal_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 		var decimalValue = 42.1337m;
-		var json = JsonConvert.SerializeObject(decimalValue, options);
+		var json = JsonConvert.SerializeObject(decimalValue, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<DecimalValue>(json, options);
+		var strongId = JsonConvert.DeserializeObject<DecimalValue>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -1130,56 +1069,55 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_DecimalIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<DecimalValue?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<DecimalValue?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedDecimal_Deserializes()
+	{
+		// Arrange
+		var value = DecimalValue.Create(42.1337m);
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<DecimalValue?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
 
 	#region String
 
-	[Theory]
-	[InlineData(TypeNameHandling.Auto)]
-	[InlineData(TypeNameHandling.Objects)]
-	[InlineData(TypeNameHandling.All)]
-	public void Serialize_StringWithTypeHandling_SerializedWithTypeInformation(TypeNameHandling handling)
+	[Fact]
+	public void Serialize_String_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()],
-			TypeNameHandling = handling
-		};
+
 		var value = EmailAddress.Create("Hello");
 
 		// Act
-		var json = JsonConvert.SerializeObject(value, options);
+		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Assert
 		Assert.Contains(value.GetType().FullName!, json);
 	}
 
 	[Fact]
-	public void Serialize_StringWithoutTypeHandling_SerializedAsString()
+	public void Serialize_AttributedString_SerializedAsString()
 	{
 		// Arrange
-		var str = EmailAddress.Create("Hello");
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
+		var str = AttributedEmailAddress.Create("Hello");
 
 		// Act
-		var strongJson = JsonConvert.SerializeObject(str, options);
+		var strongJson = JsonConvert.SerializeObject(str, _options);
 		var primitiveJson = JsonConvert.SerializeObject(str.PrimitiveValue);
 
 		// Assert
@@ -1190,14 +1128,10 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_StringIsNull_Deserializes()
 	{
 		// Arrange
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
-		var json = JsonConvert.SerializeObject(null, options);
+		var json = JsonConvert.SerializeObject(null, _options);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<EmailAddress?>(json, options);
+		var strongId = JsonConvert.DeserializeObject<EmailAddress?>(json, _options);
 
 		// Assert
 		Assert.Null(strongId);
@@ -1208,19 +1142,29 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	{
 		// Arrange
 		var stringValue = "Hello world";
-		var options = new JsonSerializerSettings
-		{
-			Converters = [new StrongTypedNewtonSoftJsonConverter()]
-		};
 
-		var json = JsonConvert.SerializeObject(stringValue, options);
+		var json = JsonConvert.SerializeObject(stringValue, _options);
 
 		// Act
-		var strongValue = JsonConvert.DeserializeObject<EmailAddress>(json, options);
+		var strongValue = JsonConvert.DeserializeObject<EmailAddress>(json, _options);
 
 		// Assert
 		Assert.NotNull(strongValue);
 		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+	}
+
+	[Fact]
+	public void Deserialize_SerializedString_Deserializes()
+	{
+		// Arrange
+		var value = EmailAddress.Create("Hello world");
+		var json = JsonConvert.SerializeObject(value, _options);
+
+		// Act
+		var deserializedValue = JsonConvert.DeserializeObject<EmailAddress?>(json, _options);
+
+		// Assert
+		Assert.Equal(value, deserializedValue);
 	}
 
 	#endregion
