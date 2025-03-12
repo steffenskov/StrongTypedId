@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace StrongTypedId.Converters;
 
@@ -20,56 +19,14 @@ public class NewtonSoftJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonC
 			return null;
 		}
 
-		if (serializer.TypeNameHandling == TypeNameHandling.None)
-		{
-			var result = serializer.Deserialize<TPrimitiveValue>(reader);
-			return result is not null
-				? StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(result)
-				: null;
-		}
-
-		var bypassSerializer = CreateBypassSerializer(serializer);
-		bypassSerializer.TypeNameHandling = TypeNameHandling.All;
-		return bypassSerializer.Deserialize<TStrongTypedValue>(reader);
+		var result = serializer.Deserialize<TPrimitiveValue>(reader);
+		return result is not null
+			? StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(result)
+			: null;
 	}
 
 	public override void WriteJson(JsonWriter writer, TStrongTypedValue? value, JsonSerializer serializer)
 	{
-		if (value is null)
-		{
-			writer.WriteNull();
-			return;
-		}
-
-		if (serializer.TypeNameHandling == TypeNameHandling.None)
-		{
-			serializer.Serialize(writer, value.PrimitiveValue);
-		}
-		else
-		{
-			var bypassSerializer = CreateBypassSerializer(serializer);
-			bypassSerializer.TypeNameHandling = TypeNameHandling.All;
-			bypassSerializer.Serialize(writer, value);
-		}
-	}
-
-	private static JsonSerializer CreateBypassSerializer(JsonSerializer originalSerializer)
-	{
-		var result = new JsonSerializer
-		{
-			TypeNameHandling = TypeNameHandling.All,
-			ContractResolver = new BypassResolver()
-		};
-		return result;
-	}
-
-	private class BypassResolver : DefaultContractResolver
-	{
-		public override JsonContract ResolveContract(Type type)
-		{
-			var contract = base.ResolveContract(type);
-			contract.Converter = null;
-			return contract;
-		}
+		serializer.Serialize(writer, value is null ? null : value.PrimitiveValue);
 	}
 }
