@@ -6,7 +6,7 @@ public class OrderingTests
 	public void OrderBy_HasDifferentValues_OrderedCorrectly()
 	{
 		// Arrange
-		var ids = new[] { new AttributedIntId(42), new AttributedIntId(1337), new AttributedIntId(256) };
+		var ids = new[] { new IntId(42), new IntId(1337), new IntId(256) };
 
 		// Act
 		var ordered = ids.OrderBy(id => id).ToList();
@@ -21,7 +21,7 @@ public class OrderingTests
 	public void OrderByDescending_HasDifferentValues_OrderedCorrectly()
 	{
 		// Arrange
-		var ids = new[] { new AttributedIntId(42), new AttributedIntId(1337), new AttributedIntId(256) };
+		var ids = new[] { new IntId(42), new IntId(1337), new IntId(256) };
 
 		// Act
 		var ordered = ids.OrderByDescending(id => id).ToList();

@@ -11,8 +11,8 @@ public class SwaggerExtensionTests
 		var options = new SwaggerGenOptions();
 
 		// Act
-		options.MapStrongType<AttributedGuidId, Guid>();
-		options.MapStrongType<AttributedIntId, int>();
+		options.MapStrongType<GuidId, Guid>();
+		options.MapStrongType<IntId, int>();
 
 		// Assert
 		Assert.True(true); // Just testing no exceptions were thrown
@@ -25,8 +25,8 @@ public class SwaggerExtensionTests
 		var options = new SwaggerGenOptions();
 
 		// Act
-		options.MapStrongType(typeof(AttributedGuidId), typeof(Guid));
-		options.MapStrongType(typeof(AttributedIntId), typeof(int));
+		options.MapStrongType(typeof(GuidId), typeof(Guid));
+		options.MapStrongType(typeof(IntId), typeof(int));
 
 		// Assert
 		Assert.True(true); // Just testing no exceptions were thrown
