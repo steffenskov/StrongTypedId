@@ -19,7 +19,7 @@ public class ExtensionTests
 	public void IsStrongTypedValue_IsStrongTypedValue_ReturnsTrue()
 	{
 		// Arrange
-		var obj = new AttributedEmailAddress("");
+		var obj = new EmailAddress("");
 
 		// Act
 		var isStrongTyped = obj.IsStrongTypedValue();
@@ -32,7 +32,7 @@ public class ExtensionTests
 	public void IsStrongTypedValue_IsStrongTypedId_ReturnsTrue()
 	{
 		// Arrange
-		var obj = new AttributedIntId(42);
+		var obj = new IntId(42);
 
 		// Act
 		var isStrongTyped = obj.IsStrongTypedValue();
@@ -45,7 +45,7 @@ public class ExtensionTests
 	public void IsStrongTypedValue_IsStrongTypedGuid_ReturnsTrue()
 	{
 		// Arrange
-		var obj = AttributedGuidId.New();
+		var obj = GuidId.New();
 
 		// Act
 		var isStrongTyped = obj.IsStrongTypedValue();
@@ -59,7 +59,7 @@ public class ExtensionTests
 	public void IsStrongTypedValue_IsStrongTypedWithoutTypeInformation_ReturnsTrue()
 	{
 		// Arrange
-		var obj = (object)AttributedGuidId.New();
+		var obj = (object)GuidId.New();
 
 		// Act
 		var isStrongTyped = obj.IsStrongTypedValue();
