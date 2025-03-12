@@ -20,7 +20,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-		<PackageReference Include="PerformantReflection" Version="1.8.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
