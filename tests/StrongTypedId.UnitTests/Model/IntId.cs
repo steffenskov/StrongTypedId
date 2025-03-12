@@ -1,10 +1,21 @@
 using Newtonsoft.Json;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace StrongTypedId.UnitTests.Model;
+
+[TypeConverter(typeof(StrongTypedValueTypeConverter<AttributedIntId, int>))]
+[StrongTypedIdJsonConverter<AttributedIntId, int>]
+[JsonConverter(typeof(NewtonSoftJsonConverter<AttributedIntId, int>))]
+public class AttributedIntId : StrongTypedId<AttributedIntId, int>
+{
+	public AttributedIntId(int primitiveValue) : base(primitiveValue)
+	{
+	}
+}
 
 [TypeConverter(typeof(StrongTypedValueTypeConverter<IntId, int>))]
 [StrongTypedIdJsonConverter<IntId, int>]
-[JsonConverter(typeof(NewtonSoftJsonConverter<IntId, int>))]
 public class IntId : StrongTypedId<IntId, int>
 {
 	public IntId(int primitiveValue) : base(primitiveValue)

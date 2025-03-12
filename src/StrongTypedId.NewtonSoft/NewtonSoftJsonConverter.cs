@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace StrongTypedId.Converters;
 
@@ -8,6 +7,7 @@ namespace StrongTypedId.Converters;
 ///     [JsonConverter(typeof(NewtonSoftJsonConverter&lt;UserId, Guid&gt;))]
 ///     public class UserId: StrongTypedId&lt;UserId, Guid&gt;
 /// </summary>
+[Obsolete("Consider using StrongTypedNewtonSoftJsonConverter instead, the attribute approach won't be maintained in the future.")]
 public class NewtonSoftJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
 	where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>

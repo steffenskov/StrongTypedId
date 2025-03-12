@@ -1,21 +1,26 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Reflection.Emit;
-using StrongTypedId.Collections;
+﻿using StrongTypedId.Reflection;
 
 namespace StrongTypedId;
+
+public abstract class StrongTypedValue
+{
+	public static object Create(Type type, object primitiveValue)
+	{
+		return DynamicActivator.Create(type, primitiveValue);
+	}
+}
 
 /// <Summary>
 ///     Abstract baseclass to represent a strong typed value. Use it like this:
 ///     public class EmailAddress: StrongTypedValue&lt;EmailAddress, string&gt;
 /// </Summary>
-public abstract class StrongTypedValue<TSelf, TPrimitiveValue> : IComparable,
+public abstract class StrongTypedValue<TSelf, TPrimitiveValue> : StrongTypedValue, IComparable,
 	IComparable<StrongTypedValue<TSelf, TPrimitiveValue>>, IComparable<TPrimitiveValue>,
 	IEquatable<TSelf>, IStrongTypedValue<TPrimitiveValue>
 	where TSelf : StrongTypedValue<TSelf, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 {
-	private static readonly LockedConcurrentDictionary<Type, Func<TPrimitiveValue, TSelf>> _constructors = new();
+	private static readonly DynamicActivator<TSelf, TPrimitiveValue> _dynamicActivator = new();
 
 	protected StrongTypedValue(TPrimitiveValue primitiveValue)
 	{
@@ -46,48 +51,7 @@ public abstract class StrongTypedValue<TSelf, TPrimitiveValue> : IComparable,
 
 	public static TSelf Create(TPrimitiveValue value)
 	{
-		var ctor = GetOrCreateCtor();
-		var instance = ctor.Invoke(value);
-		return instance;
-	}
-
-	[SuppressMessage("Major Code Smell",
-		"S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
-		Justification = "We know the ctor is protected and have control over this")]
-	private static Func<TPrimitiveValue, TSelf> GetOrCreateCtor()
-	{
-		var idType = typeof(TSelf);
-		return _constructors.GetOrAdd(idType, type =>
-		{
-			var ctor = type.GetConstructor(
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null,
-				new[] { typeof(TPrimitiveValue) }, null);
-			return CreateDelegate(ctor ?? throw new InvalidOperationException(
-				$"No constructor found for type {type.Name} with one argument of type {typeof(TPrimitiveValue).Name}."));
-		});
-	}
-
-	private static Func<TPrimitiveValue, TSelf> CreateDelegate(ConstructorInfo constructor)
-	{
-		var constructorParam = constructor.GetParameters();
-
-		// Create the dynamic method
-		var method =
-			new DynamicMethod($"{constructor.DeclaringType!.Name}__{Guid.NewGuid().ToString().Replace("-", "")}",
-				constructor.DeclaringType,
-				Array.ConvertAll<ParameterInfo, Type>(constructorParam, p => p.ParameterType),
-				true
-			);
-
-		// Create the il
-		var gen = method.GetILGenerator();
-		gen.Emit(OpCodes.Ldarg_0);
-		gen.Emit(OpCodes.Newobj, constructor);
-		gen.Emit(OpCodes.Ret);
-
-		// Return the delegate :)
-		return (Func<TPrimitiveValue, TSelf>)method.CreateDelegate(
-			typeof(Func<TPrimitiveValue, TSelf>));
+		return _dynamicActivator.Create(value);
 	}
 
 	public override bool Equals(object? obj)

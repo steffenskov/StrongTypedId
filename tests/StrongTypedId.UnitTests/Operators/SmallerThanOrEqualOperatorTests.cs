@@ -129,4 +129,3 @@ public class SmallerThanOrEqualOperatorTests
 		Assert.True(isSmaller);
 	}
 }
-

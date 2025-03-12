@@ -14,7 +14,7 @@ public class UnequalOperatorTests
 		// Assert
 		Assert.False(unequal);
 	}
-	
+
 	[Fact]
 	public void UnequalOperator_OtherIsNull_AreUnequal()
 	{

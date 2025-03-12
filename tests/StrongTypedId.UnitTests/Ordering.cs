@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace StrongTypedId.UnitTests;
 
 public class OrderingTests
