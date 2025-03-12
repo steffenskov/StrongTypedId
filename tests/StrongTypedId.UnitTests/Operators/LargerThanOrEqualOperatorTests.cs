@@ -6,8 +6,8 @@ public class LargerThanOrEqualOperatorTests
 	public void LargerThanOrEqualOperator_BothAreStrongTypedAndOtherIsLarger_IsLargerOrEqual()
 	{
 		// Arrange
-		var idOne = new AttributedIntId(42);
-		var idTwo = new AttributedIntId(1337);
+		var idOne = new IntId(42);
+		var idTwo = new IntId(1337);
 
 		// Act
 		var isLarger = idTwo >= idOne;
@@ -20,8 +20,8 @@ public class LargerThanOrEqualOperatorTests
 	public void LargerThanOrEqualOperator_BothAreStrongTypedAndOtherIsNotLarger_IsNotLargerOrEqual()
 	{
 		// Arrange
-		var idOne = new AttributedIntId(1337);
-		var idTwo = new AttributedIntId(42);
+		var idOne = new IntId(1337);
+		var idTwo = new IntId(42);
 
 		// Act
 		var isLarger = idTwo >= idOne;
@@ -34,8 +34,8 @@ public class LargerThanOrEqualOperatorTests
 	public void LargerThanOrEqualOperator_BothAreStrongTypedEqual_IsLargerOrEqual()
 	{
 		// Arrange
-		var idOne = new AttributedIntId(42);
-		var idTwo = new AttributedIntId(42);
+		var idOne = new IntId(42);
+		var idTwo = new IntId(42);
 
 		// Act
 		var isLarger = idTwo >= idOne;
@@ -48,7 +48,7 @@ public class LargerThanOrEqualOperatorTests
 	public void LargerThanOrEqualOperator_OneIsStrongTypedAndOtherIsLarger_IsLargerOrEqual()
 	{
 		// Arrange
-		var idOne = new AttributedIntId(42);
+		var idOne = new IntId(42);
 		var idTwo = 1337;
 
 		// Act
@@ -62,7 +62,7 @@ public class LargerThanOrEqualOperatorTests
 	public void LargerThanOrEqualOperator_OneIsStrongTypedAndOtherIsNotLarger_IsNotLargerOrEqual()
 	{
 		// Arrange
-		var idOne = new AttributedIntId(1337);
+		var idOne = new IntId(1337);
 		var idTwo = 42;
 
 		// Act
@@ -76,7 +76,7 @@ public class LargerThanOrEqualOperatorTests
 	public void LargerThanOrEqualOperator_OneIsStrongTypedEqual_IsLargerOrEqual()
 	{
 		// Arrange
-		var idOne = new AttributedIntId(42);
+		var idOne = new IntId(42);
 		var idTwo = 42;
 
 		// Act
@@ -92,7 +92,7 @@ public class LargerThanOrEqualOperatorTests
 	{
 		// Arrange
 		var idOne = 42;
-		var idTwo = new AttributedIntId(1337);
+		var idTwo = new IntId(1337);
 
 		// Act
 		var isLarger = idTwo >= idOne;
@@ -106,7 +106,7 @@ public class LargerThanOrEqualOperatorTests
 	{
 		// Arrange
 		var idOne = 1337;
-		var idTwo = new AttributedIntId(42);
+		var idTwo = new IntId(42);
 
 		// Act
 		var isLarger = idTwo >= idOne;
@@ -120,7 +120,7 @@ public class LargerThanOrEqualOperatorTests
 	{
 		// Arrange
 		var idOne = 42;
-		var idTwo = new AttributedIntId(42);
+		var idTwo = new IntId(42);
 
 		// Act
 		var isLarger = idTwo >= idOne;

@@ -6,7 +6,7 @@ public class UnequalOperatorTests
 	public void EqualOperator_BothAreNull_Equal()
 	{
 		// Arrange
-		AttributedGuidId? idOne = null;
+		GuidId? idOne = null;
 
 		// Act
 		var unequal = idOne != null;
@@ -19,7 +19,7 @@ public class UnequalOperatorTests
 	public void UnequalOperator_OtherIsNull_AreUnequal()
 	{
 		// Arrange
-		var idOne = AttributedGuidId.New();
+		var idOne = GuidId.New();
 
 		// Act
 		var unequal = idOne != null;
@@ -32,8 +32,8 @@ public class UnequalOperatorTests
 	public void UnequalOperator_BothAreStrongTypedAndUnequal_AreUnequal()
 	{
 		// Arrange
-		var idOne = new AttributedGuidId(Guid.NewGuid());
-		var idTwo = new AttributedGuidId(Guid.NewGuid());
+		var idOne = new GuidId(Guid.NewGuid());
+		var idTwo = new GuidId(Guid.NewGuid());
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -47,8 +47,8 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var guid = Guid.NewGuid();
-		var idOne = new AttributedGuidId(guid);
-		var idTwo = new AttributedGuidId(guid);
+		var idOne = new GuidId(guid);
+		var idTwo = new GuidId(guid);
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -62,7 +62,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new AttributedGuidId(Guid.NewGuid());
+		var idTwo = new GuidId(Guid.NewGuid());
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -76,7 +76,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new AttributedGuidId(Guid.NewGuid());
+		var idTwo = new GuidId(Guid.NewGuid());
 
 		// Act
 		var unequal = idTwo != idOne;
@@ -90,7 +90,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new AttributedGuidId(idOne);
+		var idTwo = new GuidId(idOne);
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -104,7 +104,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new AttributedGuidId(idOne);
+		var idTwo = new GuidId(idOne);
 
 		// Act
 		var unequal = idTwo != idOne;
