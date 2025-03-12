@@ -1,15 +1,24 @@
 using Newtonsoft.Json;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace StrongTypedId.UnitTests.Model;
+
+[TypeConverter(typeof(StrongTypedValueTypeConverter<AttributedEmailAddress, string>))]
+[StrongTypedValueJsonConverter<AttributedEmailAddress, string>]
+[JsonConverter(typeof(NewtonSoftJsonConverter<AttributedEmailAddress, string>))]
+public class AttributedEmailAddress : StrongTypedValue<AttributedEmailAddress, string>
+{
+	public AttributedEmailAddress(string primitiveValue) : base(primitiveValue)
+	{
+	}
+}
 
 [TypeConverter(typeof(StrongTypedValueTypeConverter<EmailAddress, string>))]
 [StrongTypedValueJsonConverter<EmailAddress, string>]
-[JsonConverter(typeof(NewtonSoftJsonConverter<EmailAddress, string>))]
 public class EmailAddress : StrongTypedValue<EmailAddress, string>
 {
 	public EmailAddress(string primitiveValue) : base(primitiveValue)
 	{
 	}
-
-	public static StrongTypedValueJsonConverterAttribute<EmailAddress, string> JsonConverter { get; } = new();
 }

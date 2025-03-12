@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text.Json;
 
 namespace StrongTypedId.UnitTests.Converters;
@@ -9,7 +8,7 @@ public class JsonConverterTests
 	public void Serialize_Guid_SerializedAsGuid()
 	{
 		// Arrange
-		var id = GuidId.New();
+		var id = AttributedGuidId.New();
 
 		// Act
 		var strongIdJson = JsonSerializer.Serialize(id);
@@ -27,7 +26,7 @@ public class JsonConverterTests
 		var json = JsonSerializer.Serialize(guid);
 
 		// Act
-		var strongId = JsonSerializer.Deserialize<GuidId>(json);
+		var strongId = JsonSerializer.Deserialize<AttributedGuidId>(json);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -38,10 +37,10 @@ public class JsonConverterTests
 	public void Deserialize_GuidIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((GuidId?)null);
+		var json = JsonSerializer.Serialize((AttributedGuidId?)null);
 
 		// Act
-		var strongId = JsonSerializer.Deserialize<GuidId?>(json);
+		var strongId = JsonSerializer.Deserialize<AttributedGuidId?>(json);
 
 		// Assert
 		Assert.Null(strongId);
@@ -51,7 +50,7 @@ public class JsonConverterTests
 	public void Serialize_Int_SerializedAsInt()
 	{
 		// Arrange
-		var id = IntId.Create(42);
+		var id = AttributedIntId.Create(42);
 
 		// Act
 		var strongIdJson = JsonSerializer.Serialize(id);
@@ -69,7 +68,7 @@ public class JsonConverterTests
 		var json = JsonSerializer.Serialize(intValue);
 
 		// Act
-		var strongId = JsonSerializer.Deserialize<IntId>(json);
+		var strongId = JsonSerializer.Deserialize<AttributedIntId>(json);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -80,10 +79,10 @@ public class JsonConverterTests
 	public void Deserialize_IntIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((IntId?)null);
+		var json = JsonSerializer.Serialize((AttributedIntId?)null);
 
 		// Act
-		var strongId = JsonSerializer.Deserialize<IntId?>(json);
+		var strongId = JsonSerializer.Deserialize<AttributedIntId?>(json);
 
 		// Assert
 		Assert.Null(strongId);
@@ -94,7 +93,7 @@ public class JsonConverterTests
 	public void Serialize_String_SerializedAsString()
 	{
 		// Arrange
-		var str = EmailAddress.Create("Hello");
+		var str = AttributedEmailAddress.Create("Hello");
 
 		// Act
 		var strongJson = JsonSerializer.Serialize(str);
@@ -108,10 +107,10 @@ public class JsonConverterTests
 	public void Deserialize_StringIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((EmailAddress?)null);
+		var json = JsonSerializer.Serialize((AttributedEmailAddress?)null);
 
 		// Act
-		var strongId = JsonSerializer.Deserialize<EmailAddress?>(json);
+		var strongId = JsonSerializer.Deserialize<AttributedEmailAddress?>(json);
 
 		// Assert
 		Assert.Null(strongId);
@@ -125,7 +124,7 @@ public class JsonConverterTests
 		var json = JsonSerializer.Serialize(stringValue);
 
 		// Act
-		var strongValue = JsonSerializer.Deserialize<EmailAddress>(json);
+		var strongValue = JsonSerializer.Deserialize<AttributedEmailAddress>(json);
 
 		// Assert
 		Assert.NotNull(strongValue);
@@ -136,9 +135,9 @@ public class JsonConverterTests
 	public void Serialize_UsedAsDictionaryKey_Serializes()
 	{
 		// Arrange
-		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
+		var aggregate = new BasicAggregateWithDictionary(new Dictionary<AttributedGuidId, string[]>
 		{
-			{ GuidId.New(), new[] { "Hello", "world" } }
+			{ AttributedGuidId.New(), new[] { "Hello", "world" } }
 		});
 
 		// Act
@@ -152,8 +151,8 @@ public class JsonConverterTests
 	public void Deserialize_UsedAsDictionaryKey_Deserializes()
 	{
 		// Arrange
-		var id = GuidId.New();
-		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
+		var id = AttributedGuidId.New();
+		var aggregate = new BasicAggregateWithDictionary(new Dictionary<AttributedGuidId, string[]>
 		{
 			{ id, new[] { "Hello", "world" } }
 		});
@@ -175,10 +174,10 @@ file class BasicAggregateWithDictionary
 	{
 	}
 
-	public BasicAggregateWithDictionary(Dictionary<GuidId, string[]> value)
+	public BasicAggregateWithDictionary(Dictionary<AttributedGuidId, string[]> value)
 	{
 		Dictionary = value;
 	}
 
-	public Dictionary<GuidId, string[]> Dictionary { get; set; } = default!;
+	public Dictionary<AttributedGuidId, string[]> Dictionary { get; set; } = default!;
 }

@@ -8,7 +8,7 @@ public class NewtonSoftJsonConverterTests
 	public void Serialize_Guid_SerializedAsGuid()
 	{
 		// Arrange
-		var id = GuidId.New();
+		var id = AttributedGuidId.New();
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id);
@@ -26,7 +26,7 @@ public class NewtonSoftJsonConverterTests
 		var json = JsonConvert.SerializeObject(guid);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<GuidId>(json);
+		var strongId = JsonConvert.DeserializeObject<AttributedGuidId>(json);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -40,7 +40,7 @@ public class NewtonSoftJsonConverterTests
 		var json = JsonConvert.SerializeObject(null);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<GuidId?>(json);
+		var strongId = JsonConvert.DeserializeObject<AttributedGuidId?>(json);
 
 		// Assert
 		Assert.Null(strongId);
@@ -50,7 +50,7 @@ public class NewtonSoftJsonConverterTests
 	public void Serialize_Int_SerializedAsInt()
 	{
 		// Arrange
-		var id = IntId.Create(42);
+		var id = AttributedIntId.Create(42);
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id);
@@ -68,7 +68,7 @@ public class NewtonSoftJsonConverterTests
 		var json = JsonConvert.SerializeObject(intValue);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<IntId>(json);
+		var strongId = JsonConvert.DeserializeObject<AttributedIntId>(json);
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -82,7 +82,7 @@ public class NewtonSoftJsonConverterTests
 		var json = JsonConvert.SerializeObject(null);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<IntId?>(json);
+		var strongId = JsonConvert.DeserializeObject<AttributedIntId?>(json);
 
 		// Assert
 		Assert.Null(strongId);
@@ -92,7 +92,7 @@ public class NewtonSoftJsonConverterTests
 	public void Serialize_String_SerializedAsString()
 	{
 		// Arrange
-		var str = EmailAddress.Create("Hello");
+		var str = AttributedEmailAddress.Create("Hello");
 
 		// Act
 		var strongJson = JsonConvert.SerializeObject(str);
@@ -109,7 +109,7 @@ public class NewtonSoftJsonConverterTests
 		var json = JsonConvert.SerializeObject(null);
 
 		// Act
-		var strongId = JsonConvert.DeserializeObject<EmailAddress?>(json);
+		var strongId = JsonConvert.DeserializeObject<AttributedEmailAddress?>(json);
 
 		// Assert
 		Assert.Null(strongId);
@@ -123,7 +123,7 @@ public class NewtonSoftJsonConverterTests
 		var json = JsonConvert.SerializeObject(stringValue);
 
 		// Act
-		var strongValue = JsonConvert.DeserializeObject<EmailAddress>(json);
+		var strongValue = JsonConvert.DeserializeObject<AttributedEmailAddress>(json);
 
 		// Assert
 		Assert.NotNull(strongValue);

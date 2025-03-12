@@ -2,7 +2,9 @@ namespace StrongTypedId;
 
 public interface IStrongTypedValue<out TPrimitiveValue> : IStrongTypedValue
 {
-	TPrimitiveValue PrimitiveValue { get; }
+	new TPrimitiveValue PrimitiveValue { get; }
+
+	object? IStrongTypedValue.PrimitiveValue => PrimitiveValue;
 }
 
 /// <summary>
@@ -10,4 +12,5 @@ public interface IStrongTypedValue<out TPrimitiveValue> : IStrongTypedValue
 /// </summary>
 public interface IStrongTypedValue
 {
+	object? PrimitiveValue { get; }
 }

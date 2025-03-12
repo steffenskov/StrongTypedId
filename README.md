@@ -7,7 +7,7 @@ The benefit of this is simple: You don't run the risk of accidentally using the 
 This works through the use of an abstract base class (`StrongTypedId<TStrongTypedId, TPrimitiveId>`) which is inherited to gain the id functionality.
 
 This project is inspired by [Andrew Lock's StronglyTypedId](https://github.com/andrewlock/StronglyTypedId).
-However I needed support for .Net 5 and thus this project was born. It has since evolved to .Net 7.
+However I needed support for .Net 5 and thus this project was born. It has since evolved to .Net 9.
 
 # Installation
 

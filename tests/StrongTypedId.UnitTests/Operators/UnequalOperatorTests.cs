@@ -6,7 +6,7 @@ public class UnequalOperatorTests
 	public void EqualOperator_BothAreNull_Equal()
 	{
 		// Arrange
-		GuidId? idOne = null;
+		AttributedGuidId? idOne = null;
 
 		// Act
 		var unequal = idOne != null;
@@ -14,12 +14,12 @@ public class UnequalOperatorTests
 		// Assert
 		Assert.False(unequal);
 	}
-	
+
 	[Fact]
 	public void UnequalOperator_OtherIsNull_AreUnequal()
 	{
 		// Arrange
-		var idOne = GuidId.New();
+		var idOne = AttributedGuidId.New();
 
 		// Act
 		var unequal = idOne != null;
@@ -32,8 +32,8 @@ public class UnequalOperatorTests
 	public void UnequalOperator_BothAreStrongTypedAndUnequal_AreUnequal()
 	{
 		// Arrange
-		var idOne = new GuidId(Guid.NewGuid());
-		var idTwo = new GuidId(Guid.NewGuid());
+		var idOne = new AttributedGuidId(Guid.NewGuid());
+		var idTwo = new AttributedGuidId(Guid.NewGuid());
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -47,8 +47,8 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var guid = Guid.NewGuid();
-		var idOne = new GuidId(guid);
-		var idTwo = new GuidId(guid);
+		var idOne = new AttributedGuidId(guid);
+		var idTwo = new AttributedGuidId(guid);
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -62,7 +62,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(Guid.NewGuid());
+		var idTwo = new AttributedGuidId(Guid.NewGuid());
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -76,7 +76,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(Guid.NewGuid());
+		var idTwo = new AttributedGuidId(Guid.NewGuid());
 
 		// Act
 		var unequal = idTwo != idOne;
@@ -90,7 +90,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(idOne);
+		var idTwo = new AttributedGuidId(idOne);
 
 		// Act
 		var unequal = idOne != idTwo;
@@ -104,7 +104,7 @@ public class UnequalOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(idOne);
+		var idTwo = new AttributedGuidId(idOne);
 
 		// Act
 		var unequal = idTwo != idOne;

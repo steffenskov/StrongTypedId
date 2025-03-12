@@ -6,7 +6,7 @@ public class EqualOperatorTests
 	public void EqualOperator_BothAreNull_Equal()
 	{
 		// Arrange
-		GuidId? idOne = null;
+		AttributedGuidId? idOne = null;
 
 		// Act
 		var equal = idOne == null;
@@ -19,7 +19,7 @@ public class EqualOperatorTests
 	public void EqualOperator_OtherIsNull_NotEqual()
 	{
 		// Arrange
-		var idOne = GuidId.New();
+		var idOne = AttributedGuidId.New();
 
 		// Act
 		var equal = idOne == null;
@@ -33,8 +33,8 @@ public class EqualOperatorTests
 	{
 		// Arrange
 		var guid = Guid.NewGuid();
-		var idOne = new GuidId(guid);
-		var idTwo = new GuidId(guid);
+		var idOne = new AttributedGuidId(guid);
+		var idTwo = new AttributedGuidId(guid);
 
 		// Act
 		var equal = idOne == idTwo;
@@ -47,8 +47,8 @@ public class EqualOperatorTests
 	public void EqualOperator_BothAreStrongTypedButNotEqual_NotEqual()
 	{
 		// Arrange
-		var idOne = new GuidId(Guid.NewGuid());
-		var idTwo = new GuidId(Guid.NewGuid());
+		var idOne = new AttributedGuidId(Guid.NewGuid());
+		var idTwo = new AttributedGuidId(Guid.NewGuid());
 
 		// Act
 		var equal = idOne == idTwo;
@@ -62,7 +62,7 @@ public class EqualOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(idOne);
+		var idTwo = new AttributedGuidId(idOne);
 
 
 		// Act
@@ -77,7 +77,7 @@ public class EqualOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(idOne);
+		var idTwo = new AttributedGuidId(idOne);
 
 
 		// Act
@@ -92,7 +92,7 @@ public class EqualOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(Guid.NewGuid());
+		var idTwo = new AttributedGuidId(Guid.NewGuid());
 
 		// Act
 		var equal = idOne == idTwo;
@@ -106,7 +106,7 @@ public class EqualOperatorTests
 	{
 		// Arrange
 		var idOne = Guid.NewGuid();
-		var idTwo = new GuidId(Guid.NewGuid());
+		var idTwo = new AttributedGuidId(Guid.NewGuid());
 
 		// Act
 		var equal = idTwo == idOne;

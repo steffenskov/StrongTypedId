@@ -8,8 +8,8 @@ public class TypeConverterTests
 	public void Serialize_Guid_SerializedAsGuid()
 	{
 		// Arrange
-		var id = GuidId.New();
-		var converter = TypeDescriptor.GetConverter(typeof(GuidId));
+		var id = AttributedGuidId.New();
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedGuidId));
 
 		// Act
 		var strongIdJson = converter.ConvertToString(id);
@@ -23,12 +23,12 @@ public class TypeConverterTests
 	public void Deserialize_Guid_Deserializes()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(GuidId));
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedGuidId));
 		var guid = Guid.NewGuid();
 		var json = converter.ConvertToString(guid);
 
 		// Act
-		var strongId = converter.ConvertFrom(json!) as GuidId;
+		var strongId = converter.ConvertFrom(json!) as AttributedGuidId;
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -39,11 +39,11 @@ public class TypeConverterTests
 	public void Deserialize_GuidIsNull_Deserializes()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(GuidId));
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedGuidId));
 		var json = converter.ConvertToString(null);
 
 		// Act
-		var strongId = converter.ConvertFrom(json!) as GuidId;
+		var strongId = converter.ConvertFrom(json!) as AttributedGuidId;
 
 		// Assert
 		Assert.Null(strongId);
@@ -53,8 +53,8 @@ public class TypeConverterTests
 	public void Serialize_Int_SerializedAsInt()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(IntId));
-		var id = IntId.Create(42);
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedIntId));
+		var id = AttributedIntId.Create(42);
 
 		// Act
 		var strongIdJson = converter.ConvertToString(id);
@@ -68,12 +68,12 @@ public class TypeConverterTests
 	public void Deserialize_Int_Deserializes()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(IntId));
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedIntId));
 		var intValue = 42;
 		var json = converter.ConvertToString(intValue);
 
 		// Act
-		var strongId = converter.ConvertFrom(json!) as IntId;
+		var strongId = converter.ConvertFrom(json!) as AttributedIntId;
 
 		// Assert
 		Assert.NotNull(strongId);
@@ -84,11 +84,11 @@ public class TypeConverterTests
 	public void Deserialize_IntIsNull_Deserializes()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(IntId));
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedIntId));
 		var json = converter.ConvertToString(null);
 
 		// Act
-		var strongId = converter.ConvertFrom(json!) as IntId;
+		var strongId = converter.ConvertFrom(json!) as AttributedIntId;
 
 		// Assert
 		Assert.Null(strongId);
@@ -99,8 +99,8 @@ public class TypeConverterTests
 	public void Serialize_String_SerializedAsString()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(EmailAddress));
-		var str = EmailAddress.Create("Hello");
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedEmailAddress));
+		var str = AttributedEmailAddress.Create("Hello");
 
 		// Act
 		var strongJson = converter.ConvertToString(str);
@@ -114,11 +114,11 @@ public class TypeConverterTests
 	public void Deserialize_StringIsNull_Deserializes()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(EmailAddress));
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedEmailAddress));
 		var json = JsonSerializer.Serialize<string>(null!);
 
 		// Act
-		var strongId = converter.ConvertFrom(json!) as EmailAddress;
+		var strongId = converter.ConvertFrom(json!) as AttributedEmailAddress;
 
 		// Assert
 		Assert.Null(strongId);
@@ -129,12 +129,12 @@ public class TypeConverterTests
 	public void Deserialize_String_Deserializes()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(EmailAddress));
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedEmailAddress));
 		var stringValue = "Hello world";
 		var json = converter.ConvertToString(stringValue);
 
 		// Act
-		var strongValue = converter.ConvertFrom(json!) as EmailAddress;
+		var strongValue = converter.ConvertFrom(json!) as AttributedEmailAddress;
 
 		// Assert
 		Assert.NotNull(strongValue);
@@ -145,12 +145,12 @@ public class TypeConverterTests
 	public void Deserialize_EmptyString_Deserializes()
 	{
 		// Arrange
-		var converter = TypeDescriptor.GetConverter(typeof(EmailAddress));
+		var converter = TypeDescriptor.GetConverter(typeof(AttributedEmailAddress));
 		var stringValue = "";
 		var json = converter.ConvertToString(stringValue);
 
 		// Act
-		var strongValue = converter.ConvertFrom(json!) as EmailAddress;
+		var strongValue = converter.ConvertFrom(json!) as AttributedEmailAddress;
 
 		// Assert
 		Assert.NotNull(strongValue);
