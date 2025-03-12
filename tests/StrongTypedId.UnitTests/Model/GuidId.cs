@@ -1,7 +1,5 @@
 using Newtonsoft.Json;
 
-#pragma warning disable CS0618 // Type or member is obsolete
-
 namespace StrongTypedId.UnitTests.Model;
 
 [TypeConverter(typeof(StrongTypedValueTypeConverter<AttributedGuidId, Guid>))]

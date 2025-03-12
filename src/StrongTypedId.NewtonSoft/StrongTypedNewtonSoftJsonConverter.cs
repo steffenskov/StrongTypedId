@@ -13,19 +13,12 @@ public class StrongTypedNewtonSoftJsonConverter : JsonConverter
 			return;
 		}
 
-		if (serializer.TypeNameHandling is TypeNameHandling.All or TypeNameHandling.Objects or TypeNameHandling.Auto)
-		{
-			writer.WriteStartObject();
-			writer.WritePropertyName("$type");
-			writer.WriteValue(FormatType(value));
-			writer.WritePropertyName("Value");
-			writer.WriteValue(value.ToString());
-			writer.WriteEndObject();
-		}
-		else
-		{
-			serializer.Serialize(writer, ((IStrongTypedValue)value).PrimitiveValue);
-		}
+		writer.WriteStartObject();
+		writer.WritePropertyName("$type");
+		writer.WriteValue(FormatType(value));
+		writer.WritePropertyName("Value");
+		writer.WriteValue(((IStrongTypedValue)value).PrimitiveValue);
+		writer.WriteEndObject();
 	}
 
 	private static string FormatType(object value)
@@ -47,14 +40,10 @@ public class StrongTypedNewtonSoftJsonConverter : JsonConverter
 			return null;
 		}
 
+
 		if (reader.TokenType == JsonToken.StartObject)
 		{
-			var props = ReadTokens(reader);
-
-			var type = Type.GetType(props["$type"]) ?? throw new InvalidOperationException("Cannot instantiate type: " + props["$type"]);
-			var value = props["Value"];
-
-			return StrongTypedValue.Create(type, value);
+			return ReadWithTypeInfo(reader);
 		}
 
 		if (objectType.IsInterface || objectType.IsAbstract)
@@ -62,14 +51,36 @@ public class StrongTypedNewtonSoftJsonConverter : JsonConverter
 			throw new InvalidOperationException("Cannot deserialize interface or abstract type when JSON doesn't contain $type. Target type: " + objectType.Name);
 		}
 
-		var rawValue = GetRawValue(reader, objectType);
+		return ReadWithoutTypeInfo(reader, objectType);
+	}
 
+	private static object? ReadWithoutTypeInfo(JsonReader reader, Type objectType)
+	{
 		var baseType = GetBaseType(objectType);
 		var genericArguments = baseType.GetGenericArguments();
 		var primitiveType = genericArguments[1];
+
+		var rawValue = GetRawValue(reader, objectType);
 		var typedValue = Convert.ChangeType(rawValue, primitiveType);
 
 		return StrongTypedValue.Create(objectType, typedValue);
+	}
+
+	private static object? ReadWithTypeInfo(JsonReader reader)
+	{
+		var props = ReadTokens(reader);
+
+		var type = Type.GetType((string)props["$type"]) ?? throw new InvalidOperationException("Cannot instantiate type: " + props["$type"]);
+		var baseType = GetBaseType(type);
+		var genericArguments = baseType.GetGenericArguments();
+		var primitiveType = genericArguments[1];
+		var value = props["Value"];
+		if (primitiveType == typeof(Guid))
+		{
+			value = Guid.Parse((string)value);
+		}
+
+		return StrongTypedValue.Create(type, Convert.ChangeType(value, primitiveType));
 	}
 
 	private static object GetRawValue(JsonReader reader, Type objectType)
@@ -97,20 +108,19 @@ public class StrongTypedNewtonSoftJsonConverter : JsonConverter
 		return type;
 	}
 
-	private static Dictionary<string, string> ReadTokens(JsonReader reader)
+	private static Dictionary<string, object> ReadTokens(JsonReader reader)
 	{
 		var key = "";
-		Dictionary<string, string> result = [];
+		Dictionary<string, object> result = [];
 		while (reader.Read())
 		{
 			if (reader.TokenType == JsonToken.PropertyName)
 			{
 				key = reader.Value!.ToString()!;
 			}
-			else if (reader.TokenType == JsonToken.String)
+			else if (reader.TokenType is JsonToken.String or JsonToken.Boolean or JsonToken.Integer or JsonToken.Float or JsonToken.Date)
 			{
-				var value = reader.Value!.ToString()!;
-				result[key] = value;
+				result[key] = reader.Value!;
 			}
 			else if (reader.TokenType == JsonToken.EndObject)
 			{
