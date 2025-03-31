@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -22,7 +22,7 @@
 		<ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="3.2.1"/>
+		<PackageReference Include="MongoDB.Driver" Version="3.3.0"/>
 		<PackageReference Include="Ckode.ServiceLocator" Version="2.3.0"/>
 	</ItemGroup>
 
