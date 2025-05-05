@@ -22,7 +22,7 @@
 		<ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="3.3.0"/>
+		<PackageReference Include="MongoDB.Driver" Version="3.4.0"/>
 		<PackageReference Include="Ckode.ServiceLocator" Version="2.3.0"/>
 	</ItemGroup>
 
