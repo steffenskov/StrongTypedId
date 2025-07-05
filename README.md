@@ -21,8 +21,7 @@ clone the source instead if that suits your needs better.
 Specify your class like this:
 
 ```
-
-public class UserId: StrongTypedId<UserId, Guid>
+public partial class UserId: StrongTypedId<UserId, Guid>
 {
 	public UserId(Guid value) : base(value)
 	{
@@ -34,7 +33,9 @@ This specifies that the class `UserId` is in fact a `Guid` and can be used in pl
 And that's basically all there is to it, now you just use `UserId` in place of `Guid` where you're dealing with an User'
 s Id.
 
-You can omit the `JsonConverter` if you don't use json serialization.
+Note: The class is marked partial because a source generator is using this to apply a `JsonConverter` attribute to it.
+If you don't need a `JsonConverter` or you'd rather specify the attributes yourself (such as e.g. on a `file` visible
+class), feel free to omit the `partial` keyword.
 
 Furthermore there are a couple of base classes available to you:
 
@@ -68,7 +69,7 @@ package [StrongTypedId.EntityFrameworkCore](https://www.nuget.org/packages/Stron
 
 ## WebAPI
 
-This is supported through the use of the built-in `JsonConverter`.
+This is supported out-of-the-box.
 
 ## MVC
 

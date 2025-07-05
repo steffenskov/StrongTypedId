@@ -1,8 +1,5 @@
-using Newtonsoft.Json;
-
 namespace StrongTypedId.UnitTests.Model;
 
-[JsonConverter(typeof(NewtonSoftJsonConverter<AttributedEmailAddress, string>))]
 public partial class AttributedEmailAddress : StrongTypedValue<AttributedEmailAddress, string>
 {
 	public AttributedEmailAddress(string primitiveValue) : base(primitiveValue)

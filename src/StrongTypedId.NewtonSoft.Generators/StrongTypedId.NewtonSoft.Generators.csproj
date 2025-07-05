@@ -8,11 +8,11 @@
 
         <Authors>Steffen Skov</Authors>
         <Company>Steffen Skov</Company>
-        <Description>SourceGenerator extension used to automatically apply JsonConverter attributes.</Description>
+        <Description>SourceGenerator extension used to automatically apply NewtonSoft JsonConverter attributes.</Description>
         <Copyright>Steffen Skov 2025</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
-        <PackageTags>strongly-typed, Id</PackageTags>
+        <PackageTags>strongly-typed, Id, newtonsoft</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <LangVersion>12</LangVersion>
 

@@ -1,6 +1,7 @@
-# StrongTypedId.Generators
+# StrongTypedId.NewtonSoft.Generators
 
-This package simplifies the usage of StrongTypedIds by auto applying the JsonConverter attribute through source
+This package simplifies the usage of StrongTypedIds by auto applying the NewtonSoft JsonConverter attribute through
+source
 generators.
 Note: Requires all your `StrongTyped` classes to be partial, as you'll get build errors otherwise.
 

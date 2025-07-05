@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace StrongTypedId.UnitTests.Model;
 
 public partial class BoolValue : StrongTypedValue<BoolValue, bool>
@@ -9,7 +7,6 @@ public partial class BoolValue : StrongTypedValue<BoolValue, bool>
 	}
 }
 
-[JsonConverter(typeof(NewtonSoftJsonConverter<AttributedBoolValue, bool>))]
 public partial class AttributedBoolValue : StrongTypedValue<AttributedBoolValue, bool>
 {
 	public AttributedBoolValue(bool primitiveValue) : base(primitiveValue)
