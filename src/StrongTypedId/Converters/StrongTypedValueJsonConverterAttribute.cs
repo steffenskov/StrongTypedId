@@ -18,14 +18,6 @@ public class StrongTypedValueJsonConverterAttribute<TStrongTypedValue, TPrimitiv
 	}
 }
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Field | AttributeTargets.Property)]
-public class StrongTypedValueJsonConverterAttribute : JsonConverterAttribute
-{
-	public StrongTypedValueJsonConverterAttribute(Type type) : base(type)
-	{
-	}
-}
-
 public class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
 	where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
