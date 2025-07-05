@@ -1179,7 +1179,6 @@ file interface IMarker : IStrongTypedValue<string>
 {
 }
 
-[TypeConverter(typeof(StrongTypedValueTypeConverter<Marker, string>))]
 file class Marker : StrongTypedValue<Marker, string>, IMarker
 {
 	public Marker(string primitiveValue) : base(primitiveValue)
