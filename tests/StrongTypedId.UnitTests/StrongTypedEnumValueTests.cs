@@ -72,7 +72,7 @@ public class StrongTypedEnumValueTests
 	}
 }
 
-file class FakeStrongEnumValue : StrongTypedEnumValue<FakeStrongEnumValue, FakeEnum>
+public partial class FakeStrongEnumValue : StrongTypedEnumValue<FakeStrongEnumValue, FakeEnum>
 {
 	public FakeStrongEnumValue(FakeEnum value) : base(value)
 	{
@@ -83,7 +83,7 @@ file class FakeStrongEnumValue : StrongTypedEnumValue<FakeStrongEnumValue, FakeE
 	}
 }
 
-file enum FakeEnum
+public enum FakeEnum
 {
 	Value1 = 1,
 	Value2 = 2

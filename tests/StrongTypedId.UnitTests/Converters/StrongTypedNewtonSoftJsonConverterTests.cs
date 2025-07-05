@@ -1179,7 +1179,7 @@ file interface IMarker : IStrongTypedValue<string>
 {
 }
 
-file class Marker : StrongTypedValue<Marker, string>, IMarker
+public partial class Marker : StrongTypedValue<Marker, string>, IMarker
 {
 	public Marker(string primitiveValue) : base(primitiveValue)
 	{

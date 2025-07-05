@@ -30,4 +30,8 @@
         <ProjectReference Include="..\..\src\StrongTypedId.Swagger\StrongTypedId.Swagger.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\StrongTypedId.Generators\StrongTypedId.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    </ItemGroup>
+
 </Project>

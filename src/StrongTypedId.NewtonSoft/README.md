@@ -33,7 +33,7 @@ If you furthermore have types you'd prefer serialized as their underlying value,
 `Newtonsoft.Json.JsonConverter` attribute to the type:
 
 ```
-[StrongTypedIdJsonConverter<UserId, Guid>]
+
 
 [Newtonsoft.Json.JsonConverter(typeof(NewtonSoftJsonConverter<UserId, Guid>))] // This is the converter for NewtonSoft.
 
