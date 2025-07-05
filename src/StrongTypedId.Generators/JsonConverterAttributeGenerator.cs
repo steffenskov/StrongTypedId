@@ -51,9 +51,10 @@ public class StrongTypedValueJsonConverterGenerator : IIncrementalGenerator
 
 	private static void Execute(Compilation compilation, IEnumerable<ClassDeclarationSyntax?> classes, SourceProductionContext context)
 	{
+		var strongTypedIdSymbol = compilation.GetTypeByMetadataName("StrongTypedId.StrongTypedId`2");
 		var strongTypedValueSymbol = compilation.GetTypeByMetadataName("StrongTypedId.StrongTypedValue`2");
 
-		if (strongTypedValueSymbol == null)
+		if (strongTypedIdSymbol is null || strongTypedValueSymbol is null)
 		{
 			return;
 		}
@@ -67,14 +68,14 @@ public class StrongTypedValueJsonConverterGenerator : IIncrementalGenerator
 
 			var semanticModel = compilation.GetSemanticModel(candidateClass.SyntaxTree);
 			var classSymbol = semanticModel.GetDeclaredSymbol(candidateClass);
-
-			if (classSymbol == null || classSymbol.IsAbstract)
+			
+			if (classSymbol == null || classSymbol.IsAbstract || classSymbol.IsFileLocal)
 			{
 				continue;
 			}
-
+			
 			// Check if this class inherits from StrongTypedValue<TSelf, TPrimitiveValue> pattern
-			var strongTypedValueInfo = GetStrongTypedValueInfo(classSymbol, strongTypedValueSymbol);
+			var strongTypedValueInfo = GetStrongTypedValueInfo(classSymbol,strongTypedIdSymbol, strongTypedValueSymbol);
 			if (strongTypedValueInfo != null)
 			{
 				var source = GenerateJsonConverterAttribute(classSymbol, strongTypedValueInfo.Value);
@@ -83,15 +84,28 @@ public class StrongTypedValueJsonConverterGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static (INamedTypeSymbol TSelf, ITypeSymbol TPrimitiveValue)? GetStrongTypedValueInfo(
+	private static (INamedTypeSymbol TSelf, ITypeSymbol TPrimitiveValue, bool isId)? GetStrongTypedValueInfo(
 		INamedTypeSymbol classSymbol,
+		INamedTypeSymbol strongTypedIdSymbol,
 		INamedTypeSymbol strongTypedValueSymbol)
 	{
 		var baseType = classSymbol.BaseType;
 
 		while (baseType != null)
 		{
-			if (SymbolEqualityComparer.Default.Equals(baseType.OriginalDefinition, strongTypedValueSymbol))
+			var isStrongTyped = false;
+			var isId = false;
+			if (SymbolEqualityComparer.Default.Equals(baseType.OriginalDefinition, strongTypedIdSymbol))
+			{
+				isStrongTyped = true;
+				isId = true;
+			}
+			else if (SymbolEqualityComparer.Default.Equals(baseType.OriginalDefinition, strongTypedValueSymbol))
+			{
+				isStrongTyped = true;
+			}
+
+			if (isStrongTyped)
 			{
 				// Check if it follows the StrongTypedValue<TSelf, TPrimitiveValue> pattern
 				var typeArguments = baseType.TypeArguments;
@@ -103,7 +117,7 @@ public class StrongTypedValueJsonConverterGenerator : IIncrementalGenerator
 					// Verify TSelf matches the current class (the StrongTypedValue<TSelf, TPrimitiveValue> pattern)
 					if (SymbolEqualityComparer.Default.Equals(tSelf, classSymbol))
 					{
-						return (classSymbol, tPrimitiveValue);
+						return (classSymbol, tPrimitiveValue, isId);
 					}
 				}
 			}
@@ -114,7 +128,7 @@ public class StrongTypedValueJsonConverterGenerator : IIncrementalGenerator
 		return null;
 	}
 
-	private static string GenerateJsonConverterAttribute(INamedTypeSymbol classSymbol, (INamedTypeSymbol TSelf, ITypeSymbol TPrimitiveValue) info)
+	private static string GenerateJsonConverterAttribute(INamedTypeSymbol classSymbol, (INamedTypeSymbol TSelf, ITypeSymbol TPrimitiveValue, bool IsId) info)
 	{
 		var namespaceName = classSymbol.ContainingNamespace.ToDisplayString();
 		var className = classSymbol.Name;
@@ -137,7 +151,9 @@ public class StrongTypedValueJsonConverterGenerator : IIncrementalGenerator
 		// Generate the partial class with JsonConverter attribute
 		var indent = string.IsNullOrEmpty(namespaceName) || namespaceName == "<global namespace>" ? "" : "    ";
 
-		source.AppendLine($"{indent}[StrongTypedValueJsonConverter<{tSelfName}, {tPrimitiveValueName}>]");
+		var converterName = info.IsId ? "StrongTypedIdJsonConverter" : "StrongTypedValueJsonConverter";
+
+		source.AppendLine($"{indent}[{converterName}<{tSelfName}, {tPrimitiveValueName}>]");
 		source.AppendLine($"{indent}public partial class {className}");
 		source.AppendLine($"{indent}{{");
 		source.AppendLine($"{indent}}}");
@@ -149,8 +165,8 @@ public class StrongTypedValueJsonConverterGenerator : IIncrementalGenerator
 		}
 
 		File.AppendAllText("/tmp/debug.txt", source.ToString());
-		
-		
+
+
 		return source.ToString();
 	}
 }
