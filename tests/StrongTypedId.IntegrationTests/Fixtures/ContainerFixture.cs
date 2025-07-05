@@ -1,3 +1,4 @@
+using DotNet.Testcontainers.Builders;
 using StrongTypedId.MongoDB;
 using Testcontainers.MongoDb;
 
@@ -14,6 +15,8 @@ public class ContainerFixture : IAsyncLifetime
 			.WithImage("mongo:latest")
 			.WithUsername("mongo")
 			.WithPassword("secret")
+			.WithPortBinding(27017, 27017)
+			.WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(27017))
 			.Build();
 	}
 

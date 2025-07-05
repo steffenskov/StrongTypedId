@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 namespace StrongTypedId.UnitTests.Model;
 
-[TypeConverter(typeof(StrongTypedValueTypeConverter<UintId, uint>))]
 [StrongTypedIdJsonConverter<UintId, uint>]
 public class UintId : StrongTypedId<UintId, uint>
 {
@@ -11,7 +10,6 @@ public class UintId : StrongTypedId<UintId, uint>
 	}
 }
 
-[TypeConverter(typeof(StrongTypedValueTypeConverter<AttributedUintId, uint>))]
 [StrongTypedIdJsonConverter<AttributedUintId, uint>]
 [JsonConverter(typeof(NewtonSoftJsonConverter<AttributedUintId, uint>))]
 public class AttributedUintId : StrongTypedId<AttributedUintId, uint>
