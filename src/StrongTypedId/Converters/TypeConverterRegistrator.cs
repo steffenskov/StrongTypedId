@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace StrongTypedId.Converters;
@@ -32,26 +31,8 @@ static internal class TypeConverterRegistrator
 
 	private static void RegisterTypeConverter(Type type)
 	{
-		var strongTypedValueType = GetStrongTypedValueType(type);
-		var arguments = strongTypedValueType.GetGenericArguments();
-		var tself = arguments[0];
-		var tprimitive = arguments[1];
-		var converterType = typeof(StrongTypedValueTypeConverter<,>).MakeGenericType(tself, tprimitive);
-		TypeDescriptor.AddAttributes(tself, new TypeConverterAttribute(converterType));
-	}
-
-	private static Type GetStrongTypedValueType(Type type)
-	{
-		if (type is { IsAbstract: true, IsGenericType: true } && type.GetGenericTypeDefinition() == typeof(StrongTypedValue<,>))
-		{
-			return type;
-		}
-
-		if (type.BaseType is not null)
-		{
-			return GetStrongTypedValueType(type.BaseType);
-		}
-
-		throw new UnreachableException($"Type {type.Name} does not inherit StrongTypedValue<,> but DOES implement IStrongTypedValue, this should not happen.");
+		var (tSelf, tPrimitive) = type.GetStrongTypedValueArguments();
+		var converterType = typeof(StrongTypedValueTypeConverter<,>).MakeGenericType(tSelf, tPrimitive);
+		TypeDescriptor.AddAttributes(tSelf, new TypeConverterAttribute(converterType));
 	}
 }

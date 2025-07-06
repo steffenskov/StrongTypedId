@@ -8,8 +8,8 @@ namespace StrongTypedId.Converters;
 ///     [StrongTypedValueJsonConverter&lt;EmailAddress, string&gt;]
 ///     public class EmailAddress: StrongTypedValue&lt;EmailAddress, string&gt;
 /// </Summary>
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Field | AttributeTargets.Property)]
-public class StrongTypedValueJsonConverterAttribute<TStrongTypedValue, TPrimitiveValue> : JsonConverterAttribute
+[AttributeUsage(AttributeTargets.Class)]
+internal class StrongTypedValueJsonConverterAttribute<TStrongTypedValue, TPrimitiveValue> : JsonConverterAttribute
 	where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 {
@@ -18,8 +18,7 @@ public class StrongTypedValueJsonConverterAttribute<TStrongTypedValue, TPrimitiv
 	}
 }
 
-
-public class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
+internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
 	where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 {

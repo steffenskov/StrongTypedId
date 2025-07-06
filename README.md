@@ -21,7 +21,7 @@ clone the source instead if that suits your needs better.
 Specify your class like this:
 
 ```
-[StrongTypedIdJsonConverter<UserId, Guid>]
+[StrongTypedValueJsonConverterFactory]
 public class UserId: StrongTypedId<UserId, Guid>
 {
 	public UserId(Guid value) : base(value)
