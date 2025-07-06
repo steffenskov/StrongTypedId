@@ -3,21 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace StrongTypedId.Converters;
 
-/// <Summary>
-///     JsonConverter for System.Text.Json. It serializes purely the underlying value. Use it like this:
-///     [StrongTypedValueJsonConverter&lt;EmailAddress, string&gt;]
-///     public class EmailAddress: StrongTypedValue&lt;EmailAddress, string&gt;
-/// </Summary>
-[AttributeUsage(AttributeTargets.Class)]
-internal class StrongTypedValueJsonConverterAttribute<TStrongTypedValue, TPrimitiveValue> : JsonConverterAttribute
-	where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
-	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
-{
-	public StrongTypedValueJsonConverterAttribute() : base(typeof(StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue>))
-	{
-	}
-}
-
 internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
 	where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
@@ -48,6 +33,7 @@ internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue>
 			{ } t when t == typeof(byte) => reader.GetByte(),
 			{ } t when t == typeof(sbyte) => reader.GetSByte(),
 			{ } t when t == typeof(string) => reader.GetString()!,
+			{ } t when t == typeof(DateTime) => reader.GetDateTime(),
 			_ => throw new NotSupportedException()
 		};
 	}
@@ -77,6 +63,7 @@ internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue>
 			byte val => () => writer.WriteNumberValue(val),
 			sbyte val => () => writer.WriteNumberValue(val),
 			string val => () => writer.WriteStringValue(val),
+			DateTime val => () => writer.WriteStringValue(val),
 			_ => throw new NotSupportedException()
 		};
 	}

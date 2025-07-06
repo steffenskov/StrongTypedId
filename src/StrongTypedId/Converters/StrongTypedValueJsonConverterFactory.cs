@@ -5,15 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace StrongTypedId.Converters;
 
-[AttributeUsage(AttributeTargets.Class)]
-public class StrongTypedValueJsonConverterFactoryAttribute : JsonConverterAttribute
-{
-	public StrongTypedValueJsonConverterFactoryAttribute() : base(typeof(StrongTypedValueJsonConverterFactory))
-	{
-	}
-}
-
-public class StrongTypedValueJsonConverterFactory : JsonConverterFactory
+internal class StrongTypedValueJsonConverterFactory : JsonConverterFactory
 {
 	// Small cache for converter instances - much more memory efficient than delegates
 	private static readonly ConcurrentDictionary<Type, JsonConverter> _converterCache = new();
