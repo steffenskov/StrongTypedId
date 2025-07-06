@@ -11,7 +11,7 @@ public class AttributedIntId : StrongTypedId<AttributedIntId, int>
 	}
 }
 
-[StrongTypedValueJsonConverter(typeof(StrongTypedValueJsonConverter<IntId, int>))]
+[StrongTypedIdJsonConverter<IntId, int>]
 public class IntId : StrongTypedId<IntId, int>
 {
 	public IntId(int primitiveValue) : base(primitiveValue)
