@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace StrongTypedId.UnitTests.Model;
 
-[StrongTypedIdJsonConverter<UlongId, ulong>]
+[StrongTypedValueJsonConverterFactory]
 public class UlongId : StrongTypedId<UlongId, ulong>
 {
 	public UlongId(ulong primitiveValue) : base(primitiveValue)
@@ -10,7 +10,7 @@ public class UlongId : StrongTypedId<UlongId, ulong>
 	}
 }
 
-[StrongTypedIdJsonConverter<AttributedUlongId, ulong>]
+[StrongTypedValueJsonConverterFactory]
 [JsonConverter(typeof(NewtonSoftJsonConverter<AttributedUlongId, ulong>))]
 public class AttributedUlongId : StrongTypedId<AttributedUlongId, ulong>
 {

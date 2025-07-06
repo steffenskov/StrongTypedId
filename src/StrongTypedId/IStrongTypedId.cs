@@ -1,5 +1,9 @@
 namespace StrongTypedId;
 
-public interface IStrongTypedId<out TPrimitive> : IStrongTypedValue<TPrimitive>
+public interface IStrongTypedId<out TPrimitive> : IStrongTypedValue<TPrimitive>, IStrongTypedId
+{
+}
+
+public interface IStrongTypedId
 {
 }

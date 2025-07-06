@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace StrongTypedId.UnitTests.Model;
 
-[StrongTypedValueJsonConverter<DoubleValue, double>]
+[StrongTypedValueJsonConverterFactory]
 public class DoubleValue : StrongTypedValue<DoubleValue, double>
 {
 	public DoubleValue(double primitiveValue) : base(primitiveValue)
@@ -10,7 +10,7 @@ public class DoubleValue : StrongTypedValue<DoubleValue, double>
 	}
 }
 
-[StrongTypedValueJsonConverter<AttributedDoubleValue, double>]
+[StrongTypedValueJsonConverterFactory]
 [JsonConverter(typeof(NewtonSoftJsonConverter<AttributedDoubleValue, double>))]
 public class AttributedDoubleValue : StrongTypedValue<AttributedDoubleValue, double>
 {
