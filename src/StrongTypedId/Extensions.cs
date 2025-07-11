@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using StrongTypedId;
 
 public static class Extensions
@@ -48,10 +47,7 @@ public static class Extensions
 
 		return type.GetInterface(nameof(IStrongTypedGuid)) is not null;
 	}
-}
 
-static internal class InternalExtensions
-{
 	/// <summary>
 	///     Gets the StrongTypedValue type specification for a given type, should not be called unless IsStrongTypedValue has
 	///     been checked first.
@@ -68,9 +64,13 @@ static internal class InternalExtensions
 			return GetStrongTypedValueType(type.BaseType);
 		}
 
-		throw new UnreachableException($"Type {type.Name} does not inherit StrongTypedValue<,> but DOES implement IStrongTypedValue, this should not happen.");
+		throw new InvalidOperationException($"Type {type.Name} does not inherit StrongTypedValue<,>");
 	}
 
+	/// <summary>
+	///     Gets the generic type arguments to a StrongTypedValue type, should not be called unless IsStrongTypedValue has
+	///     been checked first.
+	/// </summary>
 	public static (Type TSelf, Type TPrimitive) GetStrongTypedValueArguments(this Type type)
 	{
 		var strongTypedValueType = type.GetStrongTypedValueType();

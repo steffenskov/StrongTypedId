@@ -22,7 +22,6 @@ public abstract class StrongTypedValue<TSelf, TPrimitiveValue> : StrongTypedValu
 {
 	private static readonly DynamicActivator<TSelf, TPrimitiveValue> _dynamicActivator = new();
 
-
 	protected StrongTypedValue(TPrimitiveValue primitiveValue)
 	{
 		PrimitiveValue = primitiveValue;
