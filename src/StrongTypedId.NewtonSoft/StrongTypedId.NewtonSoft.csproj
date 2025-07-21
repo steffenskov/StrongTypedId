@@ -1,27 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
-		<Authors>Steffen Skov</Authors>
-		<Company>Steffen Skov</Company>
-		<Description>NewtonSoft.Json JsonConverter for the StrongTypedId library</Description>
-		<Copyright>Steffen Skov 2022</Copyright>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
-		<PackageTags>strongly-typed, Id, newtonsoft</PackageTags>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-	</PropertyGroup>
-	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\"/>
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
-	</ItemGroup>
+        <Authors>Steffen Skov</Authors>
+        <Company>Steffen Skov</Company>
+        <Description>NewtonSoft.Json JsonConverter for the StrongTypedId library</Description>
+        <Copyright>Steffen Skov 2022</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
+        <PackageTags>strongly-typed, Id, newtonsoft</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <NoWarn>$(NoWarn);NU1504;NU1008</NoWarn>
+        
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
+    </ItemGroup>
 </Project>

@@ -7,27 +7,28 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <NoWarn>$(NoWarn);NU1504;NU1008</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.3" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-        <PackageReference Include="NewtonSoft.Json" Version="13.0.3" />
-        <PackageReference Include="xunit.v3" Version="3.0.0" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.3">
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="NewtonSoft.Json"/>
+        <PackageReference Include="xunit.v3"/>
+        <PackageReference Include="xunit.runner.visualstudio">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="6.0.4">
+        <PackageReference Include="coverlet.collector">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\StrongTypedId\StrongTypedId.csproj" />
-        <ProjectReference Include="..\..\src\StrongTypedId.NewtonSoft\StrongTypedId.NewtonSoft.csproj" />
-        <ProjectReference Include="..\..\src\StrongTypedId.Swagger\StrongTypedId.Swagger.csproj" />
+        <ProjectReference Include="..\..\src\StrongTypedId\StrongTypedId.csproj"/>
+        <ProjectReference Include="..\..\src\StrongTypedId.NewtonSoft\StrongTypedId.NewtonSoft.csproj"/>
+        <ProjectReference Include="..\..\src\StrongTypedId.Swagger\StrongTypedId.Swagger.csproj"/>
     </ItemGroup>
 
 </Project>
