@@ -10,21 +10,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="coverlet.collector" Version="6.0.4"/>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7"/>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
-		<PackageReference Include="Testcontainers.MongoDb" Version="4.6.0"/>
-		<PackageReference Include="xunit.v3" Version="2.0.3"/>
-		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.1"/>
+		<PackageReference Include="coverlet.collector" Version="6.0.4" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+		<PackageReference Include="Testcontainers.MongoDb" Version="4.6.0" />
+		<PackageReference Include="xunit.v3" Version="3.0.0" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="Xunit"/>
+		<Using Include="Xunit" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\StrongTypedId.MongoDB\StrongTypedId.MongoDB.csproj"/>
-		<ProjectReference Include="..\..\src\StrongTypedId\StrongTypedId.csproj"/>
+		<ProjectReference Include="..\..\src\StrongTypedId.MongoDB\StrongTypedId.MongoDB.csproj" />
+		<ProjectReference Include="..\..\src\StrongTypedId\StrongTypedId.csproj" />
 	</ItemGroup>
 
 </Project>
