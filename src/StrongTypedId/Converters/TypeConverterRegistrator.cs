@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace StrongTypedId.Converters;
@@ -25,8 +26,7 @@ static internal class TypeConverterRegistrator
 
 	private static IEnumerable<Type> GetStrongTypedIdTypes()
 	{
-		var types = AppDomain.CurrentDomain
-			.GetAssemblies()
+		var types = LoadAssemblies()
 			.SelectMany(assembly =>
 			{
 				try
@@ -39,5 +39,35 @@ static internal class TypeConverterRegistrator
 				}
 			});
 		return types.Where(type => type is { IsClass: true, IsAbstract: false, IsGenericType: false } && type.IsStrongTypedValue());
+	}
+
+	private static IEnumerable<Assembly> LoadAssemblies()
+	{
+		var dir = AppDomain.CurrentDomain.BaseDirectory;
+		var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+		foreach (var assembly in assemblies)
+		{
+			yield return assembly;
+		}
+
+		var assemblyFileNames = assemblies.Select(x => x.Location).ToHashSet();
+		foreach (var filename in new DirectoryInfo(dir).GetFiles("*.dll").Select(file => file.FullName))
+		{
+			if (!assemblyFileNames.Contains(filename))
+			{
+				Assembly assembly;
+				try
+				{
+					assembly = Assembly.LoadFrom(filename);
+				}
+				catch
+				{
+					// Empty by design, obfuscated assemblies will trigger this
+					continue;
+				}
+
+				yield return assembly;
+			}
+		}
 	}
 }

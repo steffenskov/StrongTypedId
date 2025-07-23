@@ -1,4 +1,6 @@
 using Newtonsoft.Json;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+// The above is necessary to avoid breaking tests
 
 namespace StrongTypedId.UnitTests.Converters;
 
@@ -12,6 +14,42 @@ public class StrongTypedNewtonSoftJsonConverterTests
 		{
 			Converters = [new StrongTypedNewtonSoftJsonConverter()]
 		};
+	}
+
+	[Fact]
+	public void Serialize_UsedAsDictionaryKey_Serializes()
+	{
+		// Arrange
+		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
+		{
+			{ GuidId.New(), new[] { "Hello", "world" } }
+		});
+
+		// Act
+		var json = JsonConvert.SerializeObject(aggregate);
+
+		// Assert
+		Assert.NotNull(json);
+	}
+
+	[Fact]
+	public void Deserialize_UsedAsDictionaryKey_Deserializes()
+	{
+		// Arrange
+		var id = GuidId.New();
+		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
+		{
+			{ id, new[] { "Hello", "world" } }
+		});
+		var json = JsonConvert.SerializeObject(aggregate);
+
+		// Act
+		var deserialized = JsonConvert.DeserializeObject<BasicAggregateWithDictionary>(json);
+
+		// Assert
+		Assert.NotNull(deserialized);
+		Assert.Contains(id, deserialized.Dictionary.Keys);
+		Assert.Equal(2, deserialized.Dictionary[id].Length);
 	}
 
 	#region Interface
@@ -1184,4 +1222,18 @@ file class Marker : StrongTypedValue<Marker, string>, IMarker
 	public Marker(string primitiveValue) : base(primitiveValue)
 	{
 	}
+}
+
+file class BasicAggregateWithDictionary
+{
+	public BasicAggregateWithDictionary()
+	{
+	}
+
+	public BasicAggregateWithDictionary(Dictionary<GuidId, string[]> value)
+	{
+		Dictionary = value;
+	}
+
+	public Dictionary<GuidId, string[]> Dictionary { get; set;  } = default!;
 }
