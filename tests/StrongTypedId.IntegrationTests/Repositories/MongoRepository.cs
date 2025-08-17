@@ -2,13 +2,19 @@ using MongoDB.Driver;
 
 namespace StrongTypedId.IntegrationTests.Repositories;
 
-internal class Repository<TAggregate, TAggregateId> : IRepository<TAggregate, TAggregateId>
+public interface IMongoRepository<TAggregate, in TAggregateId>
+{
+	Task InsertAsync(TAggregate aggregate);
+	Task<TAggregate?> GetAsync(TAggregateId aggregateId);
+}
+
+internal class MongoRepository<TAggregate, TAggregateId> : IMongoRepository<TAggregate, TAggregateId>
 	where TAggregate : IAggregate<TAggregateId>
 	where TAggregateId : StrongTypedGuid<TAggregateId>
 {
 	private readonly IMongoCollection<TAggregate> _collection;
 
-	public Repository(IMongoDatabase database, string collectionName)
+	public MongoRepository(IMongoDatabase database, string collectionName)
 	{
 		_collection = database.GetCollection<TAggregate>(collectionName);
 	}

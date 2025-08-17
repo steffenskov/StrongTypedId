@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrongTypedId.IntegrationTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrongTypedId.MongoDB", "src\StrongTypedId.MongoDB\StrongTypedId.MongoDB.csproj", "{290D6B9A-395E-4FC7-9726-3CBF374012D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrongTypedId.LiteDB", "src\StrongTypedId.LiteDB\StrongTypedId.LiteDB.csproj", "{EB03850B-22DB-4B5B-915C-EBB27F000CAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{290D6B9A-395E-4FC7-9726-3CBF374012D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{290D6B9A-395E-4FC7-9726-3CBF374012D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{290D6B9A-395E-4FC7-9726-3CBF374012D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB03850B-22DB-4B5B-915C-EBB27F000CAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB03850B-22DB-4B5B-915C-EBB27F000CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB03850B-22DB-4B5B-915C-EBB27F000CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB03850B-22DB-4B5B-915C-EBB27F000CAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{09CEEDCD-466C-4253-9BE4-C67564B0CCC0} = {24F40718-A883-432A-934A-BF4C5D85874A}
 		{7512B5C0-9E80-4CA2-88E7-E3FF16BB849A} = {15564B9C-0064-452C-BE46-A50F208A84B0}
 		{290D6B9A-395E-4FC7-9726-3CBF374012D7} = {24F40718-A883-432A-934A-BF4C5D85874A}
+		{EB03850B-22DB-4B5B-915C-EBB27F000CAA} = {24F40718-A883-432A-934A-BF4C5D85874A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8945A533-9692-46A7-993C-56A08358AF51}

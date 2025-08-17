@@ -1,26 +1,26 @@
 namespace StrongTypedId.IntegrationTests;
 
 [Collection(nameof(ConfigurationCollection))]
-public class MongoDbSerializationTests : BaseTests
+public class LiteDBSerializationTests : BaseTests
 {
-	private readonly IMongoRepository<FakeAggregate, FakeId> _repository;
+	private readonly ILiteDBRepository<FakeAggregate, FakeId> _repository;
 
-	public MongoDbSerializationTests(ContainerFixture fixture) : base(fixture)
+	public LiteDBSerializationTests(ContainerFixture fixture) : base(fixture)
 	{
-		_repository = Provider.GetRequiredService<IMongoRepository<FakeAggregate, FakeId>>();
+		_repository = Provider.GetRequiredService<ILiteDBRepository<FakeAggregate, FakeId>>();
 	}
 
 	[Fact]
-	public async Task MongoSerialization_Guid_HandlesSerialization()
+	public void LiteDBSerialization_Guid_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New());
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.Equal(fake, fetched);
 	}
@@ -28,7 +28,7 @@ public class MongoDbSerializationTests : BaseTests
 	[Theory]
 	[InlineData(false)]
 	[InlineData(true)]
-	public async Task MongoSerialization_BoolId_HandlesSerialization(bool primitive)
+	public void LiteDBSerialization_BoolId_HandlesSerialization(bool primitive)
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -37,10 +37,10 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(primitive, fetched.BoolId.PrimitiveValue);
@@ -49,7 +49,7 @@ public class MongoDbSerializationTests : BaseTests
 	[Theory]
 	[InlineData(false)]
 	[InlineData(true)]
-	public async Task MongoSerialization_BoolValue_HandlesSerialization(bool primitive)
+	public void LiteDBSerialization_BoolValue_HandlesSerialization(bool primitive)
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -58,17 +58,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(primitive, fetched.BoolValue.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_DecimalId_HandlesSerialization()
+	public void LiteDBSerialization_DecimalId_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -77,17 +77,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.DecimalId.PrimitiveValue, fetched.DecimalId.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_DecimalValue_HandlesSerialization()
+	public void LiteDBSerialization_DecimalValue_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -96,17 +96,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.DecimalValue.PrimitiveValue, fetched.DecimalValue.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_DoubleId_HandlesSerialization()
+	public void LiteDBSerialization_DoubleId_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -115,17 +115,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.DoubleId.PrimitiveValue, fetched.DoubleId.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_DoubleValue_HandlesSerialization()
+	public void LiteDBSerialization_DoubleValue_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -134,17 +134,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.DoubleValue.PrimitiveValue, fetched.DoubleValue.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_EnumValue_HandlesSerialization()
+	public void LiteDBSerialization_EnumValue_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -153,17 +153,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(FakeEnum.Value1, fetched.EnumValue.PrimitiveEnumValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_GuidId_HandlesSerialization()
+	public void LiteDBSerialization_GuidId_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -172,17 +172,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.GuidId.PrimitiveValue, fetched.GuidId.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_GuidValue_HandlesSerialization()
+	public void LiteDBSerialization_GuidValue_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -191,17 +191,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.GuidValue.PrimitiveValue, fetched.GuidValue.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_IntId_HandlesSerialization()
+	public void LiteDBSerialization_IntId_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -210,17 +210,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.IntId.PrimitiveValue, fetched.IntId.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_IntValue_HandlesSerialization()
+	public void LiteDBSerialization_IntValue_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -229,17 +229,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.IntValue.PrimitiveValue, fetched.IntValue.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_LongId_HandlesSerialization()
+	public void LiteDBSerialization_LongId_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -248,17 +248,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.LongId.PrimitiveValue, fetched.LongId.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_LongValue_HandlesSerialization()
+	public void LiteDBSerialization_LongValue_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -267,17 +267,17 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.LongValue.PrimitiveValue, fetched.LongValue.PrimitiveValue);
 	}
 
 	[Fact]
-	public async Task MongoSerialization_StringValue_HandlesSerialization()
+	public void LiteDBSerialization_StringValue_HandlesSerialization()
 	{
 		// Arrange
 		var fake = new FakeAggregate(FakeId.New())
@@ -286,10 +286,10 @@ public class MongoDbSerializationTests : BaseTests
 		};
 
 		// Act
-		await _repository.InsertAsync(fake);
+		_repository.Insert(fake);
 
 		// Assert
-		var fetched = await _repository.GetAsync(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
 		Assert.NotNull(fetched);
 		Assert.Equal(fake.StringValue.PrimitiveValue, fetched.StringValue.PrimitiveValue);
