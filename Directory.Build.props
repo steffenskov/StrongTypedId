@@ -1,7 +1,7 @@
 <!-- Directory.Build.props -->
 <Project>
     <PropertyGroup>
-        <Version>2.3.3</Version>
+        <Version>2.4.0</Version>
     </PropertyGroup>
 </Project>
 

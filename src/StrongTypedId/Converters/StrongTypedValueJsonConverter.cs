@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -16,24 +17,55 @@ internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue>
 
 	private static object GetValue(Utf8JsonReader reader)
 	{
-		return typeof(TPrimitiveValue) switch
+		var primitiveType = typeof(TPrimitiveValue);
+		if (reader.TokenType == JsonTokenType.String && primitiveType != typeof(string) && primitiveType != typeof(char) &&
+		    primitiveType != typeof(DateTime)) // Attempt to Parse instead, if applicable
 		{
-			{ } t when t == typeof(bool) => reader.GetBoolean(),
-			{ } t when t == typeof(char) => reader.GetString()![0],
-			{ } t when t == typeof(Guid) => reader.GetGuid(),
-			{ } t when t == typeof(short) => reader.GetInt16(),
-			{ } t when t == typeof(int) => reader.GetInt32(),
-			{ } t when t == typeof(long) => reader.GetInt64(),
-			{ } t when t == typeof(ushort) => reader.GetUInt16(),
-			{ } t when t == typeof(uint) => reader.GetUInt32(),
-			{ } t when t == typeof(ulong) => reader.GetUInt64(),
-			{ } t when t == typeof(float) => reader.GetSingle(),
-			{ } t when t == typeof(double) => reader.GetDouble(),
-			{ } t when t == typeof(decimal) => reader.GetDecimal(),
-			{ } t when t == typeof(byte) => reader.GetByte(),
-			{ } t when t == typeof(sbyte) => reader.GetSByte(),
-			{ } t when t == typeof(string) => reader.GetString()!,
-			{ } t when t == typeof(DateTime) => reader.GetDateTime(),
+			return ParseValue(reader, primitiveType);
+		}
+
+		return primitiveType switch
+		{
+			not null when primitiveType == typeof(bool) => reader.GetBoolean(),
+			not null when primitiveType == typeof(char) => reader.GetString() is { Length: 1 } s
+				? s[0]
+				: throw new JsonException($"Expected single-character string for char at index {reader.TokenStartIndex}"),
+			not null when primitiveType == typeof(Guid) => reader.GetGuid(),
+			not null when primitiveType == typeof(short) => reader.GetInt16(),
+			not null when primitiveType == typeof(int) => reader.GetInt32(),
+			not null when primitiveType == typeof(long) => reader.GetInt64(),
+			not null when primitiveType == typeof(ushort) => reader.GetUInt16(),
+			not null when primitiveType == typeof(uint) => reader.GetUInt32(),
+			not null when primitiveType == typeof(ulong) => reader.GetUInt64(),
+			not null when primitiveType == typeof(float) => reader.GetSingle(),
+			not null when primitiveType == typeof(double) => reader.GetDouble(),
+			not null when primitiveType == typeof(decimal) => reader.GetDecimal(),
+			not null when primitiveType == typeof(byte) => reader.GetByte(),
+			not null when primitiveType == typeof(sbyte) => reader.GetSByte(),
+			not null when primitiveType == typeof(string) => reader.GetString()!,
+			not null when primitiveType == typeof(DateTime) => reader.GetDateTime(),
+			_ => throw new NotSupportedException()
+		};
+	}
+
+	private static object ParseValue(Utf8JsonReader reader, Type primitiveType)
+	{
+		var value = reader.GetString() ?? throw new JsonException($"Failed to deserialize null value to type {primitiveType.Name} at index {reader.TokenStartIndex}");
+		return primitiveType switch
+		{
+			not null when primitiveType == typeof(bool) => bool.Parse(value),
+			not null when primitiveType == typeof(Guid) => Guid.Parse(value),
+			not null when primitiveType == typeof(short) => short.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(int) => int.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(long) => long.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(ushort) => ushort.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(uint) => uint.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(ulong) => ulong.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(float) => float.Parse(value, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(double) => double.Parse(value, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(decimal) => decimal.Parse(value, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(byte) => byte.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
+			not null when primitiveType == typeof(sbyte) => sbyte.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture),
 			_ => throw new NotSupportedException()
 		};
 	}
