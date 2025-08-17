@@ -271,15 +271,16 @@ public class JsonConverterTests
 	{
 		// Arrange
 		var dateValue = DateTime.Now;
-		var json = JsonSerializer.Serialize(dateValue.ToString(CultureInfo.InvariantCulture));
+		var json = JsonSerializer.Serialize(dateValue.ToString("yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture));
 
 		// Act
 		var strongId = JsonSerializer.Deserialize<DateValue>(json);
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(dateValue.AddTicks(-(dateValue.Ticks % TimeSpan.TicksPerSecond)),
-			strongId.PrimitiveValue); // Strip out time information less than second, as that won't be included in .ToString() and thus the equal would fail
+
+		// Compare with second precision since that's what the format preserves
+		Assert.Equal(dateValue.AddTicks(-(dateValue.Ticks % TimeSpan.TicksPerSecond)), strongId.PrimitiveValue);
 	}
 
 	[Fact]
