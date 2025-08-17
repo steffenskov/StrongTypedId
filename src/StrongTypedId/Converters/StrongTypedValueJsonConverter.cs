@@ -16,7 +16,31 @@ internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue>
 
 	private static object GetValue(Utf8JsonReader reader)
 	{
-		return typeof(TPrimitiveValue) switch
+		var primitiveType = typeof(TPrimitiveValue);
+		if (reader.TokenType == JsonTokenType.String && primitiveType != typeof(string) && primitiveType != typeof(char)) // Attempt to Parse instead, if applicable
+		{
+			var value = reader.GetString() ?? throw new JsonException($"Failed to deserialize null value to type {primitiveType.Name} at index {reader.TokenStartIndex}");
+			return primitiveType switch
+			{
+				{ } t when t == typeof(bool) => bool.Parse(value),
+				{ } t when t == typeof(Guid) => Guid.Parse(value),
+				{ } t when t == typeof(short) => short.Parse(value),
+				{ } t when t == typeof(int) => int.Parse(value),
+				{ } t when t == typeof(long) => long.Parse(value),
+				{ } t when t == typeof(ushort) => ushort.Parse(value),
+				{ } t when t == typeof(uint) => uint.Parse(value),
+				{ } t when t == typeof(ulong) => ulong.Parse(value),
+				{ } t when t == typeof(float) => float.Parse(value),
+				{ } t when t == typeof(double) => double.Parse(value),
+				{ } t when t == typeof(decimal) => decimal.Parse(value),
+				{ } t when t == typeof(byte) => byte.Parse(value),
+				{ } t when t == typeof(sbyte) => sbyte.Parse(value),
+				{ } t when t == typeof(DateTime) => DateTime.Parse(value),
+				_ => throw new NotSupportedException()
+			};
+		}
+
+		return primitiveType switch
 		{
 			{ } t when t == typeof(bool) => reader.GetBoolean(),
 			{ } t when t == typeof(char) => reader.GetString()![0],
