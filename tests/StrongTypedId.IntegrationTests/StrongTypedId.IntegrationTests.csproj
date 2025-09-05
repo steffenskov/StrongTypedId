@@ -24,6 +24,8 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="LiteDB"/>
+        
     </ItemGroup>
 
     <ItemGroup>
@@ -31,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src\StrongTypedId.LiteDB\StrongTypedId.LiteDB.csproj"/>
         <ProjectReference Include="..\..\src\StrongTypedId.MongoDB\StrongTypedId.MongoDB.csproj"/>
         <ProjectReference Include="..\..\src\StrongTypedId\StrongTypedId.csproj"/>
     </ItemGroup>
