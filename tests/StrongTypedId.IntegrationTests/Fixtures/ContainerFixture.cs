@@ -16,7 +16,7 @@ public class ContainerFixture : IAsyncLifetime
 			.WithUsername("mongo")
 			.WithPassword("secret")
 			.WithPortBinding(27017, 27017)
-			.WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(27017))
+			.WithWaitStrategy(Wait.ForUnixContainer().UntilExternalTcpPortIsAvailable(27017))
 			.Build();
 	}
 
