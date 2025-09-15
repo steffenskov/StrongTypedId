@@ -32,7 +32,6 @@ public class LiteDBRepository<TAggregate, TAggregateId> : ILiteDBRepository<TAgg
 
 	public TAggregate? GetSingle(TAggregateId aggregateId)
 	{
-		return _collection.FindAll().FirstOrDefault(e => e.Id == aggregateId);
-		//return _collection.FindById(aggregateId.PrimitiveValue);
+		return _collection.FindById(aggregateId.PrimitiveValue);
 	}
 }

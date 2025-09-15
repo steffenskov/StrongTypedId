@@ -3,11 +3,13 @@ namespace StrongTypedId.IntegrationTests;
 [Collection(nameof(ConfigurationCollection))]
 public class LiteDBSerializationTests : BaseTests
 {
+	private readonly object _lock;
 	private readonly ILiteDBRepository<FakeAggregate, FakeId> _repository;
 
 	public LiteDBSerializationTests(ContainerFixture fixture) : base(fixture)
 	{
 		_repository = Provider.GetRequiredService<ILiteDBRepository<FakeAggregate, FakeId>>();
+		_lock = new object();
 	}
 
 	[Fact]
@@ -70,39 +72,45 @@ public class LiteDBSerializationTests : BaseTests
 	[Fact]
 	public void LiteDBSerialization_DecimalId_HandlesSerialization()
 	{
-		// Arrange
-		var fake = new FakeAggregate(FakeId.New())
+		lock (_lock)
 		{
-			DecimalId = new StrongDecimalId((decimal)Random.Shared.NextDouble())
-		};
+			// Arrange
+			var fake = new FakeAggregate(FakeId.New())
+			{
+				DecimalId = new StrongDecimalId((decimal)Random.Shared.NextDouble())
+			};
 
-		// Act
-		_repository.Insert(fake);
+			// Act
+			_repository.Insert(fake);
 
-		// Assert
-		var fetched = _repository.GetSingle(fake.Id);
+			// Assert
+			var fetched = _repository.GetSingle(fake.Id);
 
-		Assert.NotNull(fetched);
-		Assert.Equal(fake.DecimalId.PrimitiveValue, fetched.DecimalId.PrimitiveValue);
+			Assert.NotNull(fetched);
+			Assert.Equal(fake.DecimalId.PrimitiveValue, fetched.DecimalId.PrimitiveValue);
+		}
 	}
 
 	[Fact]
 	public void LiteDBSerialization_DecimalValue_HandlesSerialization()
 	{
-		// Arrange
-		var fake = new FakeAggregate(FakeId.New())
+		lock (_lock)
 		{
-			DecimalValue = new StrongDecimalValue((decimal)Random.Shared.NextDouble())
-		};
+			// Arrange
+			var fake = new FakeAggregate(FakeId.New())
+			{
+				DecimalValue = new StrongDecimalValue((decimal)Random.Shared.NextDouble())
+			};
 
-		// Act
-		_repository.Insert(fake);
+			// Act
+			_repository.Insert(fake);
 
-		// Assert
-		var fetched = _repository.GetSingle(fake.Id);
+			// Assert
+			var fetched = _repository.GetSingle(fake.Id);
 
-		Assert.NotNull(fetched);
-		Assert.Equal(fake.DecimalValue.PrimitiveValue, fetched.DecimalValue.PrimitiveValue);
+			Assert.NotNull(fetched);
+			Assert.Equal(fake.DecimalValue.PrimitiveValue, fetched.DecimalValue.PrimitiveValue);
+		}
 	}
 
 	[Fact]
