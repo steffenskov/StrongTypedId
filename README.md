@@ -67,7 +67,7 @@ This is supported through the package [StrongTypedId.EntityFrameworkCore](https:
 
 ## LiteDB
 
-This is supported through the package [StrongTypedId.MongoDB](https://www.nuget.org/packages/StrongTypedId.LiteDB).
+This is supported through the package [StrongTypedId.LiteDB](https://www.nuget.org/packages/StrongTypedId.LiteDB).
 
 ## MongoDB
 

@@ -213,11 +213,10 @@ public class LiteDBSerializationTests : BaseTests
 		_repository.Insert(fake);
 
 		// Assert
-		//	var fetched = _repository.GetSingle(fake.Id);
-		var all = _repository.GetAll().ToList();
+		var fetched = _repository.GetSingle(fake.Id);
 
-		//Assert.NotNull(fetched);
-		//Assert.Equal(fake.IntId.PrimitiveValue, fetched.IntId.PrimitiveValue);
+		Assert.NotNull(fetched);
+		Assert.Equal(fake.IntId.PrimitiveValue, fetched.IntId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -233,10 +232,10 @@ public class LiteDBSerializationTests : BaseTests
 		_repository.Insert(fake);
 
 		// Assert
-		//	var fetched = _repository.GetSingle(fake.Id);
+		var fetched = _repository.GetSingle(fake.Id);
 
-		//Assert.NotNull(fetched);
-		//Assert.Equal(fake.IntValue.PrimitiveValue, fetched.IntValue.PrimitiveValue);
+		Assert.NotNull(fetched);
+		Assert.Equal(fake.IntValue.PrimitiveValue, fetched.IntValue.PrimitiveValue);
 	}
 
 	[Fact]
