@@ -63,8 +63,15 @@ package [StrongTypedId.Dapper.DDD.Repository](https://www.nuget.org/packages/Str
 
 ## Entity Framework
 
-This is supported through the
-package [StrongTypedId.EntityFrameworkCore](https://www.nuget.org/packages/StrongTypedId.EntityFrameworkCore).
+This is supported through the package [StrongTypedId.EntityFrameworkCore](https://www.nuget.org/packages/StrongTypedId.EntityFrameworkCore).
+
+## LiteDB
+
+This is supported through the package [StrongTypedId.MongoDB](https://www.nuget.org/packages/StrongTypedId.LiteDB).
+
+## MongoDB
+
+This is supported through the package [StrongTypedId.MongoDB](https://www.nuget.org/packages/StrongTypedId.MongoDB).
 
 ## WebAPI
 
@@ -76,8 +83,7 @@ This is supported out-of-the-box.
 
 ## NewtonSoft.Json
 
-This is supported through the
-package [StrongTypedId.NewtonSoft](https://www.nuget.org/packages/StrongTypedId.NewtonSoft).
+This is supported through the package [StrongTypedId.NewtonSoft](https://www.nuget.org/packages/StrongTypedId.NewtonSoft).
 
 ## Swagger
 
