@@ -1,3 +1,7 @@
+# Want to see what's changed?
+
+[Changelog](https://github.com/steffenskov/StrongTypedId/blob/main/CHANGELOG.md)
+
 # StrongTypedId.NewtonSoft
 
 This package provides support for using StrongTypedId with the NewtonSoft JSON serializer.

@@ -1,3 +1,7 @@
+# Want to see what's changed?
+
+[Changelog](https://github.com/steffenskov/StrongTypedId/blob/main/CHANGELOG.md)
+
 # StrongTypedId
 
 A super small library for providing strong typed Ids (as opposed to using primitives).

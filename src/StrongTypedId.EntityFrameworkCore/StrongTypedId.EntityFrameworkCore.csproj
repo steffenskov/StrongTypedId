@@ -15,10 +15,11 @@
         <PackageTags>strongly-typed, Id, EF, EntityFramework</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <NoWarn>$(NoWarn);NU1504;NU1008</NoWarn>
-        
+
     </PropertyGroup>
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="../../CHANGELOG.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore"/>

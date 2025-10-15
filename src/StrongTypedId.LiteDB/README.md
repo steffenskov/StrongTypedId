@@ -1,3 +1,7 @@
+# Want to see what's changed?
+
+[Changelog](https://github.com/steffenskov/StrongTypedId/blob/main/CHANGELOG.md)
+
 # StrongTypedId.LiteDB
 
 This package provides support for using StrongTypedId with LiteDB by adding LiteDB serializers.
