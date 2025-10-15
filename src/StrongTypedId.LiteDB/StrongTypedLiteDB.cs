@@ -6,11 +6,10 @@ namespace StrongTypedId.LiteDB;
 
 public static class StrongTypedLiteDB
 {
-	private static readonly object _serializerRegistrationLock = new();
-	private static readonly HashSet<Type> _registeredSerializerTypes = [];
-
-	public static BsonMapper CreateBsonMapper(params Assembly[] assemblies)
+	public static BsonMapper CreateBsonMapper(params IEnumerable<Assembly> assemblies)
 	{
+		HashSet<Type> registeredSerializerTypes = [];
+		object serializerRegistrationLock = new();
 		var types = assemblies.SelectMany(assembly => assembly.GetTypes());
 		var serializerFactories = ServiceLocator.CreateInstances<ILiteDBSerializerFactory>().ToList();
 
@@ -18,30 +17,27 @@ public static class StrongTypedLiteDB
 
 		foreach (var type in types)
 		{
-			lock (_serializerRegistrationLock)
-			{
-				if (type.IsAbstract || _registeredSerializerTypes.Contains(type))
-				{
-					continue;
-				}
-			}
-
-			var factory = serializerFactories.Find(serializer => serializer.CanSerialize(type));
-			if (factory is null)
+			if (type.IsAbstract || type.IsInterface || type.IsValueType || type.BaseType is null) // Cannot be StrongTyped inheritances
 			{
 				continue;
 			}
 
-			lock (_serializerRegistrationLock)
+			lock (serializerRegistrationLock)
 			{
-				if (_registeredSerializerTypes.Contains(type))
+				if (registeredSerializerTypes.Contains(type))
+				{
+					continue;
+				}
+
+				var factory = serializerFactories.Find(serializer => serializer.CanSerialize(type));
+				if (factory is null)
 				{
 					continue;
 				}
 
 				var serializer = factory.CreateSerializer(type);
 				mapper.RegisterType(type, serializer.Serialize, serializer.Deserialize);
-				_registeredSerializerTypes.Add(type);
+				registeredSerializerTypes.Add(type);
 			}
 		}
 
