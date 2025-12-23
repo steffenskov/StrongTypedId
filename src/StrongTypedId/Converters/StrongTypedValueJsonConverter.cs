@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace StrongTypedId.Converters;
 
 internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonConverter<TStrongTypedValue>
-	where TStrongTypedValue : StrongTypedValue<TStrongTypedValue, TPrimitiveValue>
+	where TStrongTypedValue : IStrongTypedValue<TStrongTypedValue, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 {
 	public override TStrongTypedValue Read(ref Utf8JsonReader reader, Type typeToConvert,

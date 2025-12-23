@@ -1,4 +1,4 @@
-namespace StrongTypedId.UnitTests;
+namespace StrongTypedId.UnitTests.Operators;
 
 public class EqualOperatorTests
 {
@@ -22,7 +22,7 @@ public class EqualOperatorTests
 		var idOne = GuidId.New();
 
 		// Act
-		var equal = idOne == null;
+		var equal = idOne == default(GuidId);
 
 		// Assert
 		Assert.False(equal);

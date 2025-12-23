@@ -223,7 +223,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<CharValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(charValue, strongValue!.PrimitiveValue);
+		Assert.Equal(charValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -320,7 +320,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DecimalValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(decimalValue, strongValue!.PrimitiveValue);
+		Assert.Equal(decimalValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -333,7 +333,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DecimalValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(decimalValue, strongValue!.PrimitiveValue);
+		Assert.Equal(decimalValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -373,7 +373,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DoubleValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(doubleValue, strongValue!.PrimitiveValue);
+		Assert.Equal(doubleValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -386,7 +386,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DoubleValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(doubleValue, strongValue!.PrimitiveValue);
+		Assert.Equal(doubleValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -426,7 +426,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<EmailAddress>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -466,7 +466,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<FloatValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(floatValue, strongValue!.PrimitiveValue);
+		Assert.Equal(floatValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -479,7 +479,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<FloatValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(floatValue, strongValue!.PrimitiveValue);
+		Assert.Equal(floatValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -518,7 +518,6 @@ public class JsonConverterTests
 		// Act
 		var strongId = JsonSerializer.Deserialize<GuidId>(json);
 		// Assert
-		Assert.NotNull(strongId);
 		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 
@@ -531,7 +530,6 @@ public class JsonConverterTests
 		// Act
 		var strongId = JsonSerializer.Deserialize<GuidId>(json);
 		// Assert
-		Assert.NotNull(strongId);
 		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 

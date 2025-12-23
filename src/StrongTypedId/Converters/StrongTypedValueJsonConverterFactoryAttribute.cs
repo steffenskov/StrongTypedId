@@ -7,7 +7,7 @@ namespace StrongTypedId.Converters;
 ///     [StrongTypedValueJsonConverterFactory]
 ///     public class EmailAddress: StrongTypedValue&lt;EmailAddress, string&gt;
 /// </Summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class StrongTypedValueJsonConverterFactoryAttribute : JsonConverterAttribute
 {
 	public StrongTypedValueJsonConverterFactoryAttribute() : base(typeof(StrongTypedValueJsonConverterFactory))

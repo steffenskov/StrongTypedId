@@ -12,10 +12,10 @@ public static class SwaggerExtension
 	/// <typeparam name="TStrongType">Strong type to map</typeparam>
 	/// <typeparam name="TPrimitiveType">Primitive type to map it to</typeparam>
 	public static void MapStrongType<TStrongType, TPrimitiveType>(this SwaggerGenOptions options)
-		where TStrongType : StrongTypedValue<TStrongType, TPrimitiveType>
+		where TStrongType : IStrongTypedValue<TStrongType, TPrimitiveType>
 		where TPrimitiveType : IComparable, IComparable<TPrimitiveType>, IEquatable<TPrimitiveType>
 	{
-		MapStrongType(options, typeof(TStrongType), typeof(TPrimitiveType));
+		options.MapStrongType(typeof(TStrongType), typeof(TPrimitiveType));
 	}
 
 	/// <summary>

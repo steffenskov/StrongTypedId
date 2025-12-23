@@ -1,4 +1,4 @@
-namespace StrongTypedId.UnitTests;
+namespace StrongTypedId.UnitTests.Operators;
 
 public class UnequalOperatorTests
 {
@@ -22,7 +22,7 @@ public class UnequalOperatorTests
 		var idOne = GuidId.New();
 
 		// Act
-		var unequal = idOne != null;
+		var unequal = idOne != default(GuidId);
 
 		// Assert
 		Assert.True(unequal);

@@ -100,12 +100,16 @@ public class StrongTypedNewtonSoftJsonConverter : JsonConverter
 
 	private static Type GetBaseType(Type type)
 	{
-		while (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(StrongTypedValue<,>))
+		var interfaces = type.GetInterfaces();
+		foreach (var interfaceType in interfaces)
 		{
-			return GetBaseType(type.BaseType ?? throw new InvalidOperationException("Type does not inherit from StrongTypedValue<,>"));
+			if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IStrongTypedValue<,>))
+			{
+				return interfaceType;
+			}
 		}
 
-		return type;
+		throw new InvalidOperationException("Type does not implement IStrongTypedValue<,>");
 	}
 
 	private static Dictionary<string, object> ReadTokens(JsonReader reader)

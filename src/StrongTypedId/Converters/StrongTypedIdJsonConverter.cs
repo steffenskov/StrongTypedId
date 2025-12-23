@@ -5,7 +5,7 @@ namespace StrongTypedId.Converters;
 internal class
 	StrongTypedIdJsonConverter<TStrongTypedId, TPrimitiveId> : StrongTypedValueJsonConverter<TStrongTypedId,
 	TPrimitiveId>
-	where TStrongTypedId : StrongTypedId<TStrongTypedId, TPrimitiveId>
+	where TStrongTypedId : IStrongTypedId<TStrongTypedId, TPrimitiveId>
 	where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>,
 	IParsable<TPrimitiveId>
 {
@@ -15,14 +15,14 @@ internal class
 		var value = reader.GetString();
 		if (value is null)
 		{
-			return null!;
+			return default!;
 		}
 
-		return StrongTypedId<TStrongTypedId, TPrimitiveId>.Parse(value);
+		return IStrongTypedId<TStrongTypedId, TPrimitiveId>.Parse(value);
 	}
 
 	public override void WriteAsPropertyName(Utf8JsonWriter writer, TStrongTypedId value, JsonSerializerOptions options)
 	{
-		writer.WritePropertyName(value.ToString());
+		writer.WritePropertyName(value.ToString()!);
 	}
 }

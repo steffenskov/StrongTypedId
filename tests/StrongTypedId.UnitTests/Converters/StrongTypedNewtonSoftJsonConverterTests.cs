@@ -149,7 +149,6 @@ public class StrongTypedNewtonSoftJsonConverterTests
 		var strongId = JsonConvert.DeserializeObject<GuidId>(json, _options);
 
 		// Assert
-		Assert.NotNull(strongId);
 		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 

@@ -12,9 +12,32 @@ public class AttributedGuidId : StrongTypedGuid<AttributedGuidId>
 }
 
 [StrongTypedValueJsonConverterFactory]
-public class GuidId : StrongTypedGuid<GuidId>
+public struct GuidId : IStrongTypedGuid<GuidId>
 {
-	public GuidId(Guid primitiveValue) : base(primitiveValue)
+	public GuidId(Guid primitiveId)
 	{
+		PrimitiveValue = primitiveId;
+	}
+
+	public Guid PrimitiveValue { get; }
+
+	public bool Equals(GuidId other)
+	{
+		return PrimitiveValue.Equals(other.PrimitiveValue);
+	}
+
+	public override bool Equals(object? obj)
+	{
+		return obj is GuidId other && Equals(other);
+	}
+
+	public override int GetHashCode()
+	{
+		return PrimitiveValue.GetHashCode();
+	}
+
+	public override string ToString()
+	{
+		return PrimitiveValue.ToString();
 	}
 }

@@ -68,21 +68,16 @@ public static class Extensions
 	/// </summary>
 	private static Type GetStrongTypedValueType(Type type)
 	{
-		var initialType = type;
-		while (true)
+		var implementedInterfaces = type.GetInterfaces();
+		foreach (var interfaceType in implementedInterfaces)
 		{
-			if (type is { IsAbstract: true, IsGenericType: true } && type.GetGenericTypeDefinition() == typeof(StrongTypedValue<,>))
+			if (interfaceType.IsGenericType &&
+			    interfaceType.GetGenericTypeDefinition() == typeof(IStrongTypedValue<,>))
 			{
-				return type;
+				return interfaceType;
 			}
-
-			if (type.BaseType is not null)
-			{
-				type = type.BaseType;
-				continue;
-			}
-
-			throw new InvalidOperationException($"Type {initialType.Name} does not inherit StrongTypedValue<,>");
 		}
+
+		throw new InvalidOperationException($"Type {type.Name} does not implement IStrongTypedValue<,>");
 	}
 }

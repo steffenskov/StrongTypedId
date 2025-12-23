@@ -28,11 +28,10 @@ public class TypeConverterTests
 		var json = converter.ConvertToString(guid);
 
 		// Act
-		var strongId = converter.ConvertFrom(json!) as GuidId;
+		var strongId = (GuidId)(converter.ConvertFrom(json!) ?? throw new NullReferenceException());
 
 		// Assert
-		Assert.NotNull(strongId);
-		Assert.Equal(guid, strongId!.PrimitiveValue);
+		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -43,10 +42,10 @@ public class TypeConverterTests
 		var json = converter.ConvertToString(null);
 
 		// Act
-		var strongId = converter.ConvertFrom(json!) as GuidId;
+		var strongId = (GuidId)(converter.ConvertFrom(json!) ?? throw new NullReferenceException());
 
 		// Assert
-		Assert.Null(strongId);
+		Assert.Equal(Guid.Empty, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -77,7 +76,7 @@ public class TypeConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(intValue, strongId!.PrimitiveValue);
+		Assert.Equal(intValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -138,7 +137,7 @@ public class TypeConverterTests
 
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -154,6 +153,6 @@ public class TypeConverterTests
 
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 }
