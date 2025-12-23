@@ -11,7 +11,7 @@ public class JsonConverterTests
 		// Arrange
 		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
 		{
-			{ GuidId.New(), new[] { "Hello", "world" } }
+			{ GuidId.New(), ["Hello", "world"] }
 		});
 
 		// Act
@@ -28,7 +28,7 @@ public class JsonConverterTests
 		var id = GuidId.New();
 		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
 		{
-			{ id, new[] { "Hello", "world" } }
+			{ id, ["Hello", "world"] }
 		});
 		var json = JsonSerializer.Serialize(aggregate);
 
@@ -84,7 +84,7 @@ public class JsonConverterTests
 	public void Deserialize_BoolIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((BoolValue?)null);
+		var json = JsonSerializer.Serialize<BoolValue?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<BoolValue?>(json);
 		// Assert
@@ -137,7 +137,7 @@ public class JsonConverterTests
 	public void Deserialize_ByteIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((ByteId?)null);
+		var json = JsonSerializer.Serialize<ByteId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<ByteId?>(json);
 		// Assert
@@ -190,7 +190,7 @@ public class JsonConverterTests
 	public void Deserialize_SByteIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((SByteId?)null);
+		var json = JsonSerializer.Serialize<SByteId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<SByteId?>(json);
 		// Assert
@@ -223,14 +223,14 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<CharValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(charValue, strongValue!.PrimitiveValue);
+		Assert.Equal(charValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
 	public void Deserialize_CharIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((CharValue?)null);
+		var json = JsonSerializer.Serialize<CharValue?>(null);
 		// Act
 		var strongValue = JsonSerializer.Deserialize<CharValue?>(json);
 		// Assert
@@ -287,7 +287,7 @@ public class JsonConverterTests
 	public void Deserialize_DateIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((DateValue?)null);
+		var json = JsonSerializer.Serialize<DateValue?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<DateValue?>(json);
 		// Assert
@@ -320,7 +320,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DecimalValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(decimalValue, strongValue!.PrimitiveValue);
+		Assert.Equal(decimalValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -333,14 +333,14 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DecimalValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(decimalValue, strongValue!.PrimitiveValue);
+		Assert.Equal(decimalValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
 	public void Deserialize_DecimalIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((DecimalValue?)null);
+		var json = JsonSerializer.Serialize<DecimalValue?>(null);
 		// Act
 		var strongValue = JsonSerializer.Deserialize<DecimalValue?>(json);
 		// Assert
@@ -373,7 +373,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DoubleValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(doubleValue, strongValue!.PrimitiveValue);
+		Assert.Equal(doubleValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -386,14 +386,14 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<DoubleValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(doubleValue, strongValue!.PrimitiveValue);
+		Assert.Equal(doubleValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
 	public void Deserialize_DoubleIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((DoubleValue?)null);
+		var json = JsonSerializer.Serialize<DoubleValue?>(null);
 		// Act
 		var strongValue = JsonSerializer.Deserialize<DoubleValue?>(json);
 		// Assert
@@ -426,14 +426,14 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<EmailAddress>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
 	public void Deserialize_EmailAddressIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((EmailAddress?)null);
+		var json = JsonSerializer.Serialize<EmailAddress?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<EmailAddress?>(json);
 		// Assert
@@ -466,7 +466,7 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<FloatValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(floatValue, strongValue!.PrimitiveValue);
+		Assert.Equal(floatValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -479,14 +479,14 @@ public class JsonConverterTests
 		var strongValue = JsonSerializer.Deserialize<FloatValue>(json);
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(floatValue, strongValue!.PrimitiveValue);
+		Assert.Equal(floatValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
 	public void Deserialize_FloatIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((FloatValue?)null);
+		var json = JsonSerializer.Serialize<FloatValue?>(null);
 		// Act
 		var strongValue = JsonSerializer.Deserialize<FloatValue?>(json);
 		// Assert
@@ -539,7 +539,7 @@ public class JsonConverterTests
 	public void Deserialize_GuidIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((GuidId?)null);
+		var json = JsonSerializer.Serialize<GuidId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<GuidId?>(json);
 		// Assert
@@ -592,7 +592,7 @@ public class JsonConverterTests
 	public void Deserialize_IntIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((IntId?)null);
+		var json = JsonSerializer.Serialize<IntId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<IntId?>(json);
 		// Assert
@@ -645,7 +645,7 @@ public class JsonConverterTests
 	public void Deserialize_LongIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((LongId?)null);
+		var json = JsonSerializer.Serialize<LongId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<LongId?>(json);
 		// Assert
@@ -698,7 +698,7 @@ public class JsonConverterTests
 	public void Deserialize_ShortIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((ShortId?)null);
+		var json = JsonSerializer.Serialize<ShortId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<ShortId?>(json);
 		// Assert
@@ -751,7 +751,7 @@ public class JsonConverterTests
 	public void Deserialize_UIntIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((UintId?)null);
+		var json = JsonSerializer.Serialize<UintId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<UintId?>(json);
 		// Assert
@@ -804,7 +804,7 @@ public class JsonConverterTests
 	public void Deserialize_ULongIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((UlongId?)null);
+		var json = JsonSerializer.Serialize<UlongId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<UlongId?>(json);
 		// Assert
@@ -857,7 +857,7 @@ public class JsonConverterTests
 	public void Deserialize_UShortIsNull_Deserializes()
 	{
 		// Arrange
-		var json = JsonSerializer.Serialize((UshortId?)null);
+		var json = JsonSerializer.Serialize<UshortId?>(null);
 		// Act
 		var strongId = JsonSerializer.Deserialize<UshortId?>(json);
 		// Assert
@@ -878,5 +878,5 @@ file class BasicAggregateWithDictionary
 		Dictionary = value;
 	}
 
-	public Dictionary<GuidId, string[]> Dictionary { get; set; } = default!;
+	public Dictionary<GuidId, string[]> Dictionary { get; set; } = null!;
 }

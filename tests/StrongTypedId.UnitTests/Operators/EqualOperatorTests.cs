@@ -1,4 +1,4 @@
-namespace StrongTypedId.UnitTests;
+namespace StrongTypedId.UnitTests.Operators;
 
 public class EqualOperatorTests
 {

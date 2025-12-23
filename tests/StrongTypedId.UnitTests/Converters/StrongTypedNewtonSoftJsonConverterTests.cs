@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 // The above is necessary to avoid breaking tests
 
@@ -22,7 +23,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 		// Arrange
 		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
 		{
-			{ GuidId.New(), new[] { "Hello", "world" } }
+			{ GuidId.New(), ["Hello", "world"] }
 		});
 
 		// Act
@@ -39,7 +40,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 		var id = GuidId.New();
 		var aggregate = new BasicAggregateWithDictionary(new Dictionary<GuidId, string[]>
 		{
-			{ id, new[] { "Hello", "world" } }
+			{ id, ["Hello", "world"] }
 		});
 		var json = JsonConvert.SerializeObject(aggregate);
 
@@ -149,7 +150,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(guid, strongId!.PrimitiveValue);
+		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -222,7 +223,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(boolValue, strongId!.PrimitiveValue);
+		Assert.Equal(boolValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -295,7 +296,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(byteValue, strongId!.PrimitiveValue);
+		Assert.Equal(byteValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -368,7 +369,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(charValue, strongId!.PrimitiveValue);
+		Assert.Equal(charValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -441,7 +442,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(DateTimeValue, strongId!.PrimitiveValue);
+		Assert.Equal(DateTimeValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -514,7 +515,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(shortValue, strongId!.PrimitiveValue);
+		Assert.Equal(shortValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -587,7 +588,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(ushortValue, strongId!.PrimitiveValue);
+		Assert.Equal(ushortValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -660,7 +661,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(intValue, strongId!.PrimitiveValue);
+		Assert.Equal(intValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -733,7 +734,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(uintValue, strongId!.PrimitiveValue);
+		Assert.Equal(uintValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -806,7 +807,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(longValue, strongId!.PrimitiveValue);
+		Assert.Equal(longValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -879,7 +880,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(ulongValue, strongId!.PrimitiveValue);
+		Assert.Equal(ulongValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -952,7 +953,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(floatValue, strongId!.PrimitiveValue);
+		Assert.Equal(floatValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1026,7 +1027,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(doubleValue, strongId!.PrimitiveValue);
+		Assert.Equal(doubleValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1100,7 +1101,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(decimalValue, strongId!.PrimitiveValue);
+		Assert.Equal(decimalValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1188,7 +1189,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1210,7 +1211,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 file record FakeAggregate
 {
-	public IMarker Marker { get; init; } = default!;
+	public IMarker Marker { get; init; } = null!;
 }
 
 file interface IMarker : IStrongTypedValue<string>
@@ -1235,5 +1236,5 @@ file class BasicAggregateWithDictionary
 		Dictionary = value;
 	}
 
-	public Dictionary<GuidId, string[]> Dictionary { get; set;  } = default!;
+	public Dictionary<GuidId, string[]> Dictionary { get; set; } = null!;
 }

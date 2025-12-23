@@ -25,7 +25,7 @@ static internal class DynamicActivator
 		{
 			var ctor = type.GetConstructor(
 				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null,
-				new[] { primitiveType }, null);
+				[primitiveType], null);
 
 			if (ctor is null)
 			{
@@ -60,7 +60,7 @@ internal class DynamicActivator<TSelf, TPrimitiveValue>
 		{
 			var ctor = type.GetConstructor(
 				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null,
-				new[] { typeof(TPrimitiveValue) }, null);
+				[typeof(TPrimitiveValue)], null);
 
 			if (ctor is null)
 			{
