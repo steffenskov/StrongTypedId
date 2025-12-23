@@ -99,7 +99,7 @@ public class JsonConverterTests
 	public void Serialize_Byte_SerializedAsByte()
 	{
 		// Arrange
-		var id = ByteId.Create(42);
+		var id = ByteId.Create((byte)42);
 		// Act
 		var strongIdJson = JsonSerializer.Serialize(id);
 		var primitiveIdJson = JsonSerializer.Serialize(id.PrimitiveValue);
@@ -152,7 +152,7 @@ public class JsonConverterTests
 	public void Serialize_SByte_SerializedAsSByte()
 	{
 		// Arrange
-		var id = SByteId.Create(42);
+		var id = SByteId.Create((sbyte)42);
 		// Act
 		var strongIdJson = JsonSerializer.Serialize(id);
 		var primitiveIdJson = JsonSerializer.Serialize(id.PrimitiveValue);
@@ -660,7 +660,7 @@ public class JsonConverterTests
 	public void Serialize_Short_SerializedAsShort()
 	{
 		// Arrange
-		var id = ShortId.Create(123);
+		var id = ShortId.Create((short)123);
 		// Act
 		var strongIdJson = JsonSerializer.Serialize(id);
 		var primitiveIdJson = JsonSerializer.Serialize(id.PrimitiveValue);
@@ -819,7 +819,7 @@ public class JsonConverterTests
 	public void Serialize_UShort_SerializedAsUShort()
 	{
 		// Arrange
-		var id = UshortId.Create(123);
+		var id = UshortId.Create((ushort)123);
 		// Act
 		var strongIdJson = JsonSerializer.Serialize(id);
 		var primitiveIdJson = JsonSerializer.Serialize(id.PrimitiveValue);

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 // The above is necessary to avoid breaking tests
 
@@ -149,7 +150,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(guid, strongId!.PrimitiveValue);
+		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -222,7 +223,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(boolValue, strongId!.PrimitiveValue);
+		Assert.Equal(boolValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -260,7 +261,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_Byte_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var id = ByteId.Create(42);
+		var id = ByteId.Create((byte)42);
 
 		// Act
 		var json = JsonConvert.SerializeObject(id, _options);
@@ -273,7 +274,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_AttributedByte_SerializedAsByte()
 	{
 		// Arrange
-		var id = AttributedByteId.Create(42);
+		var id = AttributedByteId.Create((byte)42);
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id, _options);
@@ -295,7 +296,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(byteValue, strongId!.PrimitiveValue);
+		Assert.Equal(byteValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -315,7 +316,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_SerializedByte_Deserializes()
 	{
 		// Arrange
-		var value = ByteId.Create(42);
+		var value = ByteId.Create((byte)42);
 		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Act
@@ -368,7 +369,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(charValue, strongId!.PrimitiveValue);
+		Assert.Equal(charValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -441,7 +442,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(DateTimeValue, strongId!.PrimitiveValue);
+		Assert.Equal(DateTimeValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -479,7 +480,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_Short_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var id = ShortId.Create(42);
+		var id = ShortId.Create((short)42);
 
 		// Act
 		var json = JsonConvert.SerializeObject(id, _options);
@@ -492,7 +493,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_AttributedShort_SerializedAsShort()
 	{
 		// Arrange
-		var id = AttributedShortId.Create(42);
+		var id = AttributedShortId.Create((short)42);
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id, _options);
@@ -514,7 +515,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(shortValue, strongId!.PrimitiveValue);
+		Assert.Equal(shortValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -534,7 +535,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_SerializedShort_Deserializes()
 	{
 		// Arrange
-		var value = ShortId.Create(42);
+		var value = ShortId.Create((short)42);
 		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Act
@@ -552,7 +553,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_Ushort_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var id = UshortId.Create(42);
+		var id = UshortId.Create((ushort)42);
 
 		// Act
 		var json = JsonConvert.SerializeObject(id, _options);
@@ -565,7 +566,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_AttributedUshort_SerializedAsUshort()
 	{
 		// Arrange
-		var id = AttributedUshortId.Create(42);
+		var id = AttributedUshortId.Create((ushort)42);
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id, _options);
@@ -587,7 +588,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(ushortValue, strongId!.PrimitiveValue);
+		Assert.Equal(ushortValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -607,7 +608,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_SerializedUshort_Deserializes()
 	{
 		// Arrange
-		var value = UshortId.Create(42);
+		var value = UshortId.Create((ushort)42);
 		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Act
@@ -660,7 +661,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(intValue, strongId!.PrimitiveValue);
+		Assert.Equal(intValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -698,7 +699,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_Uint_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var id = UintId.Create(42);
+		var id = UintId.Create(42u);
 
 		// Act
 		var json = JsonConvert.SerializeObject(id, _options);
@@ -711,7 +712,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_AttributedUint_SerializedAsUint()
 	{
 		// Arrange
-		var id = AttributedUintId.Create(42);
+		var id = AttributedUintId.Create(42u);
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id, _options);
@@ -733,7 +734,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(uintValue, strongId!.PrimitiveValue);
+		Assert.Equal(uintValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -753,7 +754,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_SerializedUint_Deserializes()
 	{
 		// Arrange
-		var value = UintId.Create(42);
+		var value = UintId.Create(42u);
 		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Act
@@ -806,7 +807,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(longValue, strongId!.PrimitiveValue);
+		Assert.Equal(longValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -844,7 +845,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_Ulong_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var id = UlongId.Create(42);
+		var id = UlongId.Create(42UL);
 
 		// Act
 		var json = JsonConvert.SerializeObject(id, _options);
@@ -857,7 +858,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_AttributedUlong_SerializedAsUlong()
 	{
 		// Arrange
-		var id = AttributedUlongId.Create(42);
+		var id = AttributedUlongId.Create(42UL);
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id, _options);
@@ -879,7 +880,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(ulongValue, strongId!.PrimitiveValue);
+		Assert.Equal(ulongValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -899,7 +900,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_SerializedUlong_Deserializes()
 	{
 		// Arrange
-		var value = UlongId.Create(42);
+		var value = UlongId.Create(42UL);
 		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Act
@@ -952,7 +953,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(floatValue, strongId!.PrimitiveValue);
+		Assert.Equal(floatValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1026,7 +1027,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(doubleValue, strongId!.PrimitiveValue);
+		Assert.Equal(doubleValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1100,7 +1101,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(decimalValue, strongId!.PrimitiveValue);
+		Assert.Equal(decimalValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1188,7 +1189,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -1235,5 +1236,5 @@ file class BasicAggregateWithDictionary
 		Dictionary = value;
 	}
 
-	public Dictionary<GuidId, string[]> Dictionary { get; set;  } = default!;
+	public Dictionary<GuidId, string[]> Dictionary { get; set; } = default!;
 }

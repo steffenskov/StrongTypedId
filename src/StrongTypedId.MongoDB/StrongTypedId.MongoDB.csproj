@@ -1,31 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
-        <Authors>Steffen Skov</Authors>
-        <Company>Steffen Skov</Company>
         <Description>Serialization extension for easy usage of StrongTypedId with MongoDB.</Description>
-        <Copyright>Steffen Skov 2022</Copyright>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
         <PackageTags>strongly-typed, Id, mongodb, mongo</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <NoWarn>$(NoWarn);NU1504;NU1008</NoWarn>
-        
     </PropertyGroup>
     <ItemGroup>
-        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj" />
+        <ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" />
-        <PackageReference Include="Ckode.ServiceLocator" />
+        <PackageReference Include="MongoDB.Driver"/>
+        <PackageReference Include="Ckode.ServiceLocator"/>
     </ItemGroup>
 
 </Project>

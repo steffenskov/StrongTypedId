@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
 using StrongTypedId.Collections;
@@ -8,6 +7,7 @@ namespace StrongTypedId.Reflection;
 static internal class DynamicActivator
 {
 	private static readonly LockedConcurrentDictionary<Type, Func<object, object>> _constructors = new();
+	private static readonly LockedConcurrentDictionary<Type, object> _typedActivators = new();
 
 	public static object Create(Type type, object primitiveValue)
 	{
@@ -35,10 +35,19 @@ static internal class DynamicActivator
 			return Helper.CreateDelegate(ctor);
 		});
 	}
+
+	public static DynamicActivator<TSelf, TPrimitiveValue> GetActivator<TSelf, TPrimitiveValue>()
+		where TSelf : IStrongTypedValue<TSelf, TPrimitiveValue>
+		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
+	{
+		var result = _typedActivators.GetOrAdd(typeof(TSelf), _ => new DynamicActivator<TSelf, TPrimitiveValue>());
+
+		return (DynamicActivator<TSelf, TPrimitiveValue>)result;
+	}
 }
 
 internal class DynamicActivator<TSelf, TPrimitiveValue>
-	where TSelf : StrongTypedValue<TSelf, TPrimitiveValue>
+	where TSelf : IStrongTypedValue<TSelf, TPrimitiveValue>
 	where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 {
 	private readonly LockedConcurrentDictionary<Type, Func<TPrimitiveValue, TSelf>> _constructors = new();
