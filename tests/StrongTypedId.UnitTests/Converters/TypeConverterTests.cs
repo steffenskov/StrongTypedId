@@ -32,7 +32,7 @@ public class TypeConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(guid, strongId!.PrimitiveValue);
+		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -77,7 +77,7 @@ public class TypeConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(intValue, strongId!.PrimitiveValue);
+		Assert.Equal(intValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -138,7 +138,7 @@ public class TypeConverterTests
 
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 
 	[Fact]
@@ -154,6 +154,6 @@ public class TypeConverterTests
 
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 }

@@ -30,7 +30,7 @@ public class NewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(guid, strongId!.PrimitiveValue);
+		Assert.Equal(guid, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -72,7 +72,7 @@ public class NewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongId);
-		Assert.Equal(intValue, strongId!.PrimitiveValue);
+		Assert.Equal(intValue, strongId.PrimitiveValue);
 	}
 
 	[Fact]
@@ -127,6 +127,6 @@ public class NewtonSoftJsonConverterTests
 
 		// Assert
 		Assert.NotNull(strongValue);
-		Assert.Equal(stringValue, strongValue!.PrimitiveValue);
+		Assert.Equal(stringValue, strongValue.PrimitiveValue);
 	}
 }
