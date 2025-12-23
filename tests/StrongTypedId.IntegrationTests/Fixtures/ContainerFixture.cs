@@ -29,7 +29,6 @@ public class ContainerFixture : IAsyncLifetime
 
 	public async ValueTask DisposeAsync()
 	{
-		GC.SuppressFinalize(this);
 		await _mongoContainer.DisposeAsync();
 	}
 }
