@@ -15,14 +15,14 @@ public interface IStrongTypedId<TSelf, TPrimitiveId> : IStrongTypedId<TPrimitive
 {
 	static TSelf IParsable<TSelf?>.Parse(string s, IFormatProvider? provider)
 	{
-		return Create<TSelf, TPrimitiveId>(TPrimitiveId.Parse(s, provider));
+		return IStrongTypedValue<TSelf, TPrimitiveId>.Create(TPrimitiveId.Parse(s, provider)!);
 	}
 
 	static bool IParsable<TSelf?>.TryParse(string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result)
 	{
 		if (TPrimitiveId.TryParse(s, provider, out var primitiveId))
 		{
-			result = StrongTypedValue<TSelf, TPrimitiveId>.Create<TSelf, TPrimitiveId>(primitiveId);
+			result = IStrongTypedValue<TSelf, TPrimitiveId>.Create(primitiveId!);
 			return true;
 		}
 

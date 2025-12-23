@@ -1,7 +1,7 @@
 namespace StrongTypedId;
 
-public abstract class StrongTypedEnumValue<TSelf, TEnum> : StrongTypedValue<TSelf, string>
-	where TSelf : StrongTypedValue<TSelf, string>
+public abstract class StrongTypedEnumValue<TSelf, TEnum> : StrongTypedValue<TSelf, string>, IStrongTypedEnumValue<TSelf, TEnum>
+	where TSelf : StrongTypedValue<TSelf, string>, IStrongTypedEnumValue<TSelf, TEnum>
 	where TEnum : struct, Enum
 {
 	protected StrongTypedEnumValue(TEnum value) : base(value.ToString())
@@ -19,11 +19,10 @@ public abstract class StrongTypedEnumValue<TSelf, TEnum> : StrongTypedValue<TSel
 			throw new ArgumentException($@"Value ""{value}"" is not defined in enum {typeof(TEnum).Name}", nameof(value));
 		}
 	}
+}
 
-	public TEnum PrimitiveEnumValue => Enum.Parse<TEnum>(PrimitiveValue, true);
-
-	public static IEnumerable<TSelf> GetValidValues()
-	{
-		return Enum.GetValues<TEnum>().Select(value => Create(value.ToString()));
-	}
+public interface IStrongTypedEnumValue<TSelf, TEnum> : IStrongTypedValue<TSelf, string>
+	where TSelf : IStrongTypedEnumValue<TSelf, TEnum>
+	where TEnum : struct, Enum
+{
 }

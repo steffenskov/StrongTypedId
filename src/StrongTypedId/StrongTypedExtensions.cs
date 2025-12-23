@@ -129,45 +129,57 @@ public static class StrongTypedExtensions
 	}
 
 
-	extension<TSelf, TPrimitiveId>(StrongTypedId<TSelf, TPrimitiveId>)
-		where TSelf : StrongTypedId<TSelf, TPrimitiveId>
+	extension<TSelf, TPrimitiveId>(IStrongTypedId<TSelf, TPrimitiveId>)
+		where TSelf : IStrongTypedId<TSelf, TPrimitiveId>
 		where TPrimitiveId : struct, IComparable, IComparable<TPrimitiveId>, IEquatable<TPrimitiveId>,
 		IParsable<TPrimitiveId>
 	{
 		public static TSelf Parse(string s, IFormatProvider? provider = null)
 		{
-			return Create<TSelf, TPrimitiveId>(TPrimitiveId.Parse(s, provider));
+			return IStrongTypedValue<TSelf, TPrimitiveId>.Create(TPrimitiveId.Parse(s, provider));
 		}
 
 		public static bool TryParse(string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result)
 		{
 			if (TPrimitiveId.TryParse(s, provider, out var primitiveId))
 			{
-				result = Create<TSelf, TPrimitiveId>(primitiveId);
+				result = IStrongTypedValue<TSelf, TPrimitiveId>.Create(primitiveId);
 				return true;
 			}
 
-			result = null;
+			result = default;
 			return false;
 		}
 
 		public static bool TryParse(string? s, [MaybeNullWhen(false)] out TSelf result)
 		{
-			return TryParse<TSelf, TPrimitiveId>(s, null, out result);
+			return IStrongTypedId<TSelf, TPrimitiveId>.TryParse<TSelf, TPrimitiveId>(s, null, out result);
 		}
 	}
 
 	extension<TSelf>(IStrongTypedGuid<TSelf>)
 		where TSelf : IStrongTypedGuid<TSelf>
 	{
-		public static TSelf Empty => Create<TSelf, Guid>(Guid.Empty);
+		public static TSelf Empty => IStrongTypedValue<TSelf, Guid>.Create(Guid.Empty);
 
 		/// <Summary>
 		///     Creates a new instance of your strong typed id with Guid.CreateVersion7() as its primitive id.
 		/// </Summary>
 		public static TSelf New()
 		{
-			return Create<TSelf, Guid>(Guid.CreateVersion7());
+			return IStrongTypedValue<TSelf, Guid>.Create(Guid.CreateVersion7());
+		}
+	}
+
+	extension<TSelf, TEnum>(IStrongTypedEnumValue<TSelf, TEnum> value)
+		where TSelf : IStrongTypedEnumValue<TSelf, TEnum>
+		where TEnum : struct, Enum
+	{
+		public TEnum PrimitiveEnumValue => Enum.Parse<TEnum>(value.PrimitiveValue, true);
+
+		public static IEnumerable<TSelf> GetValidValues()
+		{
+			return Enum.GetValues<TEnum>().Select(value => IStrongTypedValue<TSelf, string>.Create(value.ToString()));
 		}
 	}
 }
