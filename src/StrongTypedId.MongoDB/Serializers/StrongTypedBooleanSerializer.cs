@@ -27,7 +27,7 @@ internal class StrongTypedBooleanSerializer<TStrongTypedValue> : IBsonSerializer
 			rawValue = context.Reader.ReadBoolean();
 		}
 
-		return StrongTypedValue<TStrongTypedValue, bool>.Create(rawValue);
+		return StrongTypedExtensions.Create<TStrongTypedValue, bool>(rawValue);
 	}
 
 	public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TStrongTypedValue? value)

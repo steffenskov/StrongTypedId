@@ -12,7 +12,7 @@ public static class StrongTypedExtensions
 		}
 	}
 
-	extension<TSelf, TPrimitiveValue>(IStrongTypedValue<TSelf, TPrimitiveValue>)
+	extension<TSelf, TPrimitiveValue>(TSelf)
 		where TSelf : IStrongTypedValue<TSelf, TPrimitiveValue>
 		where TPrimitiveValue : IComparable, IComparable<TPrimitiveValue>, IEquatable<TPrimitiveValue>
 	{
@@ -21,8 +21,7 @@ public static class StrongTypedExtensions
 			return DynamicActivator.GetActivator<TSelf, TPrimitiveValue>().Create(value); // TODO: Suffers performance hit b/c of double dictionary lookup, consider different design
 		}
 
-		public static bool operator ==(IStrongTypedValue<TSelf, TPrimitiveValue>? a,
-			IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator ==(TSelf? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
 		{
 			if (a is null && b is null)
 			{
@@ -32,82 +31,77 @@ public static class StrongTypedExtensions
 			return a?.PrimitiveValue.Equals(b is null ? null : b.PrimitiveValue) == true;
 		}
 
-		public static bool operator ==(IStrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue b)
+		public static bool operator ==(TSelf? a, TPrimitiveValue b)
 		{
 			return a?.PrimitiveValue.Equals(b) == true;
 		}
 
-		public static bool operator ==(TPrimitiveValue? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator ==(TPrimitiveValue? a, TSelf? b)
 		{
 			return a?.Equals(b is null ? null : b.PrimitiveValue) == true;
 		}
 
-		public static bool operator >(IStrongTypedValue<TSelf, TPrimitiveValue>? a,
-			IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator >(TSelf? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b is null ? null : b.PrimitiveValue) > 0;
 		}
 
-		public static bool operator >(IStrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
+		public static bool operator >(TSelf? a, TPrimitiveValue? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b) > 0;
 		}
 
-		public static bool operator >(TPrimitiveValue? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator >(TPrimitiveValue? a, TSelf? b)
 		{
 			return a?.CompareTo(b is null ? null : b.PrimitiveValue) > 0;
 		}
 
-		public static bool operator <(IStrongTypedValue<TSelf, TPrimitiveValue>? a,
-			IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator <(TSelf? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b is null ? null : b.PrimitiveValue) < 0;
 		}
 
-		public static bool operator <(IStrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
+		public static bool operator <(TSelf? a, TPrimitiveValue? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b) < 0;
 		}
 
-		public static bool operator <(TPrimitiveValue? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator <(TPrimitiveValue? a, TSelf? b)
 		{
 			return a?.CompareTo(b is null ? null : b.PrimitiveValue) < 0;
 		}
 
-		public static bool operator >=(IStrongTypedValue<TSelf, TPrimitiveValue>? a,
-			IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator >=(TSelf? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b is null ? null : b.PrimitiveValue) >= 0;
 		}
 
-		public static bool operator >=(IStrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
+		public static bool operator >=(TSelf? a, TPrimitiveValue? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b) >= 0;
 		}
 
-		public static bool operator >=(TPrimitiveValue? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator >=(TPrimitiveValue? a, TSelf? b)
 		{
 			return a?.CompareTo(b is null ? null : b.PrimitiveValue) >= 0;
 		}
 
-		public static bool operator <=(IStrongTypedValue<TSelf, TPrimitiveValue>? a,
-			IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator <=(TSelf? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b is null ? null : b.PrimitiveValue) <= 0;
 		}
 
-		public static bool operator <=(IStrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue? b)
+		public static bool operator <=(TSelf? a, TPrimitiveValue? b)
 		{
 			return a?.PrimitiveValue.CompareTo(b) <= 0;
 		}
 
-		public static bool operator <=(TPrimitiveValue? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator <=(TPrimitiveValue? a, TSelf? b)
 		{
 			return a?.CompareTo(b is null ? null : b.PrimitiveValue) <= 0;
 		}
 
-		public static bool operator !=(IStrongTypedValue<TSelf, TPrimitiveValue>? a,
-			IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator !=(TSelf? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
 		{
 			if (a is null && b is null)
 			{
@@ -117,12 +111,12 @@ public static class StrongTypedExtensions
 			return a?.PrimitiveValue.Equals(b is null ? null : b.PrimitiveValue) != true;
 		}
 
-		public static bool operator !=(IStrongTypedValue<TSelf, TPrimitiveValue>? a, TPrimitiveValue b)
+		public static bool operator !=(TSelf? a, TPrimitiveValue b)
 		{
 			return a?.PrimitiveValue.Equals(b) != true;
 		}
 
-		public static bool operator !=(TPrimitiveValue? a, IStrongTypedValue<TSelf, TPrimitiveValue>? b)
+		public static bool operator !=(TPrimitiveValue? a, TSelf? b)
 		{
 			return a?.Equals(b is null ? null : b.PrimitiveValue) != true;
 		}
@@ -136,14 +130,15 @@ public static class StrongTypedExtensions
 	{
 		public static TSelf Parse(string s, IFormatProvider? provider = null)
 		{
-			return IStrongTypedValue<TSelf, TPrimitiveId>.Create(TPrimitiveId.Parse(s, provider));
+			return Create<TSelf, TPrimitiveId>(TPrimitiveId.Parse(s, provider));
 		}
 
+		// ReSharper disable once MemberCanBePrivate.Global
 		public static bool TryParse(string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result)
 		{
 			if (TPrimitiveId.TryParse(s, provider, out var primitiveId))
 			{
-				result = IStrongTypedValue<TSelf, TPrimitiveId>.Create(primitiveId);
+				result = Create<TSelf, TPrimitiveId>(primitiveId);
 				return true;
 			}
 
@@ -160,14 +155,14 @@ public static class StrongTypedExtensions
 	extension<TSelf>(IStrongTypedGuid<TSelf>)
 		where TSelf : IStrongTypedGuid<TSelf>
 	{
-		public static TSelf Empty => IStrongTypedValue<TSelf, Guid>.Create(Guid.Empty);
+		public static TSelf Empty => Create<TSelf, Guid>(Guid.Empty);
 
 		/// <Summary>
 		///     Creates a new instance of your strong typed id with Guid.CreateVersion7() as its primitive id.
 		/// </Summary>
 		public static TSelf New()
 		{
-			return IStrongTypedValue<TSelf, Guid>.Create(Guid.CreateVersion7());
+			return Create<TSelf, Guid>(Guid.CreateVersion7());
 		}
 	}
 
@@ -179,7 +174,7 @@ public static class StrongTypedExtensions
 
 		public static IEnumerable<TSelf> GetValidValues()
 		{
-			return Enum.GetValues<TEnum>().Select(value => IStrongTypedValue<TSelf, string>.Create(value.ToString()));
+			return Enum.GetValues<TEnum>().Select(value => Create<TSelf, string>(value.ToString()));
 		}
 	}
 }

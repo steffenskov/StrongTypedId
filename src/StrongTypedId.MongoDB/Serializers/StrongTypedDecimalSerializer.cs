@@ -27,7 +27,7 @@ internal class StrongTypedDecimalSerializer<TStrongTypedValue> : IBsonSerializer
 			rawValue = (decimal)context.Reader.ReadDecimal128();
 		}
 
-		return StrongTypedValue<TStrongTypedValue, decimal>.Create(rawValue);
+		return StrongTypedExtensions.Create<TStrongTypedValue, decimal>(rawValue);
 	}
 
 	public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TStrongTypedValue? value)

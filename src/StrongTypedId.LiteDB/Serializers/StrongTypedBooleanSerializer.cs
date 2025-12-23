@@ -12,10 +12,10 @@ internal class StrongTypedBooleanSerializer<TStrongTypedValue> : ILiteDBSerializ
 
 		if (value.Type == BsonType.String)
 		{
-			return StrongTypedValue<TStrongTypedValue, bool>.Create(bool.Parse(value.AsString));
+			return StrongTypedExtensions.Create<TStrongTypedValue, bool>(bool.Parse(value.AsString));
 		}
 
-		return StrongTypedValue<TStrongTypedValue, bool>.Create(value.AsBoolean);
+		return StrongTypedExtensions.Create<TStrongTypedValue, bool>(value.AsBoolean);
 	}
 
 	public BsonValue Serialize(TStrongTypedValue? arg)

@@ -12,7 +12,7 @@ internal class StrongTypedValueJsonConverter<TStrongTypedValue, TPrimitiveValue>
 		JsonSerializerOptions options)
 	{
 		var value = (TPrimitiveValue)GetValue(reader);
-		return StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(value);
+		return StrongTypedExtensions.Create<TStrongTypedValue, TPrimitiveValue>(value);
 	}
 
 	private static object GetValue(Utf8JsonReader reader)

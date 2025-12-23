@@ -26,13 +26,13 @@ internal class StrongTypedValueTypeConverter<TStrongTypedValue, TPrimitiveValue>
 
 		if (!string.IsNullOrEmpty(stringValue) && TryParse(stringValue, out var primitive))
 		{
-			return StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create((TPrimitiveValue)primitive);
+			return StrongTypedExtensions.Create<TStrongTypedValue, TPrimitiveValue>((TPrimitiveValue)primitive);
 		}
 
 		if (string.IsNullOrEmpty(stringValue))
 		{
 			return typeof(TPrimitiveValue) == typeof(string)
-				? StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create((TPrimitiveValue)value)
+				? StrongTypedExtensions.Create<TStrongTypedValue, TPrimitiveValue>((TPrimitiveValue)value)
 				: null;
 		}
 

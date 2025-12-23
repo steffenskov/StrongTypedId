@@ -12,10 +12,10 @@ internal class StrongTypedIntSerializer<TStrongTypedValue> : ILiteDBSerializer<T
 
 		if (value.Type == BsonType.String)
 		{
-			return StrongTypedValue<TStrongTypedValue, int>.Create(int.Parse(value.AsString));
+			return StrongTypedExtensions.Create<TStrongTypedValue, int>(int.Parse(value.AsString));
 		}
 
-		return StrongTypedValue<TStrongTypedValue, int>.Create(value.AsInt32);
+		return StrongTypedExtensions.Create<TStrongTypedValue, int>(value.AsInt32);
 	}
 
 	public BsonValue Serialize(TStrongTypedValue? arg)

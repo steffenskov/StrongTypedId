@@ -772,7 +772,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_Long_SerializedWithTypeInformation()
 	{
 		// Arrange
-		var id = LongId.Create(42);
+		var id = LongId.Create(42L);
 
 		// Act
 		var json = JsonConvert.SerializeObject(id, _options);
@@ -785,7 +785,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Serialize_AttributedLong_SerializedAsLong()
 	{
 		// Arrange
-		var id = AttributedLongId.Create(42);
+		var id = AttributedLongId.Create(42L);
 
 		// Act
 		var strongIdJson = JsonConvert.SerializeObject(id, _options);
@@ -827,7 +827,7 @@ public class StrongTypedNewtonSoftJsonConverterTests
 	public void Deserialize_SerializedLong_Deserializes()
 	{
 		// Arrange
-		var value = LongId.Create(42);
+		var value = LongId.Create(42L);
 		var json = JsonConvert.SerializeObject(value, _options);
 
 		// Act

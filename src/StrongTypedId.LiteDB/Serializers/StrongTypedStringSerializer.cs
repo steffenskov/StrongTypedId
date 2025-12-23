@@ -10,7 +10,7 @@ internal class StrongTypedStringSerializer<TStrongTypedValue> : ILiteDBSerialize
 			return null;
 		}
 
-		return StrongTypedValue<TStrongTypedValue, string>.Create(value.AsString);
+		return StrongTypedExtensions.Create<TStrongTypedValue, string>(value.AsString);
 	}
 
 	public BsonValue Serialize(TStrongTypedValue? arg)

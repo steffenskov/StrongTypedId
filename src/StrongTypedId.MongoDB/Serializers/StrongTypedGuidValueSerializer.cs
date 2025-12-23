@@ -27,7 +27,7 @@ internal class StrongTypedGuidValueSerializer<TStrongTypedValue> : IBsonSerializ
 			rawValue = context.Reader.ReadGuid();
 		}
 
-		return StrongTypedValue<TStrongTypedValue, Guid>.Create(rawValue);
+		return StrongTypedExtensions.Create<TStrongTypedValue, Guid>(rawValue);
 	}
 
 	public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TStrongTypedValue? value)

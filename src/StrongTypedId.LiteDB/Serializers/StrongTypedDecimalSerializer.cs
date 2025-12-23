@@ -12,10 +12,10 @@ internal class StrongTypedDecimalSerializer<TStrongTypedValue> : ILiteDBSerializ
 
 		if (value.Type == BsonType.String)
 		{
-			return StrongTypedValue<TStrongTypedValue, decimal>.Create(decimal.Parse(value.AsString));
+			return StrongTypedExtensions.Create<TStrongTypedValue, decimal>(decimal.Parse(value.AsString));
 		}
 
-		return StrongTypedValue<TStrongTypedValue, decimal>.Create(value.AsDecimal);
+		return StrongTypedExtensions.Create<TStrongTypedValue, decimal>(value.AsDecimal);
 	}
 
 	public BsonValue Serialize(TStrongTypedValue? arg)

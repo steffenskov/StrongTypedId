@@ -20,7 +20,7 @@ public class NewtonSoftJsonConverter<TStrongTypedValue, TPrimitiveValue> : JsonC
 
 		var result = serializer.Deserialize<TPrimitiveValue>(reader);
 		return result is not null
-			? StrongTypedValue<TStrongTypedValue, TPrimitiveValue>.Create(result)
+			? StrongTypedExtensions.Create<TStrongTypedValue, TPrimitiveValue>(result)
 			: null;
 	}
 

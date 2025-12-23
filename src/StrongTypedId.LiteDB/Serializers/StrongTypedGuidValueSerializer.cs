@@ -10,7 +10,7 @@ internal class StrongTypedGuidValueSerializer<TStrongTypedValue> : ILiteDBSerial
 			return null;
 		}
 
-		return StrongTypedValue<TStrongTypedValue, Guid>.Create(value.AsGuid);
+		return StrongTypedExtensions.Create<TStrongTypedValue, Guid>(value.AsGuid);
 	}
 
 	public BsonValue Serialize(TStrongTypedValue? arg)

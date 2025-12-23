@@ -27,7 +27,7 @@ internal class StrongTypedLongSerializer<TStrongTypedValue> : IBsonSerializer<TS
 			rawValue = context.Reader.ReadInt64();
 		}
 
-		return StrongTypedValue<TStrongTypedValue, long>.Create(rawValue);
+		return StrongTypedExtensions.Create<TStrongTypedValue, long>(rawValue);
 	}
 
 	public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TStrongTypedValue? value)
