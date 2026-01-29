@@ -70,6 +70,19 @@ public class StrongTypedEnumValueTests
 		// Assert
 		Assert.Equal(FakeEnum.Value1, strongEnum.PrimitiveEnumValue);
 	}
+
+	[Fact]
+	public void Ctor_NumericString_PrimitiveBecomesEnumName()
+	{
+		// Arrange
+		var primitive = ((int)FakeEnum.Value1).ToString();
+
+		// Act
+		var strongEnum = new FakeStrongEnumValue(primitive);
+
+		// Assert
+		Assert.Equal(nameof(FakeEnum.Value1), strongEnum.PrimitiveValue);
+	}
 }
 
 file class FakeStrongEnumValue : StrongTypedEnumValue<FakeStrongEnumValue, FakeEnum>

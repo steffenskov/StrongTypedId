@@ -1,7 +1,17 @@
 <!-- Directory.Build.props -->
 <Project>
     <PropertyGroup>
-        <Version>2.5.1</Version>
+        <Version>2.5.2</Version>
+
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+        <Authors>Steffen Skov</Authors>
+        <Company>Steffen Skov</Company>
+        <Copyright>Steffen Skov 2022</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 </Project>
 

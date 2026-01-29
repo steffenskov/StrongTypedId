@@ -1,16 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
-        <Authors>Steffen Skov</Authors>
-        <Company>Steffen Skov</Company>
         <Description>Serialization extension for easy usage of StrongTypedId with LiteDB.</Description>
-        <Copyright>Steffen Skov 2022</Copyright>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
         <PackageTags>strongly-typed, Id, litedb, litedatabase</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
