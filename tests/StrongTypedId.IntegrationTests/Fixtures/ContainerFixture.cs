@@ -11,8 +11,7 @@ public class ContainerFixture : IAsyncLifetime
 	public ContainerFixture()
 	{
 		StrongTypedMongo.AddStrongTypedMongoSerializers(typeof(FakeId).Assembly);
-		_mongoContainer = new MongoDbBuilder()
-			.WithImage("mongo:latest")
+		_mongoContainer = new MongoDbBuilder("mongo:latest")
 			.WithUsername("mongo")
 			.WithPassword("secret")
 			.WithPortBinding(27017, 27017)

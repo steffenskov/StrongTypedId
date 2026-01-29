@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.2] - 2026-01-29
+
+### Fixed
+
+- StrongTypedEnum allowed numbers as string in its constructor, thereby storing the value internally as e.g. "0". This in turn would be the value used in serialization, which could cause problems downstream.
+    - The fix ensures the internal string representation is always the enum's name, not the number.
+
 ## [2.5.1] - 2025-10-15
 
 ### Added
