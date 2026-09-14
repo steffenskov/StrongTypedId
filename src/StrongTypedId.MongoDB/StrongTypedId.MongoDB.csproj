@@ -16,7 +16,6 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="MongoDB.Driver"/>
-        <PackageReference Include="Ckode.ServiceLocator"/>
     </ItemGroup>
 
 </Project>

@@ -17,7 +17,6 @@
 
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Ckode.ServiceLocator"/>
         <PackageReference Include="LiteDB"/>
     </ItemGroup>
 

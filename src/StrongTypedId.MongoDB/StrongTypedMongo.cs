@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Ckode;
 using StrongTypedId.MongoDB.Serializers.Factories;
 
 namespace StrongTypedId.MongoDB;
@@ -12,7 +11,7 @@ public static class StrongTypedMongo
 	public static void AddStrongTypedMongoSerializers(params Assembly[] assemblies)
 	{
 		var types = assemblies.SelectMany(assembly => assembly.GetTypes());
-		var serializerFactories = ServiceLocator.CreateInstances<IMongoSerializerFactory>().ToList();
+		var serializerFactories = CreateFactories().ToList();
 
 
 		Parallel.ForEach(types, type =>
@@ -42,5 +41,21 @@ public static class StrongTypedMongo
 				_registeredSerializerTypes.Add(type);
 			}
 		});
+	}
+
+	private static IEnumerable<IMongoSerializerFactory> CreateFactories()
+	{
+		var assemblyTypes = Assembly
+			.GetAssembly(typeof(IMongoSerializerFactory))!
+			.GetTypes()
+			.Where(type => type is { IsAbstract: false, IsInterface: false });
+
+		foreach (var type in assemblyTypes)
+		{
+			if (type.IsAssignableTo(typeof(IMongoSerializerFactory)))
+			{
+				yield return (IMongoSerializerFactory)Activator.CreateInstance(type)!;
+			}
+		}
 	}
 }
