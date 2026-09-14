@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/StrongTypedId.Dapper.DDD.Repository/StrongTypedId.Dapper.DDD.Repository.csproj" />
+    <Project Path="src/StrongTypedId.EntityFrameworkCore/StrongTypedId.EntityFrameworkCore.csproj" />
+    <Project Path="src/StrongTypedId.LiteDB/StrongTypedId.LiteDB.csproj" />
+    <Project Path="src/StrongTypedId.MongoDB/StrongTypedId.MongoDB.csproj" />
+    <Project Path="src/StrongTypedId.NewtonSoft/StrongTypedId.NewtonSoft.csproj" />
+    <Project Path="src/StrongTypedId.Swagger/StrongTypedId.Swagger.csproj" />
+    <Project Path="src/StrongTypedId/StrongTypedId.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/StrongTypedId.IntegrationTests/StrongTypedId.IntegrationTests.csproj" />
+    <Project Path="tests/StrongTypedId.UnitTests/StrongTypedId.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/_items/">
+    <File Path=".editorconfig" />
+    <File Path="CHANGELOG.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+</Solution>

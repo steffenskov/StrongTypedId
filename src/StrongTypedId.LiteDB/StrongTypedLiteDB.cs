@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Ckode;
 using StrongTypedId.LiteDB.Serializers.Factories;
 
 namespace StrongTypedId.LiteDB;
@@ -11,7 +10,8 @@ public static class StrongTypedLiteDB
 		HashSet<Type> registeredSerializerTypes = [];
 		object serializerRegistrationLock = new();
 		var types = assemblies.SelectMany(assembly => assembly.GetTypes());
-		var serializerFactories = ServiceLocator.CreateInstances<ILiteDBSerializerFactory>().ToList();
+
+		var serializerFactories = CreateFactories().ToList();
 
 		var mapper = new BsonMapper();
 
@@ -42,5 +42,21 @@ public static class StrongTypedLiteDB
 		}
 
 		return mapper;
+	}
+
+	private static IEnumerable<ILiteDBSerializerFactory> CreateFactories()
+	{
+		var assemblyTypes = Assembly
+			.GetAssembly(typeof(ILiteDBSerializerFactory))!
+			.GetTypes()
+			.Where(type => type is { IsAbstract: false, IsInterface: false });
+
+		foreach (var type in assemblyTypes)
+		{
+			if (type.IsAssignableTo(typeof(ILiteDBSerializerFactory)))
+			{
+				yield return (ILiteDBSerializerFactory)Activator.CreateInstance(type)!;
+			}
+		}
 	}
 }

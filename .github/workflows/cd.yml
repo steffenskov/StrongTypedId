@@ -16,7 +16,7 @@ env:
   EF_PROJECT_PATH: 'src/StrongTypedId.EntityFrameworkCore/StrongTypedId.EntityFrameworkCore.csproj'
   DAPPER_PROJECT_PATH: 'src/StrongTypedId.Dapper.DDD.Repository/StrongTypedId.Dapper.DDD.Repository.csproj'
   SWAGGER_PROJECT_PATH: 'src/StrongTypedId.Swagger/StrongTypedId.Swagger.csproj'
-  SOLUTION_PATH: 'StrongTypedId.sln'
+  SOLUTION_PATH: 'StrongTypedId.slnx'
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 
@@ -27,12 +27,12 @@ jobs:
 
     steps:
     - name: 'Checkout'
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: 'Install dotnet'
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 10.0.x
 
     - name: 'Restore packages'
       run: dotnet restore ${{ env.SOLUTION_PATH }}
@@ -48,12 +48,12 @@ jobs:
 
     steps:
     - name: 'Checkout'
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: 'Install dotnet'
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 10.0.x
 
     - name: 'Restore packages'
       run: dotnet restore ${{ env.SOLUTION_PATH }}
