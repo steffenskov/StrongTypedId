@@ -89,6 +89,11 @@ This is supported out-of-the-box.
 
 This is supported through the package [StrongTypedId.NewtonSoft](https://www.nuget.org/packages/StrongTypedId.NewtonSoft).
 
+## OpenApi
+
+This is supported through the package [StrongTypedId.OpenApi](https://www.nuget.org/packages/StrongTypedId.OpenApi).
+
 ## Swagger
 
-This is supported through the package [StrongTypedId.Swagger](https://www.nuget.org/packages/StrongTypedId.Swagger).
+This is supported through the package [StrongTypedId.Swagger](https://www.nuget.org/packages/StrongTypedId.Swagger). 
+Do note this package won't receive any further feature updates as Swagger is essentialy End-Of-Life. I suggest switching to OpenApi instead.
