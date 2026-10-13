@@ -66,7 +66,7 @@ public class OpenApiStrongTypeExtensionTests
 	}
 
 	// Gives the built-in generator at least one component schema, so doc.Components.Schemas is non-null.
-	public record OrderDto(string Name);
+	public record OrderDto(string Name, OrderId Id, CustomerId CustomerId);
 
 	#endregion
 
@@ -143,7 +143,7 @@ public class OpenApiStrongTypeExtensionTests
 	{
 		var schemas = await GetSchemasAsync(o => o.MapStrongType<OrderId, Guid>());
 
-		var schema = Assert.Contains(nameof(OrderId), schemas);
+		var schema = Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(OrderId)), schemas);
 		Assert.Equal("string", schema.GetProperty("type").GetString());
 		Assert.Equal("uuid", schema.GetProperty("format").GetString());
 		Assert.False(schema.TryGetProperty("properties", out _));
@@ -154,7 +154,7 @@ public class OpenApiStrongTypeExtensionTests
 	{
 		var schemas = await GetSchemasAsync(o => o.MapStrongType(typeof(CustomerId), typeof(int)));
 
-		var schema = Assert.Contains(nameof(CustomerId), schemas);
+		var schema = Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(CustomerId)), schemas);
 		var primaryType = schema.GetProperty("type")[0];
 		Assert.Equal("integer", primaryType.GetString());
 		Assert.Equal("int32", schema.GetProperty("format").GetString());
@@ -167,8 +167,8 @@ public class OpenApiStrongTypeExtensionTests
 			.MapStrongType<OrderId, Guid>()
 			.MapStrongType<CustomerId, int>());
 
-		Assert.Equal("uuid", schemas[nameof(OrderId)].GetProperty("format").GetString());
-		Assert.Equal("int32", schemas[nameof(CustomerId)].GetProperty("format").GetString());
+		Assert.Equal("uuid", schemas[OpenApiStrongTypeExtension.GetSchemaId(typeof(OrderId))].GetProperty("format").GetString());
+		Assert.Equal("int32", schemas[OpenApiStrongTypeExtension.GetSchemaId(typeof(CustomerId))].GetProperty("format").GetString());
 	}
 
 	[Fact]
@@ -186,9 +186,9 @@ public class OpenApiStrongTypeExtensionTests
 	{
 		var schemas = await GetSchemasAsync(o => o.MapStrongTypesFromAssembly(typeof(OrderId).Assembly));
 
-		Assert.Equal("uuid", schemas[nameof(OrderId)].GetProperty("format").GetString());
-		Assert.Equal("int32", schemas[nameof(CustomerId)].GetProperty("format").GetString());
-		Assert.DoesNotContain(nameof(NotAStrongType), schemas);
+		Assert.Equal("uuid", schemas[OpenApiStrongTypeExtension.GetSchemaId(typeof(OrderId))].GetProperty("format").GetString());
+		Assert.Equal("int32", schemas[OpenApiStrongTypeExtension.GetSchemaId(typeof(CustomerId))].GetProperty("format").GetString());
+		Assert.DoesNotContain(OpenApiStrongTypeExtension.GetSchemaId(typeof(NotAStrongType)), schemas);
 	}
 
 	[Fact]
@@ -196,8 +196,8 @@ public class OpenApiStrongTypeExtensionTests
 	{
 		var schemas = await GetSchemasAsync(o => o.MapStrongTypesFromAssemblyContaining<OrderId>());
 
-		Assert.Contains(nameof(OrderId), schemas);
-		Assert.Contains(nameof(CustomerId), schemas);
+		Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(OrderId)), schemas);
+		Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(CustomerId)), schemas);
 	}
 
 	[Fact]
@@ -205,8 +205,8 @@ public class OpenApiStrongTypeExtensionTests
 	{
 		var schemas = await GetSchemasAsync(o => o.MapStrongTypesFromAssemblyContaining(typeof(OrderId)));
 
-		Assert.Contains(nameof(OrderId), schemas);
-		Assert.Contains(nameof(CustomerId), schemas);
+		Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(OrderId)), schemas);
+		Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(CustomerId)), schemas);
 	}
 
 	[Fact]
@@ -215,8 +215,8 @@ public class OpenApiStrongTypeExtensionTests
 		var schemas = await GetSchemasAsync(o => o.MapStrongTypesFromAssemblies(
 			[typeof(OpenApiOptions).Assembly, typeof(OrderId).Assembly]));
 
-		Assert.Contains(nameof(OrderId), schemas);
-		Assert.Contains(nameof(CustomerId), schemas);
+		Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(OrderId)), schemas);
+		Assert.Contains(OpenApiStrongTypeExtension.GetSchemaId(typeof(CustomerId)), schemas);
 	}
 
 	[Fact]
@@ -224,8 +224,8 @@ public class OpenApiStrongTypeExtensionTests
 	{
 		var schemas = await GetSchemasAsync(_ => { });
 
-		Assert.DoesNotContain(nameof(OrderId), schemas);
-		Assert.DoesNotContain(nameof(CustomerId), schemas);
+		Assert.DoesNotContain(OpenApiStrongTypeExtension.GetSchemaId(typeof(OrderId)), schemas);
+		Assert.DoesNotContain(OpenApiStrongTypeExtension.GetSchemaId(typeof(CustomerId)), schemas);
 	}
 
 	#endregion

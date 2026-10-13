@@ -8,25 +8,25 @@ This package provides support for using StrongTypedId with OpenApi, to provide p
 
 # Usage
 
-Call `MapStrongType` during your OpenApi setup like below:
+Preferably map all types at once by calling `MapStrongTypesFromAssemblies` or `MapStrongTypesFromAssemblyContaining` during your OpenApi setup like below:
 
-```
+```csharp
 builder.Services.AddOpenApi(options =>
 {
-	options.MapStrongType<UserId, Guid>();
-    options.MapStrongType<EmailAddress, string>();
+    options.MapStrongTypesFromAssemblyContaining<UserId>(); // Will scan all types within the same assembly as UserId
+	options.MapStrongTypesFromAssemblies(myAssemblies); // Can scan multiple assemblies at once
 });
 ```
 
-There's also the option of mapping types without generics:
+You can also map single types if need be:
 
-```
-builder.Services.AddOpenApi(options => {
-    options.MapStrongType(typeof(UserId), typeof(Guid));
+```csharp
+builder.Services.AddOpenApi(options =>
+{
+    options.MapStrongType<UserId, Guid>(); // Map a single type using generics
+	options.MapStrongType(typeof(CustomerId), typeof(Guid)); // Map a single type manually
 });
 ```
-
-The latter can be useful, if you're using Reflection to search your AppDomain for all types and map them.~~~~
 
 # Documentation
 

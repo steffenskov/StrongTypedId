@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi;
 
 namespace StrongTypedId.OpenApi;
 
@@ -25,25 +24,34 @@ public static class OpenApiStrongTypeExtension
 		/// </summary>
 		public OpenApiOptions MapStrongType(Type strongType, Type primitiveType)
 		{
-			options.AddDocumentTransformer(async (doc, context, ct) =>
+			var schemaId = GetSchemaId(strongType);
+
+			var previous = options.CreateSchemaReferenceId;
+			options.CreateSchemaReferenceId = typeInfo =>
+				typeInfo.Type == strongType ? schemaId : previous(typeInfo);
+
+			options.AddSchemaTransformer(async (schema, context, ct) =>
 			{
-				var schemas = doc.Components?.Schemas;
-				if (schemas is null)
+				if (context.JsonTypeInfo.Type != strongType)
 				{
 					return;
 				}
 
 				var primitive = await context.GetOrCreateSchemaAsync(primitiveType, null, ct).ConfigureAwait(false);
 
-				schemas[strongType.Name] = new OpenApiSchema
-				{
-					Type = primitive.Type,
-					Format = primitive.Format,
-					Pattern = primitive.Pattern,
-					Minimum = primitive.Minimum,
-					Maximum = primitive.Maximum
-				};
+				schema.Type = primitive.Type;
+				schema.Format = primitive.Format;
+				schema.Pattern = primitive.Pattern;
+				schema.Minimum = primitive.Minimum;
+				schema.Maximum = primitive.Maximum;
+				schema.Properties = null;
+				schema.Items = null;
+				schema.AllOf = null;
+				schema.AnyOf = null;
+				schema.OneOf = null;
+				schema.Required = null;
 			});
+
 
 			return options;
 		}
@@ -109,5 +117,10 @@ public static class OpenApiStrongTypeExtension
 
 			return options;
 		}
+	}
+
+	static internal string GetSchemaId(Type type)
+	{
+		return (type.FullName ?? type.Name).Replace('+', '.');
 	}
 }
