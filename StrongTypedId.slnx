@@ -5,10 +5,12 @@
     <Project Path="src/StrongTypedId.LiteDB/StrongTypedId.LiteDB.csproj" />
     <Project Path="src/StrongTypedId.MongoDB/StrongTypedId.MongoDB.csproj" />
     <Project Path="src/StrongTypedId.NewtonSoft/StrongTypedId.NewtonSoft.csproj" />
+    <Project Path="src/StrongTypedId.OpenApi/StrongTypedId.OpenApi.csproj" />
     <Project Path="src/StrongTypedId.Swagger/StrongTypedId.Swagger.csproj" />
     <Project Path="src/StrongTypedId/StrongTypedId.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/StrongTypedId.ApiTests/StrongTypedId.ApiTests.csproj" />
     <Project Path="tests/StrongTypedId.IntegrationTests/StrongTypedId.IntegrationTests.csproj" />
     <Project Path="tests/StrongTypedId.UnitTests/StrongTypedId.UnitTests.csproj" />
   </Folder>

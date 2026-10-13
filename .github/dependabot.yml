@@ -9,3 +9,10 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "xunit.v3"
+      - dependency-name: "Microsoft.NET.Test.Sdk"
+      - dependency-name: "Microsoft.Testing.Extensions.CodeCoverage"
+
+
+# 2026-10-13: Ignored dependencies has a problem atm. where updating any one of them, causes test.sh to break - re-visit at a later date

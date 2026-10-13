@@ -16,6 +16,7 @@ env:
   EF_PROJECT_PATH: 'src/StrongTypedId.EntityFrameworkCore/StrongTypedId.EntityFrameworkCore.csproj'
   DAPPER_PROJECT_PATH: 'src/StrongTypedId.Dapper.DDD.Repository/StrongTypedId.Dapper.DDD.Repository.csproj'
   SWAGGER_PROJECT_PATH: 'src/StrongTypedId.Swagger/StrongTypedId.Swagger.csproj'
+  OPENAPI_PROJECT_PATH: 'src/StrongTypedId.OpenApi/StrongTypedId.OpenApi.csproj'
   SOLUTION_PATH: 'StrongTypedId.slnx'
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
@@ -81,6 +82,9 @@ jobs:
 
     - name: 'Pack Swagger extension'
       run: dotnet pack ${{ env.SWAGGER_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+
+    - name: 'Pack OpenApi extension'
+      run: dotnet pack ${{ env.OPENAPI_PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
     - name: NuGet login (OIDC)
       uses: NuGet/login@v1

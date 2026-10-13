@@ -5,7 +5,7 @@
         <PackageProjectUrl>https://github.com/steffenskov/StrongTypedId</PackageProjectUrl>
         <PackageTags>strongly-typed, Id, mongodb, mongo</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <NoWarn>$(NoWarn);NU1504;NU1008</NoWarn>
+
 
     </PropertyGroup>
     <ItemGroup>

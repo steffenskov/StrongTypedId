@@ -3,7 +3,7 @@
 rm TestResults -rf 2> /dev/null
 rm coverage-report -rf 2> /dev/null
 
-dotnet test --results-directory ./TestResults --coverage --coverage-output-format cobertura
+dotnet test --results-directory ./TestResults --coverage --coverage-output-format cobertura --coverage-settings coverage.settings.xml
 
 reportgenerator -reports:"TestResults/**/*.cobertura.xml" -targetdir:coverage-report -reporttypes:Html
 

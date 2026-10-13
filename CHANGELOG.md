@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-10-13
+
+### Added
+
+- Added [StrongTypedId.OpenApi](https://www.nuget.org/packages/StrongTypedId.OpenApi) package for OpenApi type mapping as replacement for the outdated Swagger package.
+
 ## [2.6.0] - 2026-09-14
 
 ### Changed
