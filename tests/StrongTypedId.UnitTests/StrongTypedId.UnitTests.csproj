@@ -3,19 +3,20 @@
     <PropertyGroup>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <NoWarn>$(NoWarn);NU1504;NU1008</NoWarn>
+
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.TestHost"/>
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
         <PackageReference Include="NewtonSoft.Json"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
         <PackageReference Include="xunit.v3"/>
         <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src\StrongTypedId.OpenApi\StrongTypedId.OpenApi.csproj"/>
         <ProjectReference Include="..\..\src\StrongTypedId\StrongTypedId.csproj"/>
         <ProjectReference Include="..\..\src\StrongTypedId.NewtonSoft\StrongTypedId.NewtonSoft.csproj"/>
         <ProjectReference Include="..\..\src\StrongTypedId.Swagger\StrongTypedId.Swagger.csproj"/>

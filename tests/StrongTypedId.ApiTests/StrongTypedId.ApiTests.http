@@ -1,0 +1,6 @@
+@StrongTypedId.ApiTests_HostAddress = http://localhost:5139
+
+GET {{StrongTypedId.ApiTests_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

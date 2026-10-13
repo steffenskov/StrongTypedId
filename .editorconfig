@@ -342,3 +342,7 @@ dotnet_code_quality.ca1826.exclude_ordefault_methods = true
 indent_style = tab
 indent_size = tab
 tab_width = 4
+
+
+[*.cs]
+dotnet_diagnostic.CA2007.severity = warning
