@@ -25,7 +25,26 @@ public static class OpenApiStrongTypeExtension
 		/// </summary>
 		public OpenApiOptions MapStrongType(Type strongType, Type primitiveType)
 		{
-			options.AddDocumentTransformer((doc, context, ct) => ReplaceSchema(doc, strongType, primitiveType));
+			options.AddDocumentTransformer(async (doc, context, ct) =>
+			{
+				var schemas = doc.Components?.Schemas;
+				if (schemas is null)
+				{
+					return;
+				}
+
+				var primitive = await context.GetOrCreateSchemaAsync(primitiveType, null, ct).ConfigureAwait(false);
+
+				schemas[strongType.Name] = new OpenApiSchema
+				{
+					Type = primitive.Type,
+					Format = primitive.Format,
+					Pattern = primitive.Pattern,
+					Minimum = primitive.Minimum,
+					Maximum = primitive.Maximum
+				};
+			});
+
 			return options;
 		}
 
@@ -68,7 +87,7 @@ public static class OpenApiStrongTypeExtension
 		/// <summary>
 		///     Scan assembly for StrongTyped types and map them.
 		/// </summary>
-		/// <param name="assembly">Asembly to scan</param>
+		/// <param name="assembly">Assembly to scan</param>
 		public OpenApiOptions MapStrongTypesFromAssembly(Assembly assembly)
 		{
 			ArgumentNullException.ThrowIfNull(assembly);
@@ -90,55 +109,5 @@ public static class OpenApiStrongTypeExtension
 
 			return options;
 		}
-	}
-
-	private static Task ReplaceSchema(OpenApiDocument doc, Type strongType, Type primitiveType)
-	{
-		var (jsonType, format) = GetOpenApiSchema(primitiveType);
-
-		// The built-in generator names components by the CLR type name (e.g. "OrderId").
-		var componentKey = strongType.Name;
-
-		if (doc.Components?.Schemas is null)
-		{
-			return Task.CompletedTask;
-		}
-
-		doc.Components.Schemas[componentKey] = new OpenApiSchema
-		{
-			Type = jsonType,
-			Format = format,
-			Properties = null,
-			Items = null,
-			AllOf = null,
-			AnyOf = null,
-			OneOf = null,
-			Required = null
-		};
-
-		return Task.CompletedTask;
-	}
-
-	private static (JsonSchemaType type, string format) GetOpenApiSchema(Type primitiveType)
-	{
-		return primitiveType switch
-		{
-			{ } t when t == typeof(bool) => (JsonSchemaType.Boolean, ""),
-			{ } t when t == typeof(char) => (JsonSchemaType.String, ""),
-			{ } t when t == typeof(string) => (JsonSchemaType.String, ""),
-			{ } t when t == typeof(Guid) => (JsonSchemaType.String, "uuid"),
-			{ } t when t == typeof(short) => (JsonSchemaType.Integer, "int16"),
-			{ } t when t == typeof(int) => (JsonSchemaType.Integer, "int32"),
-			{ } t when t == typeof(long) => (JsonSchemaType.Integer, "int64"),
-			{ } t when t == typeof(ushort) => (JsonSchemaType.Integer, "uint16"),
-			{ } t when t == typeof(uint) => (JsonSchemaType.Integer, "uint32"),
-			{ } t when t == typeof(ulong) => (JsonSchemaType.Integer, "uint64"),
-			{ } t when t == typeof(float) => (JsonSchemaType.Number, "float"),
-			{ } t when t == typeof(double) => (JsonSchemaType.Number, "double"),
-			{ } t when t == typeof(decimal) => (JsonSchemaType.Number, ""),
-			{ } t when t == typeof(byte) => (JsonSchemaType.Integer, "uint8"),
-			{ } t when t == typeof(sbyte) => (JsonSchemaType.Integer, "int8"),
-			_ => (JsonSchemaType.Object, "")
-		};
 	}
 }

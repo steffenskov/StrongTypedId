@@ -6,6 +6,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src\StrongTypedId.NewtonSoft\StrongTypedId.NewtonSoft.csproj"/>
         <ProjectReference Include="..\..\src\StrongTypedId.OpenApi\StrongTypedId.OpenApi.csproj"/>
         <ProjectReference Include="..\..\src\StrongTypedId\StrongTypedId.csproj"/>
     </ItemGroup>

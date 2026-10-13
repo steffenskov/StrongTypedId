@@ -1,11 +1,9 @@
-using System.Reflection;
 using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi;
 using StrongTypedId.OpenApi;
 
 namespace StrongTypedId.UnitTests;
@@ -22,7 +20,9 @@ public class OpenApiStrongTypeExtensionTests
 
 		await using var app = builder.Build();
 		app.MapOpenApi();
-		app.MapPost("/orders", (OrderDto dto) => Results.Ok());
+		app.MapPost("/orders", (OrderDto dto) => Results.Ok(dto));
+		app.MapGet("/orders/{id}", (OrderId id) => Results.Ok(id));
+		app.MapGet("/customers/{id}", (CustomerId id) => Results.Ok(id));
 		await app.StartAsync();
 
 		var json = await app.GetTestClient().GetStringAsync("/openapi/v1.json");
@@ -46,14 +46,14 @@ public class OpenApiStrongTypeExtensionTests
 	#region Fixtures
 
 	// NOTE: adjust the constructors to match StrongTypedValue's actual base constructor.
-	public class OrderId : StrongTypedValue<OrderId, Guid>
+	public class OrderId : StrongTypedId<OrderId, Guid>
 	{
 		public OrderId(Guid value) : base(value)
 		{
 		}
 	}
 
-	public class CustomerId : StrongTypedValue<CustomerId, int>
+	public class CustomerId : StrongTypedId<CustomerId, int>
 	{
 		public CustomerId(int value) : base(value)
 		{
@@ -155,7 +155,8 @@ public class OpenApiStrongTypeExtensionTests
 		var schemas = await GetSchemasAsync(o => o.MapStrongType(typeof(CustomerId), typeof(int)));
 
 		var schema = Assert.Contains(nameof(CustomerId), schemas);
-		Assert.Equal("integer", schema.GetProperty("type").GetString());
+		var primaryType = schema.GetProperty("type")[0];
+		Assert.Equal("integer", primaryType.GetString());
 		Assert.Equal("int32", schema.GetProperty("format").GetString());
 	}
 
@@ -228,112 +229,8 @@ public class OpenApiStrongTypeExtensionTests
 	}
 
 	#endregion
+}
 
-	#region Private helpers (via reflection)
-
-	public static TheoryData<Type, JsonSchemaType, string> PrimitiveMappings => new()
-	{
-		{ typeof(bool), JsonSchemaType.Boolean, "" },
-		{ typeof(char), JsonSchemaType.String, "" },
-		{ typeof(string), JsonSchemaType.String, "" },
-		{ typeof(Guid), JsonSchemaType.String, "uuid" },
-		{ typeof(short), JsonSchemaType.Integer, "int16" },
-		{ typeof(int), JsonSchemaType.Integer, "int32" },
-		{ typeof(long), JsonSchemaType.Integer, "int64" },
-		{ typeof(ushort), JsonSchemaType.Integer, "uint16" },
-		{ typeof(uint), JsonSchemaType.Integer, "uint32" },
-		{ typeof(ulong), JsonSchemaType.Integer, "uint64" },
-		{ typeof(float), JsonSchemaType.Number, "float" },
-		{ typeof(double), JsonSchemaType.Number, "double" },
-		{ typeof(decimal), JsonSchemaType.Number, "" },
-		{ typeof(byte), JsonSchemaType.Integer, "uint8" },
-		{ typeof(sbyte), JsonSchemaType.Integer, "int8" },
-		// Anything unmapped falls back to object
-		{ typeof(DateTime), JsonSchemaType.Object, "" },
-		{ typeof(DateTimeOffset), JsonSchemaType.Object, "" }
-	};
-
-	[Theory]
-	[MemberData(nameof(PrimitiveMappings))]
-	public void GetOpenApiSchema_MapsPrimitiveToExpectedTypeAndFormat(Type primitive, JsonSchemaType expectedType, string expectedFormat)
-	{
-		var method = typeof(OpenApiStrongTypeExtension).GetMethod("GetOpenApiSchema", BindingFlags.NonPublic | BindingFlags.Static)!;
-
-		var (type, format) = ((JsonSchemaType, string))method.Invoke(null, [primitive])!;
-
-		Assert.Equal(expectedType, type);
-		Assert.Equal(expectedFormat, format);
-	}
-
-	[Fact]
-	public async Task ReplaceSchema_ExistingComponent_IsOverwritten()
-	{
-		var doc = new OpenApiDocument
-		{
-			Components = new OpenApiComponents
-			{
-				Schemas = new Dictionary<string, IOpenApiSchema>
-				{
-					[nameof(OrderId)] = new OpenApiSchema
-					{
-						Type = JsonSchemaType.Object,
-						Properties = new Dictionary<string, IOpenApiSchema>
-						{
-							["value"] = new OpenApiSchema { Type = JsonSchemaType.String }
-						}
-					}
-				}
-			}
-		};
-
-		await InvokeReplaceSchema(doc, typeof(OrderId), typeof(Guid));
-
-		var schema = doc.Components.Schemas[nameof(OrderId)];
-		Assert.Equal(JsonSchemaType.String, schema.Type);
-		Assert.Equal("uuid", schema.Format);
-		Assert.Null(schema.Properties);
-	}
-
-	[Fact]
-	public async Task ReplaceSchema_MissingComponent_IsAdded()
-	{
-		var doc = new OpenApiDocument
-		{
-			Components = new OpenApiComponents { Schemas = new Dictionary<string, IOpenApiSchema>() }
-		};
-
-		await InvokeReplaceSchema(doc, typeof(CustomerId), typeof(int));
-
-		var schema = doc.Components.Schemas[nameof(CustomerId)];
-		Assert.Equal(JsonSchemaType.Integer, schema.Type);
-		Assert.Equal("int32", schema.Format);
-	}
-
-	[Fact]
-	public async Task ReplaceSchema_NullSchemas_CompletesWithoutThrowing()
-	{
-		var doc = new OpenApiDocument { Components = new OpenApiComponents { Schemas = null } };
-
-		await InvokeReplaceSchema(doc, typeof(OrderId), typeof(Guid));
-
-		Assert.Null(doc.Components.Schemas);
-	}
-
-	[Fact]
-	public async Task ReplaceSchema_NullComponents_CompletesWithoutThrowing()
-	{
-		var doc = new OpenApiDocument { Components = null };
-
-		await InvokeReplaceSchema(doc, typeof(OrderId), typeof(Guid));
-
-		Assert.Null(doc.Components);
-	}
-
-	private static Task InvokeReplaceSchema(OpenApiDocument doc, Type strongType, Type primitiveType)
-	{
-		var method = typeof(OpenApiStrongTypeExtension).GetMethod("ReplaceSchema", BindingFlags.NonPublic | BindingFlags.Static)!;
-		return (Task)method.Invoke(null, [doc, strongType, primitiveType])!;
-	}
-
-	#endregion
+file sealed class FakeType
+{
 }
