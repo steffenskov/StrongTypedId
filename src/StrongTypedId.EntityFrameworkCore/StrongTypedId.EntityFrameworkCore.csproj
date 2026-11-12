@@ -14,6 +14,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\StrongTypedId\StrongTypedId.csproj"/>
